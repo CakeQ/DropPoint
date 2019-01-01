@@ -35,7 +35,7 @@ ADropPointBlock::ADropPointBlock()
 	BlockMesh->SetStaticMesh(ConstructorStatics.PlaneMesh.Get());
 	BlockMesh->SetRelativeScale3D(FVector(1.f,1.f,0.25f));
 	BlockMesh->SetRelativeLocation(FVector(0.f,0.f,25.f));
-	BlockMesh->SetMaterial(0, ConstructorStatics.BlueMaterial.Get());
+	BlockMesh->SetMaterial(0, ConstructorStatics.OrangeMaterial.Get());
 	BlockMesh->SetupAttachment(DummyRoot);
 	BlockMesh->OnClicked.AddDynamic(this, &ADropPointBlock::BlockClicked);
 	BlockMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointBlock::OnFingerPressedBlock);
@@ -65,7 +65,7 @@ void ADropPointBlock::HandleClicked()
 		bIsActive = true;
 
 		// Change material
-		BlockMesh->SetMaterial(0, OrangeMaterial);
+		BlockMesh->SetMaterial(0, BlueMaterial);
 
 		// Tell the Grid
 		if (OwningGrid != nullptr)
@@ -85,10 +85,10 @@ void ADropPointBlock::Highlight(bool bOn)
 
 	if (bOn)
 	{
-		BlockMesh->SetMaterial(0, BaseMaterial);
+		BlockMesh->SetMaterial(0, BlueMaterial);
 	}
 	else
 	{
-		BlockMesh->SetMaterial(0, BlueMaterial);
+		BlockMesh->SetMaterial(0, OrangeMaterial);
 	}
 }
