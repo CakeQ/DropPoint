@@ -1,7 +1,8 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "DropPointBlockGrid.h"
-#include "DropPointBlock.h"
+#include "Tiles/DropPointTile.h"
+#include "Tiles/DropPointTileInteractive.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
 
@@ -40,12 +41,12 @@ void ADropPointBlockGrid::BeginPlay()
 		const FVector BlockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
 
 		// Spawn a block
-		ADropPointBlock* NewBlock = GetWorld()->SpawnActor<ADropPointBlock>(BlockLocation, FRotator(0,0,0));
+		ADropPointTileInteractive* NewTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(BlockLocation, FRotator(0,0,0));
 
 		// Tell the block about its owner
-		if (NewBlock != nullptr)
+		if (NewTile != nullptr)
 		{
-			NewBlock->OwningGrid = this;
+			NewTile->m_OwningGrid = this;
 		}
 	}
 }

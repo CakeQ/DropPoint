@@ -25,5 +25,8 @@ protected:
 	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-	class ADropPointBlock* CurrentBlockFocus;
+	class ADropPointTileInteractive* m_CurrentTileFocus;
+
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+	class ADropPointTileInteractive* m_CurrentActiveTile;
 };

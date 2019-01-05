@@ -1,7 +1,8 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #include "DropPointPawn.h"
-#include "DropPointBlock.h"
+#include "Tiles/DropPointTile.h"
+#include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
@@ -61,9 +62,14 @@ void ADropPointPawn::OnResetVR()
 
 void ADropPointPawn::TriggerClick()
 {
-	if (CurrentBlockFocus)
+	if (m_CurrentTileFocus)
 	{
-		CurrentBlockFocus->HandleClicked();
+		if (m_CurrentActiveTile)
+		{
+			m_CurrentActiveTile->activateTile();
+		}
+		m_CurrentTileFocus->activateTile();
+		m_CurrentActiveTile = m_CurrentTileFocus;
 	}
 }
 
@@ -78,23 +84,23 @@ void ADropPointPawn::TraceForBlock(const FVector& Start, const FVector& End, boo
 	}
 	if (HitResult.Actor.IsValid())
 	{
-		ADropPointBlock* HitBlock = Cast<ADropPointBlock>(HitResult.Actor.Get());
-		if (CurrentBlockFocus != HitBlock)
+		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
+		if (m_CurrentTileFocus != hitTile)
 		{
-			if (CurrentBlockFocus)
+			if (m_CurrentTileFocus)
 			{
-				CurrentBlockFocus->Highlight(false);
+				m_CurrentTileFocus->highlightTile(false);
 			}
-			if (HitBlock)
+			if (hitTile)
 			{
-				HitBlock->Highlight(true);
+				hitTile->highlightTile(true);
 			}
-			CurrentBlockFocus = HitBlock;
+			m_CurrentTileFocus = hitTile;
 		}
 	}
-	else if (CurrentBlockFocus)
+	else if (m_CurrentTileFocus)
 	{
-		CurrentBlockFocus->Highlight(false);
-		CurrentBlockFocus = nullptr;
+		m_CurrentTileFocus->highlightTile(false);
+		m_CurrentTileFocus = nullptr;
 	}
 }
