@@ -28,7 +28,7 @@ void ADropPointBlockGrid::BeginPlay()
 
 	// Calculate grid offset
 
-	const int32 GridOffset = (Size * BlockSpacing) / 2;
+	const int32 GridOffset = floor(((Size * BlockSpacing) / 2)/100) * 100;
 
 	// Loop to spawn each block
 	for(int32 BlockIndex=0; BlockIndex<NumBlocks; BlockIndex++)
