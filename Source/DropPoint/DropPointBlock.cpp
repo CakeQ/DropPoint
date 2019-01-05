@@ -17,7 +17,7 @@ ADropPointBlock::ADropPointBlock()
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> InactiveMaterial;
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> ActiveMaterial;
 		FConstructorStatics()
-			: TileMesh(TEXT("/Game/Geometry/Meshes/1M_Cube.1M_Cube"))
+			: TileMesh(TEXT("/Engine/BasicShapes/Cube.Cube"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
 			, InactiveMaterial(TEXT("/Game/Materials/Dev_Dark_Blue.Dev_Dark_Blue"))
 			, ActiveMaterial(TEXT("/Game/Materials/Dev_Base_Blue.Dev_Base_Blue"))

@@ -14,7 +14,7 @@ ADropPointBlockGrid::ADropPointBlockGrid()
 	RootComponent = DummyRoot;
 
 	// Set defaults
-	Size = 9;
+	Size = 7;
 	BlockSpacing = 100.f;
 }
 
