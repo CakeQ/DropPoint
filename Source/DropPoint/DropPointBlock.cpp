@@ -12,15 +12,15 @@ ADropPointBlock::ADropPointBlock()
 	// Structure to hold one-time initialization
 	struct FConstructorStatics
 	{
-		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> PlaneMesh;
+		ConstructorHelpers::FObjectFinderOptional<UStaticMesh> TileMesh;
 		ConstructorHelpers::FObjectFinderOptional<UMaterial> BaseMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> BlueMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> OrangeMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> InactiveMaterial;
+		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> ActiveMaterial;
 		FConstructorStatics()
-			: PlaneMesh(TEXT("/Game/Puzzle/Meshes/PuzzleCube.PuzzleCube"))
+			: TileMesh(TEXT("/Game/Geometry/Meshes/1M_Cube.1M_Cube"))
 			, BaseMaterial(TEXT("/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial"))
-			, BlueMaterial(TEXT("/Game/Puzzle/Meshes/BlueMaterial.BlueMaterial"))
-			, OrangeMaterial(TEXT("/Game/Puzzle/Meshes/OrangeMaterial.OrangeMaterial"))
+			, InactiveMaterial(TEXT("/Game/Materials/Dev_Dark_Blue.Dev_Dark_Blue"))
+			, ActiveMaterial(TEXT("/Game/Materials/Dev_Base_Blue.Dev_Base_Blue"))
 		{
 		}
 	};
@@ -32,18 +32,18 @@ ADropPointBlock::ADropPointBlock()
 
 	// Create static mesh component
 	BlockMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BlockMesh0"));
-	BlockMesh->SetStaticMesh(ConstructorStatics.PlaneMesh.Get());
+	BlockMesh->SetStaticMesh(ConstructorStatics.TileMesh.Get());
 	BlockMesh->SetRelativeScale3D(FVector(1.f,1.f,0.25f));
 	BlockMesh->SetRelativeLocation(FVector(0.f,0.f,25.f));
-	BlockMesh->SetMaterial(0, ConstructorStatics.OrangeMaterial.Get());
+	BlockMesh->SetMaterial(0, ConstructorStatics.InactiveMaterial.Get());
 	BlockMesh->SetupAttachment(DummyRoot);
 	BlockMesh->OnClicked.AddDynamic(this, &ADropPointBlock::BlockClicked);
 	BlockMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointBlock::OnFingerPressedBlock);
 
 	// Save a pointer to the orange material
 	BaseMaterial = ConstructorStatics.BaseMaterial.Get();
-	BlueMaterial = ConstructorStatics.BlueMaterial.Get();
-	OrangeMaterial = ConstructorStatics.OrangeMaterial.Get();
+	InactiveMaterial = ConstructorStatics.InactiveMaterial.Get();
+	ActiveMaterial = ConstructorStatics.ActiveMaterial.Get();
 }
 
 void ADropPointBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
@@ -64,14 +64,14 @@ void ADropPointBlock::HandleClicked()
 	{
 		bIsActive = true;
 
-		// Change material
-		BlockMesh->SetMaterial(0, BlueMaterial);
+		//// Change material
+		//BlockMesh->SetMaterial(0, BlueMaterial);
 
-		// Tell the Grid
-		if (OwningGrid != nullptr)
-		{
-			OwningGrid->AddScore();
-		}
+		//// Tell the Grid
+		//if (OwningGrid != nullptr)
+		//{
+		//	OwningGrid->AddScore();
+		//}
 	}
 }
 
@@ -85,10 +85,10 @@ void ADropPointBlock::Highlight(bool bOn)
 
 	if (bOn)
 	{
-		BlockMesh->SetMaterial(0, BlueMaterial);
+		BlockMesh->SetMaterial(0, ActiveMaterial);
 	}
 	else
 	{
-		BlockMesh->SetMaterial(0, OrangeMaterial);
+		BlockMesh->SetMaterial(0, InactiveMaterial);
 	}
 }

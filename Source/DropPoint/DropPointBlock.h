@@ -32,11 +32,11 @@ public:
 
 	/** Pointer to blue material used on inactive blocks */
 	UPROPERTY()
-	class UMaterialInstance* BlueMaterial;
+	class UMaterialInstance* InactiveMaterial;
 
 	/** Pointer to orange material used on active blocks */
 	UPROPERTY()
-	class UMaterialInstance* OrangeMaterial;
+	class UMaterialInstance* ActiveMaterial;
 
 	/** Grid that owns us */
 	UPROPERTY()
