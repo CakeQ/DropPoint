@@ -46,7 +46,7 @@ void ADropPointBlockGrid::BeginPlay()
 		// Tell the block about its owner
 		if (NewTile != nullptr)
 		{
-			NewTile->m_OwningGrid = this;
+			//NewTile->m_OwningGrid = this;
 		}
 	}
 }

@@ -21,7 +21,7 @@ public:
 
 	// Grid that owns us
 	UPROPERTY()
-	class ADropPointBlockGrid* m_OwningGrid;
+	class ADropPointArenaController* m_OwningGrid;
 
 protected:
 	// Dummy root component
