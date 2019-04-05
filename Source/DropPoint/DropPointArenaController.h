@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DropPointGridCoord.h"
 #include "DropPointArenaController.generated.h"
 
 UCLASS()
@@ -22,11 +23,22 @@ public:
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
 	int32 m_GridSize;
 
+	int32 getLinearIndex(const FDropPointGridCoord& coord) const { return (coord.y * m_GridSize) + coord.x; }
+
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float m_BlockSpacing;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	FVector2D m_ArenaGrid;
+	TArray<ADropPointTileInteractive*> m_Tiles;
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	virtual void setTilePos(const FDropPointGridCoord& coord, ADropPointTileInteractive* tile);
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	ADropPointTileInteractive* getTilePos(const FDropPointGridCoord& coord, bool& outOfBounds) const;
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	const bool isInsideArena(const FDropPointGridCoord & coord) const;
 
 protected:
 	// Called when the game starts or when spawned
