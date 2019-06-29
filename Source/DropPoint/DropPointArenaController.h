@@ -25,6 +25,9 @@ public:
 
 	int32 getLinearIndex(const FDropPointGridCoord& coord) const { return (coord.y * m_GridSize) + coord.x; }
 
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	int32 isInLinearRange(const int32& linearIndex, const int32& size) const;
+
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float m_BlockSpacing;
 

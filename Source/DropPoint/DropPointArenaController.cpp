@@ -13,16 +13,26 @@ ADropPointArenaController::ADropPointArenaController()
 	DummyRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Dummy0"));
 	RootComponent = DummyRoot;
 
-	// Set defaults
+	// Set debug defaults
 	m_GridSize = 7;
 	m_BlockSpacing = 100.f;
+	m_Tiles.SetNum(m_GridSize * m_GridSize);
+}
+
+int32 ADropPointArenaController::isInLinearRange(const int32 & linearIndex, const int32& size) const
+{
+	if (linearIndex >= 0 && linearIndex <= (((size -1) * size) + (size -1)))
+	{
+		return true;
+	}
+	return false;
 }
 
 void ADropPointArenaController::setTilePos(const FDropPointGridCoord & coord, ADropPointTileInteractive * tile)
 {
 	check(isInsideArena(coord));
 	const int32 linearIndex = getLinearIndex(coord);
-	check(linearIndex >= 0 && linearIndex < m_Tiles.Num());
+	check(isInLinearRange(linearIndex, m_GridSize));
 	m_Tiles[linearIndex] = tile;
 }
 
@@ -64,8 +74,8 @@ void ADropPointArenaController::BeginPlay()
 	{
 		for (int32 blockYIndex = 0; blockYIndex < m_GridSize; blockYIndex++)
 		{
-			const float XOffset = ((blockXIndex / m_GridSize) * m_BlockSpacing) - gridOffset; // Divide by dimension
-			const float YOffset = ((blockYIndex%m_GridSize) * m_BlockSpacing) - gridOffset; // Modulo gives remainder
+			const float XOffset = (blockXIndex * m_BlockSpacing) - gridOffset; // Divide by dimension
+			const float YOffset = ((blockYIndex % m_GridSize) * m_BlockSpacing) - gridOffset; // Modulo gives remainder
 
 			// Make position vector, offset from Grid location
 			const FVector blockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
@@ -79,8 +89,8 @@ void ADropPointArenaController::BeginPlay()
 				newTile->m_OwningGrid = this;
 
 				FDropPointGridCoord tileCoord;
-				tileCoord.x = newTile->GetActorLocation().X;
-				tileCoord.y = newTile->GetActorLocation().Y;
+				tileCoord.x = (newTile->GetActorLocation().X + gridOffset) / m_BlockSpacing;
+				tileCoord.y = (newTile->GetActorLocation().Y + gridOffset) / m_BlockSpacing;
 				setTilePos(tileCoord, newTile);
 			}
 		}
