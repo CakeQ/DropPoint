@@ -66,12 +66,7 @@ void ADropPointPawn::TriggerClick()
 	{
 		if (m_CurrentActiveTile)
 		{
-			m_CurrentActiveTile->deactivateTile();
-			if (m_CurrentTileFocus == m_CurrentActiveTile)
-			{
-				m_CurrentActiveTile = nullptr;
-				return;
-			}
+			m_CurrentActiveTile->activateTile();
 		}
 		m_CurrentTileFocus->activateTile();
 		m_CurrentActiveTile = m_CurrentTileFocus;

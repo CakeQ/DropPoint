@@ -38,28 +38,18 @@ void ADropPointTileInteractive::tilePressed(ETouchIndex::Type FingerIndex, UPrim
 	activateTile();
 }
 
-void ADropPointTileInteractive::toggleTile()
+void ADropPointTileInteractive::activateTile()
 {
 	if (!m_IsActive)
 	{
-		activateTile();
+		m_TileMesh->SetMaterial(0, m_ActiveMaterial);
 	}
 	else
 	{
-		deactivateTile();
+		m_TileMesh->SetMaterial(0, m_BaseMaterial);
 	}
-}
 
-void ADropPointTileInteractive::activateTile()
-{
-	m_TileMesh->SetMaterial(0, m_ActiveMaterial);
-	m_IsActive = true;
-}
-
-void ADropPointTileInteractive::deactivateTile()
-{
-	m_TileMesh->SetMaterial(0, m_BaseMaterial);
-	m_IsActive = false;
+	m_IsActive = !m_IsActive;
 }
 
 void ADropPointTileInteractive::highlightTile(bool bOn)

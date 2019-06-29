@@ -38,9 +38,7 @@ public:
 		void tilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 
 	// Tile interaction functions
-	void toggleTile();
 	void activateTile();
-	void deactivateTile();
 
 	void highlightTile(bool bOn);
 
