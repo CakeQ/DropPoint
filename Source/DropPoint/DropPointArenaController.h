@@ -32,6 +32,9 @@ public:
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	TArray<ADropPointTile*> Tiles;
 
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AActor> TileTypeActor;
+
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	int32 getLinearIndex(const FDropPointGridCoord& coord) const;
 

@@ -29,15 +29,18 @@ public:
 protected:
 
 	// StaticMesh component for the tile
-	UPROPERTY(Category = Block, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* TileMesh;
 
-	UPROPERTY(Category = Block, VisibleDefaultsOnly, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FDropPointGridCoord TileCoordinates;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
+	class UStaticMesh* BaseMesh;
 
 	// Pointer to base material used on default state
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* BaseMaterial;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = TileGrid, meta = (AllowPrivateAccess = "true"))
+	FDropPointGridCoord TileCoordinates;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

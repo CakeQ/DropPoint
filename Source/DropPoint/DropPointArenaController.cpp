@@ -17,6 +17,7 @@ ADropPointArenaController::ADropPointArenaController()
 	GridSize = 7;
 	TileSize = 100.f;
 	Tiles.SetNum(GridSize * GridSize);
+
 }
 
 int32 ADropPointArenaController::getLinearIndex(const FDropPointGridCoord & coord) const
@@ -83,6 +84,10 @@ void ADropPointArenaController::endTurn()
 
 void ADropPointArenaController::spawnArena()
 {
+	if (!TileTypeActor)
+	{
+		return;
+	}
 	// Calculate grid offset
 	const int32 gridOffset = floor(((GridSize * TileSize) / 2) / 100) * 100;
 
@@ -98,7 +103,7 @@ void ADropPointArenaController::spawnArena()
 			const FVector blockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
 
 			// Spawn a block
-			ADropPointTileInteractive* newTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(blockLocation, FRotator(0, 0, 0));
+			ADropPointTileInteractive* newTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(TileTypeActor.GetDefaultObject()->GetClass(), blockLocation, FRotator(0, 0, 0));
 
 			// Tell the block about its owner
 			if (newTile != nullptr)
@@ -118,5 +123,6 @@ void ADropPointArenaController::spawnArena()
 void ADropPointArenaController::BeginPlay()
 {
 	Super::BeginPlay();
+
 	spawnArena();
 }

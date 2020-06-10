@@ -9,26 +9,25 @@
 ADropPointTileInteractive::ADropPointTileInteractive()
 {
 
-	struct ConstructorStatics
-	{
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> HighlightMaterial;
-		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> ActiveMaterial;
-		ConstructorStatics()
-			: HighlightMaterial(TEXT("/Game/Materials/Dev_Base_Blue.Dev_Base_Blue"))
-			, ActiveMaterial(TEXT("/Game/Materials/Dev_Stripe_Blue.Dev_Stripe_Blue"))
-		{
-		}
-	};
+	//struct ConstructorStatics
+	//{
+	//	ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> HighlightMaterial;
+	//	ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> ActiveMaterial;
+	//	ConstructorStatics()
+	//		: HighlightMaterial(TEXT("/Game/Materials/Dev_Base_Blue.Dev_Base_Blue"))
+	//		, ActiveMaterial(TEXT("/Game/Materials/Dev_Stripe_Blue.Dev_Stripe_Blue"))
+	//	{
+	//	}
+	//};
 
-	static ConstructorStatics TileStatics;
+	//static ConstructorStatics TileStatics;
 
-	//m_TileMesh->SetMaterial(0, constructorStatics.ActiveMaterial.Get());
 	TileMesh->OnClicked.AddDynamic(this, &ADropPointTileInteractive::TileClicked);
 	TileMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointTileInteractive::TilePressed);
 
-	// Save a pointer to the materials
-	HighlightMaterial = TileStatics.HighlightMaterial.Get();
-	ActiveMaterial = TileStatics.ActiveMaterial.Get();
+	//// Save a pointer to the materials
+	//HighlightMaterial = TileStatics.HighlightMaterial.Get();
+	//ActiveMaterial = TileStatics.ActiveMaterial.Get();
 }
 
 void ADropPointTileInteractive::TileClicked(UPrimitiveComponent * ClickedComp, FKey ButtonClicked)

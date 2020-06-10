@@ -22,11 +22,11 @@ public:
 	bool IsActive;
 
 	// Pointer to highlighted material used when highlighted
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* HighlightMaterial;
 
 	// Pointer to active material used when clicked on or activated
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* ActiveMaterial;
 
 	// Handle the tile being clicked

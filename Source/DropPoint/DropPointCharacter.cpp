@@ -25,7 +25,6 @@ ADropPointCharacter::ADropPointCharacter()
 
 	PawnSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	PawnSpringArm->SetupAttachment(RootComponent);
-	PawnSpringArm->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when character does
 	PawnSpringArm->TargetArmLength = 800.f;
 	PawnSpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 	PawnSpringArm->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
