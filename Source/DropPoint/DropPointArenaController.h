@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://www.cakedan.net/ and Archie Whitehead 2019 All Rights Reserved.
+// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #pragma once
 
@@ -21,27 +21,40 @@ public:
 	ADropPointArenaController();
 
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
-	int32 m_GridSize;
+	int32 GridSize;
 
-	int32 getLinearIndex(const FDropPointGridCoord& coord) const { return (coord.y * m_GridSize) + coord.x; }
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	int32 TurnCount;
+
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	float TileSize;
+
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	TArray<ADropPointTile*> Tiles;
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	int32 getLinearIndex(const FDropPointGridCoord& coord) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	int32 isInLinearRange(const int32& linearIndex, const int32& size) const;
-
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	float m_BlockSpacing;
-
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	TArray<ADropPointTileInteractive*> m_Tiles;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	virtual void setTilePos(const FDropPointGridCoord& coord, ADropPointTileInteractive* tile);
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	ADropPointTileInteractive* getTilePos(const FDropPointGridCoord& coord, bool& outOfBounds) const;
+	ADropPointTile* getTilePos(const FDropPointGridCoord& coord) const;
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	ADropPointTile* getTileStep(const FDropPointGridCoord & origin, const FDropPointGridCoord & offset) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	const bool isInsideArena(const FDropPointGridCoord & coord) const;
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	virtual void endTurn();
+
+	UFUNCTION(Category = GridBase, BlueprintCallable)
+	virtual void spawnArena();
 
 protected:
 	// Called when the game starts or when spawned

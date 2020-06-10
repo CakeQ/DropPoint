@@ -2,12 +2,12 @@
 
 #include "DropPointGameMode.h"
 #include "DropPointPlayerController.h"
-#include "DropPointPawn.h"
+#include "DropPointCharacter.h"
 
 ADropPointGameMode::ADropPointGameMode()
 {
 	// no pawn by default
-	DefaultPawnClass = ADropPointPawn::StaticClass();
+	DefaultPawnClass = ADropPointCharacter::StaticClass();
 	// use our own player controller class
 	PlayerControllerClass = ADropPointPlayerController::StaticClass();
 }

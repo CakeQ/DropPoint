@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://www.cakedan.net/ and Archie Whitehead 2019 All Rights Reserved.
+// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #pragma once
 
@@ -13,8 +13,8 @@ struct DROPPOINT_API FDropPointGridCoord
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DropPoint)
-	int32 x;
+		int32 x;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DropPoint)
-	int32 y;	
+		int32 y;	
 };

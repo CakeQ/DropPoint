@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://www.cakedan.net/ and Archie Whitehead 2019 All Rights Reserved.
+// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointTileInteractive.h"
 #include "UObject/ConstructorHelpers.h"
@@ -8,6 +8,7 @@
 
 ADropPointTileInteractive::ADropPointTileInteractive()
 {
+
 	struct ConstructorStatics
 	{
 		ConstructorHelpers::FObjectFinderOptional<UMaterialInstance> HighlightMaterial;
@@ -18,63 +19,65 @@ ADropPointTileInteractive::ADropPointTileInteractive()
 		{
 		}
 	};
-	static ConstructorStatics constructorStatics;
+
+	static ConstructorStatics TileStatics;
+
 	//m_TileMesh->SetMaterial(0, constructorStatics.ActiveMaterial.Get());
-	m_TileMesh->OnClicked.AddDynamic(this, &ADropPointTileInteractive::tileClicked);
-	m_TileMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointTileInteractive::tilePressed);
+	TileMesh->OnClicked.AddDynamic(this, &ADropPointTileInteractive::TileClicked);
+	TileMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointTileInteractive::TilePressed);
 
 	// Save a pointer to the materials
-	m_HighlightMaterial = constructorStatics.HighlightMaterial.Get();
-	m_ActiveMaterial = constructorStatics.ActiveMaterial.Get();
+	HighlightMaterial = TileStatics.HighlightMaterial.Get();
+	ActiveMaterial = TileStatics.ActiveMaterial.Get();
 }
 
-void ADropPointTileInteractive::tileClicked(UPrimitiveComponent * ClickedComp, FKey ButtonClicked)
+void ADropPointTileInteractive::TileClicked(UPrimitiveComponent * ClickedComp, FKey ButtonClicked)
 {
-	activateTile();
+	ActivateTile();
 }
 
-void ADropPointTileInteractive::tilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent * TouchedComponent)
+void ADropPointTileInteractive::TilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent * TouchedComponent)
 {
-	activateTile();
+	ActivateTile();
 }
 
-void ADropPointTileInteractive::toggleTile()
+void ADropPointTileInteractive::ToggleTile()
 {
-	if (!m_IsActive)
+	if (!IsActive)
 	{
-		activateTile();
+		ActivateTile();
 	}
 	else
 	{
-		deactivateTile();
+		DeactivateTile();
 	}
 }
 
-void ADropPointTileInteractive::activateTile()
+void ADropPointTileInteractive::ActivateTile()
 {
-	m_TileMesh->SetMaterial(0, m_ActiveMaterial);
-	m_IsActive = true;
+	TileMesh->SetMaterial(0, ActiveMaterial);
+	IsActive = true;
 }
 
-void ADropPointTileInteractive::deactivateTile()
+void ADropPointTileInteractive::DeactivateTile()
 {
-	m_TileMesh->SetMaterial(0, m_BaseMaterial);
-	m_IsActive = false;
+	TileMesh->SetMaterial(0, BaseMaterial);
+	IsActive = false;
 }
 
-void ADropPointTileInteractive::highlightTile(bool bOn)
+void ADropPointTileInteractive::HighlightTile(bool bOn)
 {
-	if (m_IsActive)
+	if (IsActive)
 	{
 		return;
 	}
 
 	if (bOn)
 	{
-		m_TileMesh->SetMaterial(0, m_HighlightMaterial);
+		TileMesh->SetMaterial(0, HighlightMaterial);
 	}
 	else
 	{
-		m_TileMesh->SetMaterial(0, m_BaseMaterial);
+		TileMesh->SetMaterial(0, BaseMaterial);
 	}
 }

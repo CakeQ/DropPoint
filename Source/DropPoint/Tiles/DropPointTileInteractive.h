@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://www.cakedan.net/ and Archie Whitehead 2019 All Rights Reserved.
+// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #pragma once
 
@@ -19,30 +19,30 @@ public:
 	ADropPointTileInteractive();
 
 	// Are we currently active?
-	bool m_IsActive;
+	bool IsActive;
 
 	// Pointer to highlighted material used when highlighted
 	UPROPERTY()
-		class UMaterialInstance* m_HighlightMaterial;
+	class UMaterialInstance* HighlightMaterial;
 
 	// Pointer to active material used when clicked on or activated
 	UPROPERTY()
-		class UMaterialInstance* m_ActiveMaterial;
+	class UMaterialInstance* ActiveMaterial;
 
 	// Handle the tile being clicked
 	UFUNCTION()
-		void tileClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
+	void TileClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
 
 	// Handle the tile being touched
 	UFUNCTION()
-		void tilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
+	void TilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 
 	// Tile interaction functions
-	void toggleTile();
-	void activateTile();
-	void deactivateTile();
+	void ToggleTile();
+	void ActivateTile();
+	void DeactivateTile();
 
-	void highlightTile(bool bOn);
+	void HighlightTile(bool bOn);
 
 protected:
 	//FString m_HighlightMaterialPath, m_ActiveMaterialPath;
