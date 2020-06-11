@@ -21,7 +21,7 @@ void ADropPointGameMode::BeginPlay()
 	if (DefaultPawnClass)
 	{
 		//PlayerCharacter = GetWorld()->SpawnActor<ADropPointCharacter>(DefaultPawnClass.GetDefaultObject()->GetClass(), FVector(0, 0, 0), FRotator(0, 0, 0));
-		GetWorld()->SpawnActor<AActor>(DefaultPawnClass.GetDefaultObject()->GetClass(), FVector(-100.f, 100.f, 200.f), FRotator(0, 0, -45.f));
+		GetWorld()->SpawnActor<AActor>(DefaultPawnClass.GetDefaultObject()->GetClass(), FVector(0, 0, 0), FRotator(0, 0, 0));
 	}
 }
 

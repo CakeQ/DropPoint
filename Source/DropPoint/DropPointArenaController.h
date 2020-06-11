@@ -21,43 +21,49 @@ public:
 	ADropPointArenaController();
 
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
-	int32 GridSize;
+	int32 GridSize = 7;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	int32 TurnCount;
+	int32 TurnCount = 0;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	float TileSize;
+	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
+
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	class UDropPointWidgetTurn* TurnCountWidget;
+
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	float TileSize = 100.0f;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	TArray<ADropPointTile*> Tiles;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AActor> TileTypeActor;
+	TSubclassOf<AActor> TileTypeClass;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	int32 getLinearIndex(const FDropPointGridCoord& coord) const;
+	int32 GetLinearIndex(const FDropPointGridCoord& coord) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	int32 isInLinearRange(const int32& linearIndex, const int32& size) const;
+	int32 IsInLinearRange(const int32& linearIndex, const int32& size) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	virtual void setTilePos(const FDropPointGridCoord& coord, ADropPointTileInteractive* tile);
+	virtual void SetTilePos(const FDropPointGridCoord& coord, ADropPointTileInteractive* tile);
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	ADropPointTile* getTilePos(const FDropPointGridCoord& coord) const;
+	ADropPointTile* GetTilePos(const FDropPointGridCoord& coord) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	ADropPointTile* getTileStep(const FDropPointGridCoord & origin, const FDropPointGridCoord & offset) const;
+	ADropPointTile* GetTileStep(const FDropPointGridCoord & origin, const FDropPointGridCoord & offset) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	const bool isInsideArena(const FDropPointGridCoord & coord) const;
+	const bool IsInsideArena(const FDropPointGridCoord & coord) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	virtual void endTurn();
+	virtual void EndTurn();
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
-	virtual void spawnArena();
+	virtual void SpawnArena();
 
 protected:
 	// Called when the game starts or when spawned

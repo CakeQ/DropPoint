@@ -18,7 +18,7 @@ public:
 
 	// Grid that owns us
 	UPROPERTY()
-	class ADropPointArenaController* m_OwningGrid;
+	class ADropPointArenaController* OwningGrid;
 
 	UFUNCTION(Category = Block, BlueprintCallable)
 	FORCEINLINE FDropPointGridCoord& getCoords() { return TileCoordinates; };

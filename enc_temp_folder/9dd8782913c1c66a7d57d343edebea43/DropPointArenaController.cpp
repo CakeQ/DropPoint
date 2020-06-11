@@ -78,7 +78,7 @@ void ADropPointArenaController::EndTurn()
 	TurnCount++;
 	if (TurnCountWidget)
 	{
-		TurnCountWidget->UpdateTurn(TurnCount);
+		TurnCountWidget->UpdateTurn();
 	}
 }
 
@@ -132,7 +132,7 @@ void ADropPointArenaController::BeginPlay()
 		TurnCountWidget = CreateWidget<UDropPointWidgetTurn>(GetWorld(), TurnCountWidgetClass);
 		if (TurnCountWidget)
 		{
-			TurnCountWidget->UpdateTurn(TurnCount);
+			TurnCountWidget->SetCountValue(TurnCount);
 			TurnCountWidget->AddToViewport();
 		}
 	}

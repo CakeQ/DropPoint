@@ -1,16 +1,18 @@
 // Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointCharacter.h"
+#include "DropPointGameMode.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
-#include "Camera/CameraComponent.h"
+#include "Engine/World.h"
+#include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Engine/World.h"
-#include "Engine/Engine.h"
+#include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 
 #define PrintDebug(x) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT(x));}
@@ -40,6 +42,12 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	if (PanCamera)
+	{
+		GetWorld()->GetGameViewport()->Viewport->SetMouse(PanX, PanY);
+		return;
+	}
+
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
@@ -61,13 +69,24 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 	}
 }
 
+void ADropPointCharacter::NextAction()
+{
+	ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+	gamemode->EndTurn();
+}
+
 void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("TriggerClick", IE_Pressed, this, &ADropPointCharacter::TriggerClick);
+	PlayerInputComponent->BindAction("MiddleClick", IE_Pressed, this, &ADropPointCharacter::EnablePan);
+	PlayerInputComponent->BindAction("MiddleClick", IE_Released, this, &ADropPointCharacter::DisablePan);
+	PlayerInputComponent->BindAction("NextAction", IE_Released, this, &ADropPointCharacter::NextAction);
 	PlayerInputComponent->BindAxis("MoveX", this, &ADropPointCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("MoveY", this, &ADropPointCharacter::MoveUp);
+	PlayerInputComponent->BindAxis("PanX", this, &ADropPointCharacter::PanRight);
+	PlayerInputComponent->BindAxis("PanY", this, &ADropPointCharacter::PanUp);
 	PlayerInputComponent->BindAxis("ScrollZoom", this, &ADropPointCharacter::ScrollZoom);
 }
 
@@ -121,6 +140,46 @@ void ADropPointCharacter::MoveUp(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void ADropPointCharacter::EnablePan()
+{
+	PanCamera = true;
+	if (CurrentTileFocus)
+	{
+		CurrentTileFocus->HighlightTile(false);
+	}
+	GetWorld()->GetGameViewport()->Viewport->LockMouseToViewport(true);
+	PanX = GetWorld()->GetGameViewport()->Viewport->GetMouseX();
+	PanY = GetWorld()->GetGameViewport()->Viewport->GetMouseY();
+	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = false;
+}
+
+void ADropPointCharacter::DisablePan()
+{
+	PanCamera = false;
+	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
+	GetWorld()->GetGameViewport()->Viewport->LockMouseToViewport(false);
+}
+
+void ADropPointCharacter::PanUp(float Value)
+{
+	if (!PanCamera)
+	{
+		return;
+	}
+
+	MoveUp(GetWorld()->GetGameViewport()->Viewport->GetMouseY() - PanY);
+}
+
+void ADropPointCharacter::PanRight(float Value)
+{
+	if (!PanCamera)
+	{
+		return;
+	}
+
+	MoveRight(PanX - GetWorld()->GetGameViewport()->Viewport->GetMouseX());
 }
 
 void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers)

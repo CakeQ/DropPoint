@@ -24,7 +24,24 @@ public:
 
 	void MoveUp(float Value);
 
+	void EnablePan();
+
+	void DisablePan();
+
+	void PanRight(float Value);
+
+	void PanUp(float Value);
+
+	void NextAction();
+
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+private:
+	bool PanCamera;
+
+	int32 PanX;
+
+	int32 PanY;
 
 protected:
 
