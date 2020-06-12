@@ -35,7 +35,6 @@ ADropPointCharacter::ADropPointCharacter()
 	PawnCamera->SetupAttachment(PawnSpringArm, USpringArmComponent::SocketName);
 	PawnCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
 	PawnCamera->OrthoWidth = 1500.0f;
-	PawnCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 }
 
 void ADropPointCharacter::Tick(float DeltaSeconds)

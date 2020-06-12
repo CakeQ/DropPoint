@@ -22,6 +22,9 @@ protected:
 	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
 	class ADropPointArenaController* ArenaController;
 
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<AActor> PlayerClass;
+
 	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
 	class ADropPointCharacter* PlayerCharacter;
 
