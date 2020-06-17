@@ -3,8 +3,8 @@
 #include "DropPointTile.h"
 #include "Engine/StaticMesh.h"
 #include "Components/StaticMeshComponent.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Materials/MaterialInstance.h"
+#include "UObject/ConstructorHelpers.h"
 
 ADropPointTile::ADropPointTile()
 {
