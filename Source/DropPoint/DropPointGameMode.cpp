@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
+// Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
 
 #include "DropPointGameMode.h"
 #include "DropPointPlayerController.h"
@@ -23,6 +23,7 @@ void ADropPointGameMode::BeginPlay()
 	{
 		PlayerCharacter = GetWorld()->SpawnActor<ADropPointCharacter>(PlayerClass.GetDefaultObject()->GetClass(), FVector(-100.f, 100.f, 200.f), FRotator(0, -45.f, 0));
 		GetWorld()->GetFirstPlayerController()->Possess(PlayerCharacter);
+		PlayerCharacter->DisablePan();
 	}
 }
 

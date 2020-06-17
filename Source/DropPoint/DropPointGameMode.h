@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
+// Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
 
 #pragma once
 

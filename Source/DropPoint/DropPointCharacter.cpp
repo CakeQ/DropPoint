@@ -1,4 +1,4 @@
-// Copyright Daniel Thompson https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
+// Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointCharacter.h"
 #include "DropPointGameMode.h"
@@ -27,14 +27,23 @@ ADropPointCharacter::ADropPointCharacter()
 
 	PawnSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	PawnSpringArm->SetupAttachment(RootComponent);
-	PawnSpringArm->TargetArmLength = 800.f;
+	PawnCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
+	PawnCamera->SetupAttachment(PawnSpringArm, USpringArmComponent::SocketName);
+
+	//PawnCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
 	PawnSpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 	PawnSpringArm->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
-	PawnCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
-	PawnCamera->SetupAttachment(PawnSpringArm, USpringArmComponent::SocketName);
-	PawnCamera->SetProjectionMode(ECameraProjectionMode::Orthographic);
-	PawnCamera->OrthoWidth = 1500.0f;
+	if (PawnCamera->ProjectionMode == ECameraProjectionMode::Orthographic)
+	{
+		PawnSpringArm->TargetArmLength = 800.f;
+		PawnCamera->OrthoWidth = 1500.0f;
+	}
+	else
+	{
+		PawnSpringArm->TargetArmLength = 12000.f;
+		PawnCamera->FieldOfView = 5.0f;
+	}
 }
 
 void ADropPointCharacter::Tick(float DeltaSeconds)
@@ -54,7 +63,7 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 			if (UCameraComponent* OurCamera = PC->GetViewTarget()->FindComponentByClass<UCameraComponent>())
 			{
 				FVector Start = OurCamera->GetComponentLocation();
-				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 8000.0f);
+				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 30000.0f);
 				TraceForBlock(Start, End, true);
 			}
 		}
@@ -62,7 +71,7 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 		{
 			FVector Start, Dir, End;
 			PC->DeprojectMousePositionToWorld(Start, Dir);
-			End = Start + (Dir * 8000.0f);
+			End = Start + (Dir * 30000.0f);
 			TraceForBlock(Start, End, false);
 		}
 	}
@@ -109,7 +118,14 @@ void ADropPointCharacter::TriggerClick()
 
 void ADropPointCharacter::ScrollZoom(float Value)
 {
-	PawnCamera->OrthoWidth = FMath::Clamp(PawnCamera->OrthoWidth - (Value * 100.0f), 300.0f, 3000.0f);
+	if (PawnCamera->ProjectionMode == ECameraProjectionMode::Orthographic)
+	{
+		PawnCamera->OrthoWidth = FMath::Clamp(PawnCamera->OrthoWidth - (Value * 100.0f), 300.0f, 3000.0f);
+	}
+	else
+	{
+		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 800.0f), 2400.0f, 24000.0f);
+	}
 }
 
 void ADropPointCharacter::MoveRight(float Value)
