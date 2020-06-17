@@ -11,6 +11,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Materials/MaterialParameterCollection.h"
+#include "Materials/MaterialParameterCollectionInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
@@ -43,6 +45,11 @@ ADropPointCharacter::ADropPointCharacter()
 	{
 		PawnSpringArm->TargetArmLength = 3000.f;
 		PawnCamera->FieldOfView = 35.0f;
+	}
+
+	if (HighlightParameterCollection)
+	{
+		HighlightParameters = GetWorld()->GetParameterCollectionInstance(HighlightParameterCollection);
 	}
 }
 
@@ -96,6 +103,15 @@ void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("PanX", this, &ADropPointCharacter::PanRight);
 	PlayerInputComponent->BindAxis("PanY", this, &ADropPointCharacter::PanUp);
 	PlayerInputComponent->BindAxis("ScrollZoom", this, &ADropPointCharacter::ScrollZoom);
+}
+
+void ADropPointCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if (HighlightParameterCollection)
+	{
+		HighlightParameters = GetWorld()->GetParameterCollectionInstance(HighlightParameterCollection);
+	}
 }
 
 void ADropPointCharacter::TriggerClick()
@@ -208,6 +224,10 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 	}
 	if (HitResult.Actor.IsValid())
 	{
+		if (HighlightParameters)
+		{
+			HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), HitResult.Location);
+		}
 		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
 		if (CurrentTileFocus != hitTile)
 		{
@@ -220,6 +240,10 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 				hitTile->HighlightTile(true);
 			}
 			CurrentTileFocus = hitTile;
+			if (HighlightParameters)
+			{
+				HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), hitTile->GetActorLocation());
+			}
 		}
 	}
 	else if (CurrentTileFocus)

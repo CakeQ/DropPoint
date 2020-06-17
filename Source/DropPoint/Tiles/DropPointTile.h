@@ -45,9 +45,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//FString m_MeshPath = "/Engine/BasicShapes/Cube.Cube";
-	//FString m_BaseMaterialPath = "/Game/Puzzle/Meshes/BaseMaterial.BaseMaterial";
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

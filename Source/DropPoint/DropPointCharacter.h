@@ -36,6 +36,8 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	virtual void BeginPlay() override;
+
 private:
 	bool PanCamera;
 
@@ -58,4 +60,10 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* PawnCamera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Material, meta = (AllowPrivateAccess = "true"))
+	class UMaterialParameterCollection* HighlightParameterCollection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Material, meta = (AllowPrivateAccess = "true"))
+	class UMaterialParameterCollectionInstance* HighlightParameters;
 };
