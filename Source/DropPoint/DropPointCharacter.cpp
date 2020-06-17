@@ -124,7 +124,7 @@ void ADropPointCharacter::ScrollZoom(float Value)
 	}
 	else
 	{
-		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 800.0f), 2400.0f, 24000.0f);
+		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 800.0f), 7200.0f, 24000.0f);
 	}
 }
 
