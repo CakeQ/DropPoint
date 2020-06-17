@@ -41,8 +41,8 @@ ADropPointCharacter::ADropPointCharacter()
 	}
 	else
 	{
-		PawnSpringArm->TargetArmLength = 12000.f;
-		PawnCamera->FieldOfView = 5.0f;
+		PawnSpringArm->TargetArmLength = 3000.f;
+		PawnCamera->FieldOfView = 35.0f;
 	}
 }
 
@@ -124,7 +124,7 @@ void ADropPointCharacter::ScrollZoom(float Value)
 	}
 	else
 	{
-		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 800.0f), 7200.0f, 24000.0f);
+		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 200.0f), 600.0f, 6000.0f);
 	}
 }
 
