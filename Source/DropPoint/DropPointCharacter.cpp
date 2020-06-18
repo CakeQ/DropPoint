@@ -6,7 +6,6 @@
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Engine/World.h"
-#include "Engine/Engine.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -224,12 +223,8 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 	}
 	if (HitResult.Actor.IsValid())
 	{
-		if (HighlightParameters)
-		{
-			HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), HitResult.Location);
-		}
 		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
-		if (CurrentTileFocus != hitTile)
+		if (hitTile && CurrentTileFocus != hitTile)
 		{
 			if (CurrentTileFocus)
 			{
@@ -238,6 +233,10 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 			if (hitTile)
 			{
 				hitTile->HighlightTile(true);
+				if (HighlightParameters)
+				{
+					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), hitTile->GetActorLocation());
+				}
 			}
 			CurrentTileFocus = hitTile;
 			if (HighlightParameters)
