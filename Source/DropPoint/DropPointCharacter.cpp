@@ -128,6 +128,10 @@ void ADropPointCharacter::TriggerClick()
 		}
 		CurrentTileFocus->ActivateTile();
 		CurrentActiveTile = CurrentTileFocus;
+		if (HighlightParameters)
+		{
+			HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), CurrentTileFocus->GetActorLocation());
+		}
 		if (UnitSpawnTypeClass)
 		{
 			GetWorld()->SpawnActor<AActor>(UnitSpawnTypeClass.GetDefaultObject()->GetClass(), FVector(CurrentActiveTile->GetActorLocation().X, CurrentActiveTile->GetActorLocation().Y, 50.0f), FRotator(0, 0, 0));
@@ -228,7 +232,7 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 	if (HitResult.Actor.IsValid())
 	{
 		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
-		if (hitTile && CurrentTileFocus != hitTile)
+		if (CurrentTileFocus != hitTile)
 		{
 			if (CurrentTileFocus)
 			{
@@ -239,14 +243,15 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 				hitTile->HighlightTile(true);
 				if (HighlightParameters)
 				{
-					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), hitTile->GetActorLocation());
+					FVector loc = hitTile->GetActorLocation();
+					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), loc);
+					if (!CurrentActiveTile)
+					{
+						HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), loc);
+					}
 				}
 			}
 			CurrentTileFocus = hitTile;
-			if (HighlightParameters)
-			{
-				HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), hitTile->GetActorLocation());
-			}
 		}
 	}
 	else if (CurrentTileFocus)
