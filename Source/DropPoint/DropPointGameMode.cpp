@@ -3,7 +3,6 @@
 #include "DropPointGameMode.h"
 #include "DropPointPlayerController.h"
 #include "DropPointCharacter.h"
-#include "DropPointArenaController.h"
 #include "DropPointWidgetTurn.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
