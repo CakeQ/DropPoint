@@ -66,4 +66,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Material, meta = (AllowPrivateAccess = "true"))
 	class UMaterialParameterCollectionInstance* HighlightParameters;
+
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class AActor> UnitSpawnTypeClass;
 };

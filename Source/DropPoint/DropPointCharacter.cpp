@@ -128,6 +128,10 @@ void ADropPointCharacter::TriggerClick()
 		}
 		CurrentTileFocus->ActivateTile();
 		CurrentActiveTile = CurrentTileFocus;
+		if (UnitSpawnTypeClass)
+		{
+			GetWorld()->SpawnActor<AActor>(UnitSpawnTypeClass.GetDefaultObject()->GetClass(), FVector(CurrentActiveTile->GetActorLocation().X, CurrentActiveTile->GetActorLocation().Y, 50.0f), FRotator(0, 0, 0));
+		}
 	}
 }
 

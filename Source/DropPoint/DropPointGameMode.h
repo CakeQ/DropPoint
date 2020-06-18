@@ -28,6 +28,15 @@ protected:
 	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
 	class ADropPointCharacter* PlayerCharacter;
 
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)
+	int32 TurnCount = 0;
+
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
+
+	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
+	class UDropPointWidgetTurn* TurnCountWidget;
+
 public:
 	virtual void BeginPlay() override;
 

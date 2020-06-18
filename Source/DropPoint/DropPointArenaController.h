@@ -24,15 +24,6 @@ public:
 	int32 GridSize = 7;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	int32 TurnCount = 0;
-
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
-
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
-	class UDropPointWidgetTurn* TurnCountWidget;
-
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float TileSize = 100.0f;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)

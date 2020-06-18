@@ -1,11 +1,8 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointArenaController.h"
-#include "DropPointWidgetTurn.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
-#include "Components/TextRenderComponent.h"
-#include "Blueprint/UserWidget.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -75,11 +72,6 @@ void ADropPointArenaController::EndTurn()
 	//Unit Actions
 	//Hazard Progression
 	//Apply Damage
-	TurnCount++;
-	if (TurnCountWidget)
-	{
-		TurnCountWidget->UpdateTurn(TurnCount);
-	}
 }
 
 void ADropPointArenaController::SpawnArena()
@@ -126,14 +118,4 @@ void ADropPointArenaController::BeginPlay()
 
 	Tiles.SetNum(GridSize * GridSize);
 	SpawnArena();
-
-	if (TurnCountWidgetClass)
-	{
-		TurnCountWidget = CreateWidget<UDropPointWidgetTurn>(GetWorld(), TurnCountWidgetClass);
-		if (TurnCountWidget)
-		{
-			TurnCountWidget->UpdateTurn(TurnCount);
-			TurnCountWidget->AddToViewport();
-		}
-	}
 }
