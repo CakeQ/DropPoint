@@ -61,10 +61,10 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UCameraComponent* PawnCamera;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Material, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Material)
 	class UMaterialParameterCollection* HighlightParameterCollection;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Material, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Material)
 	class UMaterialParameterCollectionInstance* HighlightParameters;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)

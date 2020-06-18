@@ -20,10 +20,19 @@ void ADropPointTile::BeginPlay()
 	TileMesh->SetMaterial(0, BaseMaterial);
 }
 
-void ADropPointTile::setCoords(const int32& xInput, const int32& yInput)
+void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 {
-	TileCoordinates.x = xInput;
-	TileCoordinates.y = yInput;
+	TileCoordinates = NewCoord;
+}
+
+void ADropPointTile::SetUnit(AActor* NewUnit, bool Force = false)
+{
+	if ((!NewUnit || Unit) && !Force)
+	{
+		return;
+	}
+	Unit = NewUnit;
+	Unit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
 }
 
 // Called every frame

@@ -2,6 +2,7 @@
 
 #include "DropPointCharacter.h"
 #include "DropPointGameMode.h"
+#include "DropPointGridCoord.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -134,7 +135,11 @@ void ADropPointCharacter::TriggerClick()
 		}
 		if (UnitSpawnTypeClass)
 		{
-			GetWorld()->SpawnActor<AActor>(UnitSpawnTypeClass.GetDefaultObject()->GetClass(), FVector(CurrentActiveTile->GetActorLocation().X, CurrentActiveTile->GetActorLocation().Y, 50.0f), FRotator(0, 0, 0));
+			ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+			if (gamemode)
+			{
+				gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, false);
+			}
 		}
 	}
 }

@@ -17,13 +17,13 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Unit, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Unit)
 	class UStaticMeshComponent* UnitMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	class UStaticMesh* BaseMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	class UMaterialInstance* BaseMaterial;
 
 	// Called when the game starts or when spawned

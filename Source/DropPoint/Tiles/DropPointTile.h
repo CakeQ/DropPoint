@@ -16,31 +16,24 @@ public:
 	// Sets default values for this actor's properties
 	ADropPointTile();
 
-	// Grid that owns us
-	UPROPERTY()
-	class ADropPointArenaController* OwningGrid;
-
-	UFUNCTION(Category = Block, BlueprintCallable)
-	FORCEINLINE FDropPointGridCoord& getCoords() { return TileCoordinates; };
-
-	UFUNCTION(Category = Block, BlueprintCallable)
-	virtual void setCoords(const int32& xInput, const int32& yInput);
-
 protected:
 
 	// StaticMesh component for the tile
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
 	class UStaticMeshComponent* TileMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	class UStaticMesh* BaseMesh;
 
 	// Pointer to base material used on default state
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	class UMaterialInstance* BaseMaterial;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = TileGrid, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
 	FDropPointGridCoord TileCoordinates;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
+	class AActor* Unit;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -48,5 +41,17 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	FORCEINLINE FDropPointGridCoord& GetGridCoords() { return TileCoordinates; };
+
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	virtual void SetTileCoords(const FDropPointGridCoord& NewCoord);
+
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	FORCEINLINE bool HasUnit() { return Unit != nullptr; };
+
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	void SetUnit(class AActor* NewUnit, bool Force);
 
 };
