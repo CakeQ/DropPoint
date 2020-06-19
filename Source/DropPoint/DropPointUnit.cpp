@@ -27,3 +27,20 @@ void ADropPointUnit::Tick(float DeltaTime)
 
 }
 
+void ADropPointUnit::AdjustHealth(int32 Amount)
+{
+	if (bInvulnerable)
+	{
+		return;
+	}
+	Health = FMath::Clamp(Health + Amount, 0, MaxHealth);
+	if (!Health)
+	{
+		Die();
+	}
+}
+
+void ADropPointUnit::Die()
+{
+
+}
