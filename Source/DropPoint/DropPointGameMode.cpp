@@ -21,10 +21,6 @@ ADropPointGameMode::ADropPointGameMode()
 void ADropPointGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	//if (ArenaClass)
-	//{
-	//	ArenaController = GetWorld()->SpawnActor<ADropPointGameMode>(ArenaClass.GetDefaultObject()->GetClass(), FVector(0, 0, 0), FRotator(0, 0, 0));
-	//}
 
 	if (PlayerClass)
 	{

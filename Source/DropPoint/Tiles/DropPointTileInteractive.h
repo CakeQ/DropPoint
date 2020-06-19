@@ -19,7 +19,7 @@ public:
 	ADropPointTileInteractive();
 
 	// Are we currently active?
-	bool IsActive;
+	bool bIsActive;
 
 	// Pointer to highlighted material used when highlighted
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)

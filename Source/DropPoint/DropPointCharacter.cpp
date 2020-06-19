@@ -57,7 +57,7 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (PanCamera)
+	if (bPanCamera)
 	{
 		GetWorld()->GetGameViewport()->Viewport->SetMouse(PanX, PanY);
 		return;
@@ -187,7 +187,7 @@ void ADropPointCharacter::MoveUp(float Value)
 
 void ADropPointCharacter::EnablePan()
 {
-	PanCamera = true;
+	bPanCamera = true;
 	if (CurrentTileFocus)
 	{
 		CurrentTileFocus->HighlightTile(false);
@@ -200,14 +200,14 @@ void ADropPointCharacter::EnablePan()
 
 void ADropPointCharacter::DisablePan()
 {
-	PanCamera = false;
+	bPanCamera = false;
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
 	GetWorld()->GetGameViewport()->Viewport->LockMouseToViewport(false);
 }
 
 void ADropPointCharacter::PanUp(float Value)
 {
-	if (!PanCamera)
+	if (!bPanCamera)
 	{
 		return;
 	}
@@ -217,7 +217,7 @@ void ADropPointCharacter::PanUp(float Value)
 
 void ADropPointCharacter::PanRight(float Value)
 {
-	if (!PanCamera)
+	if (!bPanCamera)
 	{
 		return;
 	}

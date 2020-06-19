@@ -24,7 +24,7 @@ void ADropPointTileInteractive::TilePressed(ETouchIndex::Type FingerIndex, UPrim
 
 void ADropPointTileInteractive::ToggleTile()
 {
-	if (!IsActive)
+	if (!bIsActive)
 	{
 		ActivateTile();
 	}
@@ -37,18 +37,18 @@ void ADropPointTileInteractive::ToggleTile()
 void ADropPointTileInteractive::ActivateTile()
 {
 	TileMesh->SetMaterial(0, ActiveMaterial);
-	IsActive = true;
+	bIsActive = true;
 }
 
 void ADropPointTileInteractive::DeactivateTile()
 {
 	TileMesh->SetMaterial(0, BaseMaterial);
-	IsActive = false;
+	bIsActive = false;
 }
 
 void ADropPointTileInteractive::HighlightTile(bool bOn)
 {
-	if (IsActive)
+	if (bIsActive)
 	{
 		return;
 	}

@@ -39,7 +39,7 @@ public:
 	virtual void BeginPlay() override;
 
 private:
-	bool PanCamera;
+	bool bPanCamera;
 
 	int32 PanX;
 
