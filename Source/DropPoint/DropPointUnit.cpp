@@ -2,6 +2,7 @@
 
 
 #include "DropPointUnit.h"
+#include "DropPointAbility.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstance.h"
 
@@ -18,6 +19,15 @@ void ADropPointUnit::BeginPlay()
 	Super::BeginPlay();
 	UnitMesh->SetStaticMesh(BaseMesh);
 	UnitMesh->SetMaterial(0, BaseMaterial);
+
+	if (Abilities.Num())
+	{
+		for (TSubclassOf<UDropPointAbility> NewAbilityClass : AbilityClasses)
+		{
+			UDropPointAbility* NewAbility = CreateDefaultSubobject<UDropPointAbility>(TEXT("Ability"));
+			Abilities.Add(NewAbility);
+		}
+	}
 }
 
 // Called every frame
@@ -27,20 +37,24 @@ void ADropPointUnit::Tick(float DeltaTime)
 
 }
 
-void ADropPointUnit::AdjustHealth(int32 Amount)
+void ADropPointUnit::TryLaunch()
 {
-	if (bInvulnerable)
+	if (GetTimeToLaunch() > 0)
 	{
 		return;
 	}
-	Health = FMath::Clamp(Health + Amount, 0, MaxHealth);
-	if (!Health)
-	{
-		Die();
-	}
+
+	//Die();
 }
 
-void ADropPointUnit::Die()
+void ADropPointUnit::TriggerAbilities()
 {
-
+	for (UDropPointAbility* Ability : Abilities)
+	{
+		Ability->HandleQueuedTriggers();
+		if (Ability->AbilityType == EAbilityTypes::Passive && Ability->ReadyToTrigger())
+		{
+			Ability->QueueTrigger(this);
+		}
+	}
 }

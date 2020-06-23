@@ -1,6 +1,7 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointTile.h"
+#include "DropPointUnit.h"
 #include "Engine/StaticMesh.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstance.h"
@@ -25,7 +26,7 @@ void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 	TileCoordinates = NewCoord;
 }
 
-void ADropPointTile::SetUnit(AActor* NewUnit, bool Force = false)
+void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool Force = false)
 {
 	if ((!NewUnit || Unit) && !Force)
 	{

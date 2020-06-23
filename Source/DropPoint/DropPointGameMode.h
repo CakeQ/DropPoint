@@ -43,6 +43,9 @@ public:
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> TileTypeClass;
 
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	TArray<class ADropPointUnit*> Units;
+
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	int32 GetLinearIndex(const FDropPointGridCoord& coord) const;
 
@@ -58,7 +61,7 @@ public:
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	class ADropPointTile* GetTileStep(const FDropPointGridCoord& origin, const FDropPointGridCoord& offset) const;
 
-	void SetTileUnit(const FDropPointGridCoord& coord, class AActor* NewUnit, bool Force);
+	void SetTileUnit(const FDropPointGridCoord& coord, class ADropPointUnit* UnitType, bool Force);
 
 	UFUNCTION(Category = Grid, BlueprintCallable)
 	bool TileHasUnit(const FDropPointGridCoord& coord) const;
@@ -75,7 +78,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> ClassType, bool Force);
+	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool Force);
 };
 
 

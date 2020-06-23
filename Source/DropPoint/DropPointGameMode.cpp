@@ -3,6 +3,8 @@
 #include "DropPointGameMode.h"
 #include "DropPointPlayerController.h"
 #include "DropPointCharacter.h"
+#include "DropPointAbility.h"
+#include "DropPointUnit.h"
 #include "DropPointWidgetTurn.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
@@ -85,7 +87,7 @@ ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& origi
 	return GetTileAtPos(newCoords);
 }
 
-void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, AActor* NewUnit, bool Force = false)
+void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPointUnit* NewUnit, bool Force = false)
 {
 	if (!IsInsideArena(coord))
 	{
@@ -125,9 +127,9 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> ClassType, bool Force = false)
+void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool Force = false)
 {
-	if (!ClassType || !IsInsideArena(coord))
+	if (!UnitType || !IsInsideArena(coord))
 	{
 		return;
 	}
@@ -138,16 +140,31 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassO
 		return;
 	}
 
-	AActor* NewUnit = GetWorld()->SpawnActor<AActor>(ClassType.GetDefaultObject()->GetClass());
+	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType.GetDefaultObject()->GetClass());
 	SetTileUnit(coord, NewUnit);
 }
 
 void ADropPointGameMode::EndTurn()
 {
-	//Launch Units
-	//Unit Actions
+	/* Sort the units list each turn so that all factions have their units done in order
+	(should be friendly, neutral, then enemy unless changed), with each faction's units ordered by oldest to newest  */
+	Units.Sort(ADropPointUnit::FactionPredicate);
+
+	for (ADropPointUnit* Unit : Units)
+	{
+		// Handle all unit takeoffs
+		if (Unit->HasUnitFlag(EUnitFlags::TakingOff))
+		{
+			Unit->TryLaunch();
+		}
+
+		// Call any passive abilities
+		Unit->TriggerAbilities();
+	}
+
 	//Hazard Progression
 	//Apply Damage
+
 	TurnCount++;
 	if (TurnCountWidget)
 	{

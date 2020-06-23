@@ -33,7 +33,7 @@ protected:
 	FDropPointGridCoord TileCoordinates;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
-	class AActor* Unit;
+	class ADropPointUnit* Unit;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -52,6 +52,6 @@ public:
 	FORCEINLINE bool HasUnit() { return Unit != nullptr; };
 
 	UFUNCTION(Category = Tile, BlueprintCallable)
-	void SetUnit(class AActor* NewUnit, bool Force);
+	void SetUnit(class ADropPointUnit* NewUnit, bool Force);
 
 };
