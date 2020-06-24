@@ -52,6 +52,6 @@ public:
 	FORCEINLINE bool HasUnit() { return Unit != nullptr; };
 
 	UFUNCTION(Category = Tile, BlueprintCallable)
-	void SetUnit(class ADropPointUnit* NewUnit, bool Force);
+	void SetUnit(class ADropPointUnit* NewUnit, bool bForce);
 
 };

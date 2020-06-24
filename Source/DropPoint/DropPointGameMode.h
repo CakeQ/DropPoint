@@ -61,7 +61,7 @@ public:
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	class ADropPointTile* GetTileStep(const FDropPointGridCoord& origin, const FDropPointGridCoord& offset) const;
 
-	void SetTileUnit(const FDropPointGridCoord& coord, class ADropPointUnit* UnitType, bool Force);
+	void SetTileUnit(const FDropPointGridCoord& coord, class ADropPointUnit* UnitType, bool bForce);
 
 	UFUNCTION(Category = Grid, BlueprintCallable)
 	bool TileHasUnit(const FDropPointGridCoord& coord) const;
@@ -78,7 +78,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool Force);
+	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool bForce);
 };
 
 

@@ -20,11 +20,11 @@ void ADropPointUnit::BeginPlay()
 	UnitMesh->SetStaticMesh(BaseMesh);
 	UnitMesh->SetMaterial(0, BaseMaterial);
 
-	if (Abilities.Num())
+	if (AbilityClasses.Num())
 	{
 		for (TSubclassOf<UDropPointAbility> NewAbilityClass : AbilityClasses)
 		{
-			UDropPointAbility* NewAbility = CreateDefaultSubobject<UDropPointAbility>(TEXT("Ability"));
+			UDropPointAbility* NewAbility = NewObject<UDropPointAbility>(this, NewAbilityClass);
 			Abilities.Add(NewAbility);
 		}
 	}
@@ -52,7 +52,7 @@ void ADropPointUnit::TriggerAbilities()
 	for (UDropPointAbility* Ability : Abilities)
 	{
 		Ability->HandleQueuedTriggers();
-		if (Ability->AbilityType == EAbilityTypes::Passive && Ability->ReadyToTrigger())
+		if (Ability->GetAbilityType() == EAbilityTypes::Passive && Ability->ReadyToTrigger())
 		{
 			Ability->QueueTrigger(this);
 		}

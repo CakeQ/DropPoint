@@ -26,9 +26,9 @@ void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 	TileCoordinates = NewCoord;
 }
 
-void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool Force = false)
+void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 {
-	if ((!NewUnit || Unit) && !Force)
+	if ((!NewUnit || Unit) && !bForce)
 	{
 		return;
 	}

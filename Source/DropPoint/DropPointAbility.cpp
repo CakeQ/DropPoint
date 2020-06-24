@@ -11,6 +11,10 @@ UDropPointAbility::UDropPointAbility()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+	//if (AbilityTypeIn)
+	//{
+	//	AbilityType = AbilityTypeIn
+	//}
 	// ...
 }
 
@@ -33,22 +37,48 @@ void UDropPointAbility::TickComponent(float DeltaTime, ELevelTick TickType, FAct
 	// ...
 }
 
+void UDropPointAbility::SetAbilityType(EAbilityTypes NewType)
+{
+	AbilityType = NewType;
+}
+
 void UDropPointAbility::Trigger(ADropPointUnit* Owner)
 {
-
+	// Ability does it's actual action here.
 }
 
+// Called by the unit, either on activation (active ability) or on turn end (passive ability).
 void UDropPointAbility::QueueTrigger(ADropPointUnit* Owner)
 {
+	// If the ability has no windup, trigger it immediately.
+	if (AbilityWindup <= 0)
+	{
+		Trigger(Owner);
+		return;
+	}
 
+	// Otherwise, queue the unit and start the windup.
+	QueuedUnits.Add(Owner);
+	AbilityWindupLeft = AbilityWindup;
 }
 
+// Called by the unit on turn end. Handles both active and passive abilities.
 void UDropPointAbility::HandleQueuedTriggers()
 {
+	AbilityWindupLeft = FMath::Clamp(AbilityWindupLeft - 1, 0, AbilityWindup);
+	if (AbilityWindupLeft > 0)
+	{
+		return;
+	}
+
+	for (ADropPointUnit* UnitToTrigger : QueuedUnits)
+	{
+		Trigger(UnitToTrigger);
+	}
 }
 
 void UDropPointAbility::TickCooldown()
 {
-
+	AbilityCooldownLeft = FMath::Clamp(AbilityCooldownLeft - 1, 0, AbilityCooldown);
 }
 

@@ -26,7 +26,7 @@ void ADropPointGameMode::BeginPlay()
 
 	if (PlayerClass)
 	{
-		PlayerCharacter = GetWorld()->SpawnActor<ADropPointCharacter>(PlayerClass.GetDefaultObject()->GetClass(), FVector(-100.f, 100.f, 200.f), FRotator(0, -45.f, 0));
+		PlayerCharacter = GetWorld()->SpawnActor<ADropPointCharacter>(PlayerClass, FVector(-100.f, 100.f, 200.f), FRotator(0, -45.f, 0));
 		GetWorld()->GetFirstPlayerController()->Possess(PlayerCharacter);
 		PlayerCharacter->DisablePan();
 	}
@@ -87,18 +87,18 @@ ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& origi
 	return GetTileAtPos(newCoords);
 }
 
-void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPointUnit* NewUnit, bool Force = false)
+void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPointUnit* NewUnit, bool bForce = false)
 {
 	if (!IsInsideArena(coord))
 	{
 		return;
 	}
 	ADropPointTile* RefTile = GetTileAtPos(coord);
-	if (RefTile->HasUnit() && !Force)
+	if (RefTile->HasUnit() && !bForce)
 	{
 		return;
 	}
-	RefTile->SetUnit(NewUnit, Force);
+	RefTile->SetUnit(NewUnit, bForce);
 }
 
 bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& coord) const
@@ -127,7 +127,7 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool Force = false)
+void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool bForce = false)
 {
 	if (!UnitType || !IsInsideArena(coord))
 	{
@@ -135,13 +135,14 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassO
 	}
 
 	ADropPointTile* RefTile = GetTileAtPos(coord);
-	if (RefTile->HasUnit() && !Force)
+	if (RefTile->HasUnit() && !bForce)
 	{
 		return;
 	}
 
-	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType.GetDefaultObject()->GetClass());
-	SetTileUnit(coord, NewUnit);
+	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
+	Units.Add(NewUnit);
+	SetTileUnit(coord, NewUnit, bForce);
 }
 
 void ADropPointGameMode::EndTurn()
@@ -193,7 +194,7 @@ void ADropPointGameMode::SpawnArena()
 			const FVector blockLocation = FVector(XOffset, YOffset, 0.f);
 
 			// Spawn a block
-			ADropPointTileInteractive* newTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(TileTypeClass.GetDefaultObject()->GetClass(), blockLocation, FRotator(0, 0, 0));
+			ADropPointTileInteractive* newTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(TileTypeClass, blockLocation, FRotator(0, 0, 0));
 
 			// Tell the block about its owner
 			if (newTile != nullptr)

@@ -48,6 +48,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	virtual void SetAbilityType(EAbilityTypes NewType);
+
 	// Called when the ability component is selected to fire
 	virtual void Trigger(class ADropPointUnit* Owner);
 
@@ -58,6 +60,8 @@ public:
 	virtual void HandleQueuedTriggers();
 
 	virtual void TickCooldown();
+
+	FORCEINLINE EAbilityTypes GetAbilityType() { return AbilityType; };
 
 	FORCEINLINE bool ReadyToTrigger() { return AbilityCooldownLeft <= 0 && AbilityWindupLeft <= 0; };
 

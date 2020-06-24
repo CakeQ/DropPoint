@@ -37,14 +37,17 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	class UStaticMesh* BaseMesh;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Unit)
 	class UStaticMeshComponent* UnitMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	class UStaticMesh* BaseMesh;
+	class UMaterialInstance* BaseMaterial;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	class UMaterialInstance* BaseMaterial;
+	class UMaterialInstance* TestMaterial;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	//int32 Health = 3;
@@ -87,4 +90,6 @@ public:
 	FORCEINLINE bool HasUnitFlag(EUnitFlags FlagType) { return (UnitFlags & FlagType) != EUnitFlags::None; };
 
 	FORCEINLINE static bool FactionPredicate(const ADropPointUnit& u1, const ADropPointUnit& u2) { return (u1.Faction > u2.Faction); };
+
+	FORCEINLINE void TestTrigger() { UnitMesh->SetMaterial(0, TestMaterial); };
 };
