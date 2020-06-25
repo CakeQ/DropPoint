@@ -33,6 +33,7 @@ void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 		return;
 	}
 	Unit = NewUnit;
+	Unit->SetConnectedTile(this);
 	Unit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
 }
 
@@ -41,5 +42,25 @@ void ADropPointTile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ADropPointTile::SetTileFlag(const ETileFlags& Value)
+{
+	TileFlags = Value;
+}
+
+void ADropPointTile::AddTileFlag(const ETileFlags& Value)
+{
+	TileFlags |= Value;
+}
+
+void ADropPointTile::RemoveTileFlag(const ETileFlags& Value)
+{
+	TileFlags &= ~Value;
+}
+
+bool ADropPointTile::HasTileFlag(const ETileFlags& Value)
+{
+	return (uint8)TileFlags & (uint8)Value;
 }
 

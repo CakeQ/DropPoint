@@ -58,3 +58,38 @@ void ADropPointUnit::TriggerAbilities()
 		}
 	}
 }
+
+void ADropPointUnit::AddMinerals(const int32& Amount)
+{
+	//if (ConnectedCore)
+	//{
+	//	ConnectedCore->AddMinerals(Amount);
+	//	return;
+	//}
+	StoredMinerals += Amount;
+}
+
+void ADropPointUnit::AdjustHealth(const int32& Amount)
+{
+	Health = FMath::Clamp(Health + Amount, 0, MaxHealth);
+	if (Health <= 0)
+	{
+		Die();
+	}
+}
+
+float ADropPointUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	AdjustHealth(-DamageAmount);
+	return DamageAmount;
+}
+
+void ADropPointUnit::Die()
+{
+	Destroy();
+}
+
+void ADropPointUnit::SetConnectedTile(ADropPointTile* Tile)
+{
+	ConnectedTile = Tile;
+}

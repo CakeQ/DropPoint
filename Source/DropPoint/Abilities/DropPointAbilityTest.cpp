@@ -9,13 +9,6 @@ UDropPointAbilityTest::UDropPointAbilityTest()
 	SetAbilityType(EAbilityTypes::Passive);
 }
 
-void UDropPointAbilityTest::BeginPlay()
-{
-	Super::BeginPlay();
-
-	SetAbilityType(EAbilityTypes::Passive);
-}
-
 void UDropPointAbilityTest::Trigger(ADropPointUnit* Owner)
 {
 	Super::Trigger(Owner);

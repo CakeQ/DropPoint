@@ -7,7 +7,7 @@
 #include "DropPointAbility.generated.h"
 
 UENUM()
-enum class EAbilityTypes : uint8
+enum class EAbilityTypes
 {
 	Instant,
 	Passive

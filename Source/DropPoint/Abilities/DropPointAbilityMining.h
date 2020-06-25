@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "DropPointAbility.h"
-#include "DropPointAbilityTest.generated.h"
+#include "DropPointAbilityMining.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DROPPOINT_API UDropPointAbilityTest : public UDropPointAbility
+class DROPPOINT_API UDropPointAbilityMining : public UDropPointAbility
 {
 	GENERATED_BODY()
 	
 public:
 
-	UDropPointAbilityTest();
+	UDropPointAbilityMining();
 
 	void Trigger(class ADropPointUnit* Owner) override;
 };

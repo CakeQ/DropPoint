@@ -7,7 +7,7 @@
 #include "DropPointUnit.generated.h"
 
 UENUM()
-enum class EUnitFlags
+enum class EUnitFlags : uint8
 {
 	None,
 	TakingOff		= 0x01,
@@ -49,11 +49,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	class UMaterialInstance* TestMaterial;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	//int32 Health = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Unit)
+	class ADropPointTile* ConnectedTile;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	//int32 MaxHealth = 3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	int32 Health = 3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	int32 MaxHealth = 3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	EUnitFlags UnitFlags = EUnitFlags::None;
@@ -68,7 +71,7 @@ protected:
 	TArray<class UDropPointAbility*> Abilities;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	TArray<int32> StoredResources;
+	int32 StoredMinerals;
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -80,12 +83,25 @@ public:
 	void TryLaunch();
 
 	void TriggerAbilities();
+	
+	void AddMinerals(const int32& Amount);
 
-	//FORCEINLINE int32 GetHealth() { return Health; };
+	void AdjustHealth(const int32& Amount);
 
-	//FORCEINLINE int32 GetMaxHealth() { return MaxHealth; };
+	// Override base actor TakeDamage
+	float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	void Die();
+
+	FORCEINLINE int32 GetHealth() { return Health; };
+
+	FORCEINLINE int32 GetMaxHealth() { return MaxHealth; };
 
 	FORCEINLINE int32 GetTimeToLaunch() { return TimeToLaunch; };
+
+	void SetConnectedTile(class ADropPointTile* Tile);
+
+	FORCEINLINE class ADropPointTile* GetConnectedTile() { return ConnectedTile; };
 
 	FORCEINLINE bool HasUnitFlag(EUnitFlags FlagType) { return (UnitFlags & FlagType) != EUnitFlags::None; };
 

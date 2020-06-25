@@ -192,7 +192,6 @@ void ADropPointCharacter::EnablePan()
 	{
 		CurrentTileFocus->HighlightTile(false);
 	}
-	GetWorld()->GetGameViewport()->Viewport->LockMouseToViewport(true);
 	PanX = GetWorld()->GetGameViewport()->Viewport->GetMouseX();
 	PanY = GetWorld()->GetGameViewport()->Viewport->GetMouseY();
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = false;
@@ -202,7 +201,6 @@ void ADropPointCharacter::DisablePan()
 {
 	bPanCamera = false;
 	UGameplayStatics::GetPlayerController(this, 0)->bShowMouseCursor = true;
-	GetWorld()->GetGameViewport()->Viewport->LockMouseToViewport(false);
 }
 
 void ADropPointCharacter::PanUp(float Value)

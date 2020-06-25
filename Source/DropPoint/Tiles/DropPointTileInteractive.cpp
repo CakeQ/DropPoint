@@ -24,7 +24,7 @@ void ADropPointTileInteractive::TilePressed(ETouchIndex::Type FingerIndex, UPrim
 
 void ADropPointTileInteractive::ToggleTile()
 {
-	if (!bIsActive)
+	if (!HasTileFlag(ETileFlags::Selected))
 	{
 		ActivateTile();
 	}
@@ -37,28 +37,30 @@ void ADropPointTileInteractive::ToggleTile()
 void ADropPointTileInteractive::ActivateTile()
 {
 	TileMesh->SetMaterial(0, ActiveMaterial);
-	bIsActive = true;
+	AddTileFlag(ETileFlags::Selected);
 }
 
 void ADropPointTileInteractive::DeactivateTile()
 {
 	TileMesh->SetMaterial(0, BaseMaterial);
-	bIsActive = false;
+	RemoveTileFlag(ETileFlags::Selected);
 }
 
 void ADropPointTileInteractive::HighlightTile(bool bOn)
 {
-	if (bIsActive)
+	if (HasTileFlag(ETileFlags::Selected))
 	{
 		return;
 	}
 
 	if (bOn)
 	{
+		AddTileFlag(ETileFlags::Highlighted);
 		TileMesh->SetMaterial(0, HighlightMaterial);
 	}
 	else
 	{
+		RemoveTileFlag(ETileFlags::Highlighted);
 		TileMesh->SetMaterial(0, BaseMaterial);
 	}
 }

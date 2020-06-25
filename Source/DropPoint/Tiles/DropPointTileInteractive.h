@@ -18,9 +18,6 @@ public:
 	// Sets default values for this actor's properties
 	ADropPointTileInteractive();
 
-	// Are we currently active?
-	bool bIsActive;
-
 	// Pointer to highlighted material used when highlighted
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
 	class UMaterialInstance* HighlightMaterial;
@@ -39,7 +36,9 @@ public:
 
 	// Tile interaction functions
 	void ToggleTile();
+
 	void ActivateTile();
+
 	void DeactivateTile();
 
 	void HighlightTile(bool bOn);

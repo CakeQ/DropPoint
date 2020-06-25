@@ -7,6 +7,18 @@
 #include "DropPoint/DropPointGridCoord.h"
 #include "DropPointTile.generated.h"
 
+UENUM()
+enum class ETileFlags : uint8
+{
+	None,
+	Highlighted = 0x01,
+	Selected = 0x02,
+	IncomingUnit = 0x04,
+	IncomingDamage = 0x08,
+	HasMinerals = 0x16
+};
+ENUM_CLASS_FLAGS(ETileFlags)
+
 UCLASS()
 class DROPPOINT_API ADropPointTile : public AActor
 {
@@ -17,6 +29,9 @@ public:
 	ADropPointTile();
 
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
+	ETileFlags TileFlags = ETileFlags::None;
 
 	// StaticMesh component for the tile
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
@@ -35,12 +50,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
 	class ADropPointUnit* Unit;
 
+public:	
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void SetTileFlag(const ETileFlags& Value);
+
+	void AddTileFlag(const ETileFlags& Value);
+
+	void RemoveTileFlag(const ETileFlags& Value);
+
+	bool HasTileFlag(const ETileFlags& Value);
 
 	UFUNCTION(Category = Tile, BlueprintCallable)
 	FORCEINLINE FDropPointGridCoord& GetGridCoords() { return TileCoordinates; };
