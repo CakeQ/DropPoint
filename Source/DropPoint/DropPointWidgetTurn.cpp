@@ -11,8 +11,8 @@ void UDropPointWidgetTurn::NativeConstruct()
 
 void UDropPointWidgetTurn::UpdateTurn(const int32& value)
 {
-	if (TurnText)
+	if (Text_TurnCounter)
 	{
-		TurnText->SetText(FText::Format(FText::FromString("Turn: {0}"), value));
+		Text_TurnCounter->SetText(FText::Format(FText::FromString("Turn: {0}"), value));
 	}
 }

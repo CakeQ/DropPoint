@@ -18,7 +18,7 @@ public:
 	virtual void NativeConstruct() override;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget), Category = Turn)
-	class UTextBlock* TurnText;
+	class UTextBlock* Text_TurnCounter;
 
 	UFUNCTION()
 	void UpdateTurn(const int32& value);

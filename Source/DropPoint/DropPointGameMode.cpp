@@ -6,6 +6,7 @@
 #include "DropPointAbility.h"
 #include "DropPointUnit.h"
 #include "DropPointWidgetTurn.h"
+#include "Widgets/DropPointWidgetUnitMenu.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "CoreMinimal.h"
@@ -38,6 +39,16 @@ void ADropPointGameMode::BeginPlay()
 		{
 			TurnCountWidget->UpdateTurn(TurnCount);
 			TurnCountWidget->AddToViewport();
+		}
+	}
+
+	if (UnitMenuWidgetClass && UnitSpawnClasses.Num())
+	{
+		UnitMenuWidget = CreateWidget<UDropPointWidgetUnitMenu>(GetWorld(), UnitMenuWidgetClass);
+		if (UnitMenuWidget)
+		{
+			UnitMenuWidget->CreateButtons(UnitSpawnClasses);
+			UnitMenuWidget->AddToViewport();
 		}
 	}
 
@@ -127,7 +138,7 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool bForce = false)
+void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, bool bForce = false)
 {
 	if (!UnitType || !IsInsideArena(coord))
 	{

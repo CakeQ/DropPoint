@@ -14,40 +14,12 @@ class ADropPointCharacter : public ACharacter
 public:
 	ADropPointCharacter();
 
-	virtual void Tick(float DeltaSeconds) override;
-
-	void TriggerClick();
-
-	void ScrollZoom(float Value);
-
-	void MoveRight(float Value);
-
-	void MoveUp(float Value);
-
-	void EnablePan();
-
-	void DisablePan();
-
-	void PanRight(float Value);
-
-	void PanUp(float Value);
-
-	void NextAction();
-
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
-	virtual void BeginPlay() override;
-
-private:
-	bool bPanCamera;
+protected:
+	bool bPanCamera = false;
 
 	int32 PanX;
 
 	int32 PanY;
-
-protected:
-
-	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 	class ADropPointTileInteractive* CurrentTileFocus;
@@ -68,5 +40,32 @@ protected:
 	class UMaterialParameterCollectionInstance* HighlightParameters;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class AActor> UnitSpawnTypeClass;
+	TSubclassOf<class ADropPointUnit> UnitSpawnTypeClass;
+
+	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
+
+public:
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	void TriggerClick();
+
+	void ScrollZoom(float Value);
+
+	void MoveRight(float Value);
+
+	void MoveUp(float Value);
+
+	void EnablePan();
+
+	void DisablePan();
+
+	void PanRight(float Value);
+
+	void PanUp(float Value);
+
+	void NextAction();
 };
