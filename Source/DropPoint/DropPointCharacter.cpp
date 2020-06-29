@@ -3,6 +3,7 @@
 #include "DropPointCharacter.h"
 #include "DropPointGameMode.h"
 #include "DropPointGridCoord.h"
+#include "DropPointUnit.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"

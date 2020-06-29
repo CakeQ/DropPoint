@@ -19,7 +19,7 @@ void ADropPointUnit::BeginPlay()
 	Super::BeginPlay();
 	UnitMesh->SetStaticMesh(BaseMesh);
 	UnitMesh->SetMaterial(0, BaseMaterial);
-
+	
 	if (AbilityClasses.Num())
 	{
 		for (TSubclassOf<UDropPointAbility> NewAbilityClass : AbilityClasses)

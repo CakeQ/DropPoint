@@ -36,6 +36,11 @@ public:
 	EFactions Faction = EFactions::Neutral;
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	FString UnitName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	FString UnitDesc;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	class UStaticMesh* BaseMesh;
@@ -108,4 +113,10 @@ public:
 	FORCEINLINE static bool FactionPredicate(const ADropPointUnit& u1, const ADropPointUnit& u2) { return (u1.Faction > u2.Faction); };
 
 	FORCEINLINE void TestTrigger() { UnitMesh->SetMaterial(0, TestMaterial); };
+
+	FORCEINLINE void GetThumbnail() { };
+
+	FORCEINLINE const FString& GetName() { return UnitName; };
+
+	FORCEINLINE const FString& GetDescription() { return UnitDesc; };
 };

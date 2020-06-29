@@ -31,19 +31,28 @@ public:
 	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
 	class UDropPointWidgetTurn* TurnCountWidget;
 
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> UnitMenuWidgetClass;
+
+	UPROPERTY(Category = DropPoint, BlueprintReadOnly)
+	class UDropPointWidgetUnitMenu* UnitMenuWidget;
+
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	int32 GridSize = 7;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	float TileSize = 100.0f;
 
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Grid, BlueprintReadOnly)
 	TArray<class ADropPointTile*> Tiles;
 
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> TileTypeClass;
 
-	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
+	TArray<TSubclassOf<class ADropPointUnit>> UnitSpawnClasses;
+
+	UPROPERTY(Category = Grid, BlueprintReadOnly)
 	TArray<class ADropPointUnit*> Units;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
@@ -78,7 +87,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<AActor> UnitType, bool bForce);
+	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, bool bForce);
 };
 
 
