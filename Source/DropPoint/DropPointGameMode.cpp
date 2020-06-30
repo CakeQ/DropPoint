@@ -47,7 +47,7 @@ void ADropPointGameMode::BeginPlay()
 		UnitMenuWidget = CreateWidget<UDropPointWidgetUnitMenu>(GetWorld(), UnitMenuWidgetClass);
 		if (UnitMenuWidget)
 		{
-			UnitMenuWidget->CreateButtons(UnitSpawnClasses);
+			UnitMenuWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);
 			UnitMenuWidget->AddToViewport();
 		}
 	}

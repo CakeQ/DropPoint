@@ -68,4 +68,8 @@ public:
 	void PanUp(float Value);
 
 	void NextAction();
+
+	FORCEINLINE TSubclassOf<class ADropPointUnit> GetUnitSpawnType() { return UnitSpawnTypeClass; };
+
+	FORCEINLINE void SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType) { UnitSpawnTypeClass = NewType; };
 };

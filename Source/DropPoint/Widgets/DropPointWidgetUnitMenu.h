@@ -25,5 +25,5 @@ protected:
 	TArray<class UCheckBox*> UnitButtons;
 
 public:
-	void CreateButtons(TArray<TSubclassOf<class ADropPointUnit>> Units);
+	void CreateButtons(TArray<TSubclassOf<class ADropPointUnit>> Units, class ADropPointCharacter* Player);
 };

@@ -4,9 +4,10 @@
 #include "DropPointWidgetUnitMenu.h"
 #include "../DropPointWidgetUnit.h"
 #include "../DropPointUnit.h"
+#include "../DropPointCharacter.h"
 #include "Components/WrapBox.h"
 
-void UDropPointWidgetUnitMenu::CreateButtons(TArray<TSubclassOf<ADropPointUnit>> Units)
+void UDropPointWidgetUnitMenu::CreateButtons(TArray<TSubclassOf<ADropPointUnit>> Units, ADropPointCharacter* Player)
 {
 	if (UnitButtonClass && Units.Num())
 	{
@@ -14,6 +15,7 @@ void UDropPointWidgetUnitMenu::CreateButtons(TArray<TSubclassOf<ADropPointUnit>>
 		{
 			UDropPointWidgetUnit* NewButton = CreateWidget<UDropPointWidgetUnit>(GetWorld(), UnitButtonClass);
 			NewButton->SetUnitType(UnitType);
+			NewButton->SetPlayer(Player);
 			if (WrapBox_Units)
 			{
 				WrapBox_Units->AddChildToWrapBox(NewButton);

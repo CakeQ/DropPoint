@@ -14,10 +14,19 @@ class DROPPOINT_API UDropPointWidgetUnit : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeConstruct() override;
+
 	class ADropPointUnit* UnitType;
+
+	class ADropPointCharacter* PlayerCharacter;
 
 public:
 	void SetUnitType(TSubclassOf<class ADropPointUnit> NewType);
+
+	FORCEINLINE void SetPlayer(class ADropPointCharacter* Player) { PlayerCharacter = Player; };
+
+	UFUNCTION()
+	void ActivateButton();
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget), Category = UnitButton)
 	class UButton* Button_Unit;
