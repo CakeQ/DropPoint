@@ -4,20 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "DropPoint/DropPointGridCoord.h"
+#include "DropPointEnums.h"
+#include "DropPointGridCoord.h"
 #include "DropPointTile.generated.h"
-
-UENUM()
-enum class ETileFlags : uint8
-{
-	None,
-	Highlighted = 0x01,
-	Selected = 0x02,
-	IncomingUnit = 0x04,
-	IncomingDamage = 0x08,
-	HasMinerals = 0x16
-};
-ENUM_CLASS_FLAGS(ETileFlags)
 
 UCLASS()
 class DROPPOINT_API ADropPointTile : public AActor
@@ -41,15 +30,9 @@ protected:
 	FDropPointGridCoord TileCoordinates;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
-	class ADropPointUnit* Unit;
+	TArray<class ADropPointUnit*> Units;
 
 public:	
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	void SetTileFlag(const ETileFlags& Value);
 
@@ -66,7 +49,7 @@ public:
 	virtual void SetTileCoords(const FDropPointGridCoord& NewCoord);
 
 	UFUNCTION(Category = Tile, BlueprintCallable)
-	FORCEINLINE bool HasUnit() { return Unit != nullptr; };
+	bool HasUnit(EUnitLayers Layer);
 
 	UFUNCTION(Category = Tile, BlueprintCallable)
 	void SetUnit(class ADropPointUnit* NewUnit, bool bForce);

@@ -1,10 +1,11 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
 
 #include "DropPointGameMode.h"
+#include "DropPointGridCoord.h"
 #include "DropPointPlayerController.h"
 #include "DropPointCharacter.h"
-#include "DropPointAbility.h"
 #include "DropPointUnit.h"
+#include "DropPointAbility.h"
 #include "DropPointWidgetTurn.h"
 #include "Widgets/DropPointWidgetUnitMenu.h"
 #include "Tiles/DropPointTile.h"
@@ -105,21 +106,21 @@ void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPoin
 		return;
 	}
 	ADropPointTile* RefTile = GetTileAtPos(coord);
-	if (RefTile->HasUnit() && !bForce)
+	if (RefTile->HasUnit(NewUnit->GetLayer()) && !bForce)
 	{
 		return;
 	}
 	RefTile->SetUnit(NewUnit, bForce);
 }
 
-bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& coord) const
+bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& coord, EUnitLayers Layer = EUnitLayers::Ground) const
 {
 	if (!IsInsideArena(coord))
 	{
 		return false;
 	}
 	ADropPointTile* RefTile = GetTileAtPos(coord);
-	if (RefTile->HasUnit())
+	if (RefTile->HasUnit(Layer))
 	{
 		return true;
 	}
@@ -146,7 +147,7 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassO
 	}
 
 	ADropPointTile* RefTile = GetTileAtPos(coord);
-	if (RefTile->HasUnit() && !bForce)
+	if (RefTile->HasUnit(UnitType->GetDefaultObject<ADropPointUnit>()->GetLayer()) && !bForce)
 	{
 		return;
 	}

@@ -4,33 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "DropPointEnums.h"
 #include "DropPointUnit.generated.h"
-
-UENUM()
-enum class EUnitFlags : uint8
-{
-	None,
-	TakingOff		= 0x01,
-	Overheating		= 0x02,
-	Invulnerable	= 0x04
-};
-ENUM_CLASS_FLAGS(EUnitFlags)
-
-UENUM()
-enum class EUnitFactions : uint8
-{
-	Player,
-	Neutral,
-	Hostile
-};
-
-UENUM()
-enum class EUnitLayers : uint8
-{
-	Ground,
-	Flying,
-	Environmental
-};
 
 UCLASS()
 class DROPPOINT_API ADropPointUnit : public AActor

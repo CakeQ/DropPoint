@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DropPointEnums.h"
+#include "DropPointGridCoord.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/GameModeBase.h"
-#include "DropPointGridCoord.h"
 #include "DropPointGameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -73,7 +74,7 @@ public:
 	void SetTileUnit(const FDropPointGridCoord& coord, class ADropPointUnit* UnitType, bool bForce);
 
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	bool TileHasUnit(const FDropPointGridCoord& coord) const;
+	bool TileHasUnit(const FDropPointGridCoord& coord, EUnitLayers layer) const;
 
 	UFUNCTION(Category = GridBase, BlueprintCallable)
 	bool IsInsideArena(const FDropPointGridCoord& coord) const;
@@ -87,7 +88,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, bool bForce);
+	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<class ADropPointUnit> UnitType, bool bForce);
 };
 
 

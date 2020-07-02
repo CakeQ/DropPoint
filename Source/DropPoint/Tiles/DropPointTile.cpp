@@ -2,6 +2,7 @@
 
 #include "DropPointTile.h"
 #include "DropPointUnit.h"
+#include "DropPointGridCoord.h"
 #include "Engine/StaticMesh.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstance.h"
@@ -13,33 +14,39 @@ ADropPointTile::ADropPointTile()
 	RootComponent = TileMesh;
 }
 
-// Called when the game starts or when spawned
-void ADropPointTile::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 {
 	TileCoordinates = NewCoord;
 }
 
-void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
+bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
 {
-	if ((!NewUnit || Unit) && !bForce)
+	for (ADropPointUnit* Unit : Units)
 	{
-		return;
+		if (Unit->GetLayer() == Layer)
+		{
+			return true;
+		}
 	}
-	Unit = NewUnit;
-	Unit->SetConnectedTile(this);
-	Unit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
+	return false;
 }
 
-// Called every frame
-void ADropPointTile::Tick(float DeltaTime)
+void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 {
-	Super::Tick(DeltaTime);
-
+	for (ADropPointUnit* Unit : Units)
+	{
+		if (Unit->GetLayer() == NewUnit->GetLayer() && !bForce)
+		{
+			if (!bForce)
+			{
+				return;
+			}
+			Units.Remove(Unit);
+		}
+	}
+	Units.Add(NewUnit);
+	NewUnit->SetConnectedTile(this);
+	NewUnit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
 }
 
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)
