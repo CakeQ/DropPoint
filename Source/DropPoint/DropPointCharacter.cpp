@@ -138,7 +138,7 @@ void ADropPointCharacter::TriggerClick()
 			ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
 			if (gamemode)
 			{
-				gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, false);
+				gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, EUnitFactions::Player, false);
 			}
 		}
 	}

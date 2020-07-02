@@ -88,7 +88,7 @@ public:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<class ADropPointUnit> UnitType, bool bForce);
+	void CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<class ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce);
 };
 
 

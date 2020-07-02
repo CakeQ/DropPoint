@@ -139,7 +139,7 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, bool bForce = false)
+void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
 {
 	if (!UnitType || !IsInsideArena(coord))
 	{
@@ -153,6 +153,7 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassO
 	}
 
 	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
+	NewUnit->SetFaction(Faction);
 	Units.Add(NewUnit);
 	SetTileUnit(coord, NewUnit, bForce);
 }

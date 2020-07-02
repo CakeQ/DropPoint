@@ -78,6 +78,8 @@ public:
 
 	FORCEINLINE const EUnitFactions GetFaction() { return UnitFaction; };
 
+	FORCEINLINE void SetFaction(EUnitFactions Faction) { UnitFaction = Faction; };
+
 	FORCEINLINE const EUnitLayers GetLayer() { return UnitLayer; };
 
 	void SetConnectedTile(class ADropPointTile* Tile);
