@@ -17,17 +17,6 @@ ADropPointUnit::ADropPointUnit()
 void ADropPointUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	UnitMesh->SetStaticMesh(BaseMesh);
-	UnitMesh->SetMaterial(0, BaseMaterial);
-	
-	if (AbilityClasses.Num())
-	{
-		for (TSubclassOf<UDropPointAbility> NewAbilityClass : AbilityClasses)
-		{
-			UDropPointAbility* NewAbility = NewObject<UDropPointAbility>(this, NewAbilityClass);
-			Abilities.Add(NewAbility);
-		}
-	}
 }
 
 // Called every frame
@@ -49,6 +38,8 @@ void ADropPointUnit::TryLaunch()
 
 void ADropPointUnit::TriggerAbilities()
 {
+	TArray<UDropPointAbility*> Abilities;
+	GetComponents<UDropPointAbility>(Abilities);
 	for (UDropPointAbility* Ability : Abilities)
 	{
 		Ability->HandleQueuedTriggers();

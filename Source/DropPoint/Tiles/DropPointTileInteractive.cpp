@@ -36,14 +36,14 @@ void ADropPointTileInteractive::ToggleTile()
 
 void ADropPointTileInteractive::ActivateTile()
 {
-	TileMesh->SetMaterial(0, ActiveMaterial);
 	AddTileFlag(ETileFlags::Selected);
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 1.0f);
 }
 
 void ADropPointTileInteractive::DeactivateTile()
 {
-	TileMesh->SetMaterial(0, BaseMaterial);
 	RemoveTileFlag(ETileFlags::Selected);
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 0.0f);
 }
 
 void ADropPointTileInteractive::HighlightTile(bool bOn)
@@ -56,11 +56,11 @@ void ADropPointTileInteractive::HighlightTile(bool bOn)
 	if (bOn)
 	{
 		AddTileFlag(ETileFlags::Highlighted);
-		TileMesh->SetMaterial(0, HighlightMaterial);
+		TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), 1.0f);
 	}
 	else
 	{
 		RemoveTileFlag(ETileFlags::Highlighted);
-		TileMesh->SetMaterial(0, BaseMaterial);
+		TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), 0.0f);
 	}
 }

@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, Category = Abilities, meta = (BlueprintSpawnableComponent))
 class DROPPOINT_API UDropPointAbilityMining : public UDropPointAbility
 {
 	GENERATED_BODY()

@@ -13,5 +13,5 @@ void UDropPointAbilityTest::Trigger(ADropPointUnit* Owner)
 {
 	Super::Trigger(Owner);
 
-	Owner->TestTrigger();
+	Owner->ChangeMaterial(TestMaterial);
 }

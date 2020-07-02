@@ -17,8 +17,6 @@ ADropPointTile::ADropPointTile()
 void ADropPointTile::BeginPlay()
 {
 	Super::BeginPlay();
-	TileMesh->SetStaticMesh(BaseMesh);
-	TileMesh->SetMaterial(0, BaseMaterial);
 }
 
 void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)

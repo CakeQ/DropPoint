@@ -17,11 +17,19 @@ enum class EUnitFlags : uint8
 ENUM_CLASS_FLAGS(EUnitFlags)
 
 UENUM()
-enum class EFactions : uint8
+enum class EUnitFactions : uint8
 {
 	Player,
 	Neutral,
 	Hostile
+};
+
+UENUM()
+enum class EUnitLayers : uint8
+{
+	Ground,
+	Flying,
+	Environmental
 };
 
 UCLASS()
@@ -33,7 +41,8 @@ public:
 	// Sets default values for this actor's properties
 	ADropPointUnit();
 
-	EFactions Faction = EFactions::Neutral;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	EUnitFactions UnitFaction = EUnitFactions::Neutral;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
@@ -42,19 +51,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	FString UnitDesc;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	class UStaticMesh* BaseMesh;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Unit)
 	class UStaticMeshComponent* UnitMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	class UMaterialInstance* BaseMaterial;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	class UMaterialInstance* TestMaterial;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Unit)
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Unit)
 	class ADropPointTile* ConnectedTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
@@ -64,16 +64,13 @@ protected:
 	int32 MaxHealth = 3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	EUnitFlags UnitFlags = EUnitFlags::None;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	int32 TimeToLaunch = 3;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	TArray<TSubclassOf<class UDropPointAbility>> AbilityClasses;
+	EUnitLayers UnitLayer = EUnitLayers::Ground;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Unit)
-	TArray<class UDropPointAbility*> Abilities;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	EUnitFlags UnitFlags = EUnitFlags::None;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	int32 StoredMinerals;
@@ -98,11 +95,15 @@ public:
 
 	void Die();
 
-	FORCEINLINE int32 GetHealth() { return Health; };
+	FORCEINLINE const int32 GetHealth() { return Health; };
 
-	FORCEINLINE int32 GetMaxHealth() { return MaxHealth; };
+	FORCEINLINE const int32 GetMaxHealth() { return MaxHealth; };
 
-	FORCEINLINE int32 GetTimeToLaunch() { return TimeToLaunch; };
+	FORCEINLINE const int32 GetTimeToLaunch() { return TimeToLaunch; };
+
+	FORCEINLINE const EUnitFactions GetFaction() { return UnitFaction; };
+
+	FORCEINLINE const EUnitLayers GetLayer() { return UnitLayer; };
 
 	void SetConnectedTile(class ADropPointTile* Tile);
 
@@ -110,9 +111,9 @@ public:
 
 	FORCEINLINE bool HasUnitFlag(EUnitFlags FlagType) { return (UnitFlags & FlagType) != EUnitFlags::None; };
 
-	FORCEINLINE static bool FactionPredicate(const ADropPointUnit& u1, const ADropPointUnit& u2) { return (u1.Faction > u2.Faction); };
+	FORCEINLINE static bool FactionPredicate(const ADropPointUnit& u1, const ADropPointUnit& u2) { return (u1.UnitFaction > u2.UnitFaction); };
 
-	FORCEINLINE void TestTrigger() { UnitMesh->SetMaterial(0, TestMaterial); };
+	FORCEINLINE void ChangeMaterial(UMaterialInstance* NewMaterial) { UnitMesh->SetMaterial(0, NewMaterial); };
 
 	FORCEINLINE void GetThumbnail() { };
 

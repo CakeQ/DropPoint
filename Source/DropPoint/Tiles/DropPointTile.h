@@ -37,13 +37,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
 	class UStaticMeshComponent* TileMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-	class UStaticMesh* BaseMesh;
-
-	// Pointer to base material used on default state
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-	class UMaterialInstance* BaseMaterial;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)
 	FDropPointGridCoord TileCoordinates;
 

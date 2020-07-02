@@ -9,14 +9,18 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, Category = Abilities, meta = (BlueprintSpawnableComponent))
 class DROPPOINT_API UDropPointAbilityTest : public UDropPointAbility
 {
 	GENERATED_BODY()
 	
 public:
-
 	UDropPointAbilityTest();
 
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	class UMaterialInstance* TestMaterial;
+
+public:
 	void Trigger(class ADropPointUnit* Owner) override;
 };

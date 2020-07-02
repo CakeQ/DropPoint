@@ -18,14 +18,6 @@ public:
 	// Sets default values for this actor's properties
 	ADropPointTileInteractive();
 
-	// Pointer to highlighted material used when highlighted
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-	class UMaterialInstance* HighlightMaterial;
-
-	// Pointer to active material used when clicked on or activated
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-	class UMaterialInstance* ActiveMaterial;
-
 	// Handle the tile being clicked
 	UFUNCTION()
 	void TileClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
@@ -42,7 +34,4 @@ public:
 	void DeactivateTile();
 
 	void HighlightTile(bool bOn);
-
-protected:
-	//FString m_HighlightMaterialPath, m_ActiveMaterialPath;
 };
