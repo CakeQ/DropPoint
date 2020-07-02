@@ -234,7 +234,25 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 	}
 	if (HitResult.Actor.IsValid())
 	{
+		//Cast to the tile.
 		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
+
+		//If the cast failed, try casting to any unit on top.
+		if (!hitTile)
+		{
+			ADropPointUnit* hitUnit = Cast<ADropPointUnit>(HitResult.Actor.Get());
+			if (hitUnit)
+			{
+				hitTile = Cast<ADropPointTileInteractive>(hitUnit->GetConnectedTile());
+			}
+		}
+
+		//If we still fail to cast, just return.
+		if (!hitTile)
+		{
+			return;
+		}
+
 		if (CurrentTileFocus != hitTile)
 		{
 			if (CurrentTileFocus)

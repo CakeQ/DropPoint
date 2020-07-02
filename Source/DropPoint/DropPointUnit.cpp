@@ -80,6 +80,11 @@ void ADropPointUnit::Die()
 	Destroy();
 }
 
+void ADropPointUnit::HighlightUnit(bool bOn)
+{
+	UnitMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), (float)bOn);
+}
+
 void ADropPointUnit::SetConnectedTile(ADropPointTile* Tile)
 {
 	ConnectedTile = Tile;

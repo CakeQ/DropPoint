@@ -1,6 +1,7 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointTileInteractive.h"
+#include "DropPointUnit.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -62,5 +63,13 @@ void ADropPointTileInteractive::HighlightTile(bool bOn)
 	{
 		RemoveTileFlag(ETileFlags::Highlighted);
 		TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), 0.0f);
+	}
+
+	if (!HasTileFlag(ETileFlags::Selected))
+	{
+		for (ADropPointUnit* Unit : Units)
+		{
+			Unit->HighlightUnit(bOn);
+		}
 	}
 }
