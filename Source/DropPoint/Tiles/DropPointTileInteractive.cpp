@@ -39,12 +39,23 @@ void ADropPointTileInteractive::ActivateTile()
 {
 	AddTileFlag(ETileFlags::Selected);
 	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 1.0f);
+	for (ADropPointUnit* Unit : Units)
+	{
+		Unit->HighlightUnit(true);
+	}
 }
 
 void ADropPointTileInteractive::DeactivateTile()
 {
 	RemoveTileFlag(ETileFlags::Selected);
 	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 0.0f);
+	if (!HasTileFlag(ETileFlags::Highlighted))
+	{
+		for (ADropPointUnit* Unit : Units)
+		{
+			Unit->HighlightUnit(false);
+		}
+	}
 }
 
 void ADropPointTileInteractive::HighlightTile(bool bOn)
