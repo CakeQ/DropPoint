@@ -70,6 +70,8 @@ public:
 
 	void Die();
 
+	void HighlightUnit(bool bOn);
+
 	FORCEINLINE const int32 GetHealth() { return Health; };
 
 	FORCEINLINE const int32 GetMaxHealth() { return MaxHealth; };
