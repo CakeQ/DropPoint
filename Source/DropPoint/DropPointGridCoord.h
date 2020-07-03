@@ -6,15 +6,18 @@
 #include "Engine/UserDefinedStruct.h"
 #include "DropPointGridCoord.generated.h"
 
+/**
+ * A basic struct used by the DropPoint game mode to store grid coordinates.
+ */
 USTRUCT(BlueprintType)
 struct DROPPOINT_API FDropPointGridCoord
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DropPoint)
-		int32 x;
+	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
+	int32 x;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = DropPoint)
-		int32 y;	
+	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
+	int32 y;	
 };

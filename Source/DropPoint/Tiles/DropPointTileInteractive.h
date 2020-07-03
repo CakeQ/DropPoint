@@ -7,7 +7,7 @@
 #include "DropPointTileInteractive.generated.h"
 
 /**
- * 
+ * Interactive tile used within the DropPoint game mode. Features interactive elements for selection, which the parent tile does not have. All tiles within the arena should be interactive.
  */
 UCLASS()
 class DROPPOINT_API ADropPointTileInteractive : public ADropPointTile
@@ -15,23 +15,33 @@ class DROPPOINT_API ADropPointTileInteractive : public ADropPointTile
 	GENERATED_BODY()
 	
 public:
-	// Sets default values for this actor's properties
+	/** Override to set up input binding. */
 	ADropPointTileInteractive();
 
-	// Handle the tile being clicked
-	UFUNCTION()
+	/** Handle the tile being clicked. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void TileClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);
 
-	// Handle the tile being touched
-	UFUNCTION()
+	/** Handle the tile being touched. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void TilePressed(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 
-	// Tile interaction functions
+	/** Toggle the selection state of the tile. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void ToggleTile();
 
+	/** Activate the tile to be selected. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void ActivateTile();
 
+	/** Deactivate the tile to be unselected. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void DeactivateTile();
 
+	/**
+	 * Handles highlighting of the tile.
+	 * @param bOn - Whether or not it should be highlighted.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void HighlightTile(bool bOn);
 };

@@ -46,3 +46,10 @@ enum class EUnitLayers : uint8
 	Flying,
 	Environmental
 };
+
+UENUM()
+enum class EAbilityTypes
+{
+	Instant,
+	Passive
+};

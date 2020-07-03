@@ -7,7 +7,7 @@
 #include "DropPointAbilityTest.generated.h"
 
 /**
- * 
+ * A test ability that changes the material of a unit on trigger.
  */
 UCLASS(Blueprintable, Category = Abilities, meta = (BlueprintSpawnableComponent))
 class DROPPOINT_API UDropPointAbilityTest : public UDropPointAbility
@@ -18,9 +18,14 @@ public:
 	UDropPointAbilityTest();
 
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
 	class UMaterialInstance* TestMaterial;
 
 public:
+	/**
+	 * Called when the ability component is selected to fire. Changes the material of the owning unit to the TestMaterial.
+	 * @param Owner - The unit to handle functionality with.
+	 */
+	UFUNCTION(Category = Ability, BlueprintCallable)
 	void Trigger(class ADropPointUnit* Owner) override;
 };
