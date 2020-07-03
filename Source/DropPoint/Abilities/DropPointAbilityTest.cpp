@@ -2,7 +2,7 @@
 
 
 #include "DropPointAbilityTest.h"
-#include "../DropPointUnit.h"
+#include "DropPointUnit.h"
 
 UDropPointAbilityTest::UDropPointAbilityTest()
 {

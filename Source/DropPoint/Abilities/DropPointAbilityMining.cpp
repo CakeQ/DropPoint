@@ -2,8 +2,8 @@
 
 
 #include "DropPointAbilityMining.h"
-#include "../DropPointUnit.h"
-#include "../Tiles/DropPointTile.h"
+#include "DropPointUnit.h"
+#include "Tiles/DropPointTile.h"
 
 UDropPointAbilityMining::UDropPointAbilityMining()
 {

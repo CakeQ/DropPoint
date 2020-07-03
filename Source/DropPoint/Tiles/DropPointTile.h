@@ -19,8 +19,8 @@ public:
 
 protected:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile)
-	ETileFlags TileFlags = ETileFlags::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Tile, meta = (Bitmask, BitmaskEnum = "ETileFlags"))
+	uint8 TileFlags;
 
 	// StaticMesh component for the tile
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Tile)

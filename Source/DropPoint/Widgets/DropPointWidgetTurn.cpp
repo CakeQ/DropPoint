@@ -9,10 +9,10 @@ void UDropPointWidgetTurn::NativeConstruct()
 	Super::NativeConstruct();
 }
 
-void UDropPointWidgetTurn::UpdateTurn(const int32& value)
+void UDropPointWidgetTurn::UpdateTurn(const int32& Value)
 {
 	if (Text_TurnCounter)
 	{
-		Text_TurnCounter->SetText(FText::Format(FText::FromString("Turn: {0}"), value));
+		Text_TurnCounter->SetText(FText::Format(FText::FromString("{0}"), Value));
 	}
 }

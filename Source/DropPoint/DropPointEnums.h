@@ -12,22 +12,22 @@
 UENUM()
 enum class ETileFlags : uint8
 {
-	None,
-	Highlighted = 0x01,
-	Selected = 0x02,
-	IncomingUnit = 0x04,
-	IncomingDamage = 0x08,
-	HasMinerals = 0x16
+	None = 0,
+	Highlighted,
+	Selected,
+	IncomingUnit,
+	IncomingDamage,
+	HasMinerals
 };
 ENUM_CLASS_FLAGS(ETileFlags)
 
 UENUM()
 enum class EUnitFlags : uint8
 {
-	None,
-	TakingOff = 0x01,
-	Overheating = 0x02,
-	Invulnerable = 0x04
+	None = 0,
+	TakingOff,
+	Overheating,
+	Invulnerable
 };
 ENUM_CLASS_FLAGS(EUnitFlags)
 

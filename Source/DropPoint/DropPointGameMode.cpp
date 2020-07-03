@@ -6,7 +6,7 @@
 #include "DropPointCharacter.h"
 #include "DropPointUnit.h"
 #include "DropPointAbility.h"
-#include "DropPointWidgetTurn.h"
+#include "Widgets/DropPointWidgetTurn.h"
 #include "Widgets/DropPointWidgetUnitMenu.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
@@ -57,41 +57,41 @@ void ADropPointGameMode::BeginPlay()
 	SpawnArena();
 }
 
-int32 ADropPointGameMode::GetLinearIndex(const FDropPointGridCoord& coord) const
+int32 ADropPointGameMode::GetLinearIndex(const FDropPointGridCoord& Coord) const
 {
-	return (coord.y * GridSize) + coord.x;
+	return (Coord.y * GridSize) + Coord.x;
 }
 
-int32 ADropPointGameMode::IsInLinearRange(const int32& linearIndex, const int32& size) const
+int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size) const
 {
-	if (linearIndex >= 0 && linearIndex <= (((size - 1) * size) + (size - 1)))
+	if (Index >= 0 && Index <= (((Size - 1) * Size) + (Size - 1)))
 	{
 		return true;
 	}
 	return false;
 }
 
-void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& coord, ADropPointTileInteractive* tile)
+void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& Coord, ADropPointTileInteractive* tile)
 {
-	check(IsInsideArena(coord));
-	const int32 linearIndex = GetLinearIndex(coord);
-	check(IsInLinearRange(linearIndex, GridSize));
-	tile->SetTileCoords(coord);
-	Tiles[linearIndex] = tile;
+	check(IsInsideArena(Coord));
+	const int32 Index = GetLinearIndex(Coord);
+	check(IsInLinearRange(Index, GridSize));
+	tile->SetTileCoords(Coord);
+	Tiles[Index] = tile;
 }
 
-ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& coord) const
+ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& Coord) const
 {
-	if (IsInsideArena(coord))
+	if (IsInsideArena(Coord))
 	{
-		const int32 linearIndex = GetLinearIndex(coord);
-		check(linearIndex >= 0 && linearIndex < Tiles.Num());
-		return Tiles[linearIndex];
+		const int32 Index = GetLinearIndex(Coord);
+		check(Index >= 0 && Index < Tiles.Num());
+		return Tiles[Index];
 	}
 	return nullptr;
 }
 
-ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& origin, const FDropPointGridCoord& offset) const
+ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const
 {
 	FDropPointGridCoord newCoords;
 	newCoords.x = origin.x + offset.x;
@@ -99,13 +99,13 @@ ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& origi
 	return GetTileAtPos(newCoords);
 }
 
-void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPointUnit* NewUnit, bool bForce = false)
+void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, bool bForce = false)
 {
-	if (!IsInsideArena(coord))
+	if (!IsInsideArena(Coord))
 	{
 		return;
 	}
-	ADropPointTile* RefTile = GetTileAtPos(coord);
+	ADropPointTile* RefTile = GetTileAtPos(Coord);
 	if (RefTile->HasUnit(NewUnit->GetLayer()) && !bForce)
 	{
 		return;
@@ -113,13 +113,13 @@ void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& coord, ADropPoin
 	RefTile->SetUnit(NewUnit, bForce);
 }
 
-bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& coord, EUnitLayers Layer = EUnitLayers::Ground) const
+bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, EUnitLayers Layer = EUnitLayers::Ground) const
 {
-	if (!IsInsideArena(coord))
+	if (!IsInsideArena(Coord))
 	{
 		return false;
 	}
-	ADropPointTile* RefTile = GetTileAtPos(coord);
+	ADropPointTile* RefTile = GetTileAtPos(Coord);
 	if (RefTile->HasUnit(Layer))
 	{
 		return true;
@@ -127,11 +127,11 @@ bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& coord, EUnitLaye
 	return false;
 }
 
-bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
+bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& Coord) const
 {
-	if (coord.x >= 0 && coord.x < GridSize)
+	if (Coord.x >= 0 && Coord.x < GridSize)
 	{
-		if (coord.y >= 0 && coord.y < GridSize)
+		if (Coord.y >= 0 && Coord.y < GridSize)
 		{
 			return true;
 		}
@@ -139,14 +139,14 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
+void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
 {
-	if (!UnitType || !IsInsideArena(coord))
+	if (!UnitType || !IsInsideArena(Coord))
 	{
 		return;
 	}
 
-	ADropPointTile* RefTile = GetTileAtPos(coord);
+	ADropPointTile* RefTile = GetTileAtPos(Coord);
 	if (RefTile->HasUnit(UnitType->GetDefaultObject<ADropPointUnit>()->GetLayer()) && !bForce)
 	{
 		return;
@@ -155,7 +155,7 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& coord, TSubclassO
 	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
 	NewUnit->SetFaction(Faction);
 	Units.Add(NewUnit);
-	SetTileUnit(coord, NewUnit, bForce);
+	SetTileUnit(Coord, NewUnit, bForce);
 }
 
 void ADropPointGameMode::EndTurn()

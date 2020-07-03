@@ -2,9 +2,9 @@
 
 
 #include "DropPointWidgetUnitMenu.h"
-#include "../DropPointWidgetUnit.h"
-#include "../DropPointUnit.h"
-#include "../DropPointCharacter.h"
+#include "DropPointWidgetUnit.h"
+#include "DropPointUnit.h"
+#include "DropPointCharacter.h"
 #include "Components/WrapBox.h"
 
 void UDropPointWidgetUnitMenu::CreateButtons(TArray<TSubclassOf<ADropPointUnit>> Units, ADropPointCharacter* Player)

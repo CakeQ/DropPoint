@@ -1,4 +1,4 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
+// Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
 
 #pragma once
 
@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "DropPointPlayerController.generated.h"
 
-/** PlayerController class used to enable cursor */
 UCLASS()
 class ADropPointPlayerController : public APlayerController
 {

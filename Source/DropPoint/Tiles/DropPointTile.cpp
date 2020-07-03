@@ -51,21 +51,21 @@ void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)
 {
-	TileFlags = Value;
+	TileFlags = (uint8)Value;
 }
 
 void ADropPointTile::AddTileFlag(const ETileFlags& Value)
 {
-	TileFlags |= Value;
+	TileFlags |= (uint8)Value;
 }
 
 void ADropPointTile::RemoveTileFlag(const ETileFlags& Value)
 {
-	TileFlags &= ~Value;
+	TileFlags &= ~(uint8)Value;
 }
 
 bool ADropPointTile::HasTileFlag(const ETileFlags& Value)
 {
-	return (uint8)TileFlags & (uint8)Value;
+	return TileFlags & (uint8)Value;
 }
 

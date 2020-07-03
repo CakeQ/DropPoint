@@ -44,8 +44,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	EUnitLayers UnitLayer = EUnitLayers::Ground;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
-	EUnitFlags UnitFlags = EUnitFlags::None;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit, meta=(Bitmask, BitmaskEnum = "EUnitFlags"))
+	uint8 UnitFlags;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Unit)
 	int32 StoredMinerals;
@@ -88,7 +88,7 @@ public:
 
 	FORCEINLINE class ADropPointTile* GetConnectedTile() { return ConnectedTile; };
 
-	FORCEINLINE bool HasUnitFlag(EUnitFlags FlagType) { return (UnitFlags & FlagType) != EUnitFlags::None; };
+	FORCEINLINE bool HasUnitFlag(EUnitFlags Value) { return UnitFlags & (uint8)Value; };
 
 	FORCEINLINE static bool FactionPredicate(const ADropPointUnit& u1, const ADropPointUnit& u2) { return (u1.UnitFaction > u2.UnitFaction); };
 

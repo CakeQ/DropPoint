@@ -17,7 +17,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 
-#define PrintDebug(x) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT(x));}
+//#define PrintDebug(x) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT(x));}
 
 ADropPointCharacter::ADropPointCharacter()
 {
@@ -46,11 +46,6 @@ ADropPointCharacter::ADropPointCharacter()
 		PawnSpringArm->TargetArmLength = 3000.f;
 		PawnCamera->FieldOfView = 35.0f;
 	}
-
-	if (HighlightParameterCollection)
-	{
-		HighlightParameters = GetWorld()->GetParameterCollectionInstance(HighlightParameterCollection);
-	}
 }
 
 void ADropPointCharacter::Tick(float DeltaSeconds)
@@ -65,22 +60,10 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
-		{
-			if (UCameraComponent* OurCamera = PC->GetViewTarget()->FindComponentByClass<UCameraComponent>())
-			{
-				FVector Start = OurCamera->GetComponentLocation();
-				FVector End = Start + (OurCamera->GetComponentRotation().Vector() * 30000.0f);
-				TraceForBlock(Start, End, true);
-			}
-		}
-		else
-		{
-			FVector Start, Dir, End;
-			PC->DeprojectMousePositionToWorld(Start, Dir);
-			End = Start + (Dir * 30000.0f);
-			TraceForBlock(Start, End, false);
-		}
+		FVector Start, Dir, End;
+		PC->DeprojectMousePositionToWorld(Start, Dir);
+		End = Start + (Dir * 30000.0f);
+		TraceForBlock(Start, End, false);
 	}
 }
 
