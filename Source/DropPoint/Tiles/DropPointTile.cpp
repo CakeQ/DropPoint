@@ -17,6 +17,8 @@ ADropPointTile::ADropPointTile()
 void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 {
 	TileCoordinates = NewCoord;
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileX"), TileCoordinates.x);
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileY"), TileCoordinates.y);
 }
 
 bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
