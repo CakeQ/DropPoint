@@ -24,6 +24,11 @@ void UDropPointAbility::SetAbilityType(EAbilityTypes NewType)
 	AbilityType = NewType;
 }
 
+void UDropPointAbility::Trigger(class ADropPointUnit* Owner)
+{
+
+}
+
 // Called by the unit, either on activation (active ability) or on turn end (passive ability).
 void UDropPointAbility::QueueTrigger(ADropPointUnit* Owner)
 {

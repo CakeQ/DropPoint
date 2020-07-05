@@ -39,14 +39,14 @@ public:
 	void SetUnitType(TSubclassOf<class ADropPointUnit> NewType);
 
 	/** Sets the player this button is bound to. */
-	UFUNCTION(Category = DropPoint, BlueprintSetter)
-	FORCEINLINE void SetPlayer(class ADropPointCharacter* Player) { PlayerCharacter = Player; };
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintSetter)
+	void SetPlayer(class ADropPointCharacter* Player) { PlayerCharacter = Player; };
 
 	/** Tells the player to use the unit type class this button is storing. */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void ActivateButton();
 
 	/** Gets the unit class type this button stores. */
-	UFUNCTION(Category = DropPoint, BlueprintGetter)
-	FORCEINLINE class ADropPointUnit* GetUnitType() { return UnitType; };
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	class ADropPointUnit* GetUnitType() { return UnitType; };
 };

@@ -73,6 +73,11 @@ void ADropPointCharacter::NextAction()
 	gamemode->EndTurn();
 }
 
+void ADropPointCharacter::SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType)
+{
+	UnitSpawnTypeClass = NewType;
+}
+
 void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);

@@ -21,6 +21,5 @@ public:
 	 * Called when the ability component is selected to fire. Gives the unit minerals passively if the tile it sits on contains minerals.
 	 * @param Owner - The unit to handle functionality with.
 	 */
-	UFUNCTION(Category = Ability, BlueprintCallable)
 	void Trigger(class ADropPointUnit* Owner) override;
 };

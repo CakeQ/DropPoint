@@ -67,8 +67,8 @@ public:
 	bool HasTileFlag(const ETileFlags& Value);
 
 	/** Gets the tile's current grid coordinates. */
-	UFUNCTION(Category = Tile, BlueprintGetter)
-	FORCEINLINE FDropPointGridCoord& GetGridCoords() { return TileCoordinates; };
+	FORCEINLINE UFUNCTION(Category = Tile, BlueprintGetter)
+	FDropPointGridCoord& GetGridCoords() { return TileCoordinates; };
 
 	/**
 	 * Sets the tile to have the given coordinates within the grid.

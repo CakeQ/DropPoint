@@ -26,6 +26,5 @@ public:
 	 * Called when the ability component is selected to fire. Changes the material of the owning unit to the TestMaterial.
 	 * @param Owner - The unit to handle functionality with.
 	 */
-	UFUNCTION(Category = Ability, BlueprintCallable)
 	void Trigger(class ADropPointUnit* Owner) override;
 };

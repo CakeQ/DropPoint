@@ -105,72 +105,72 @@ public:
 	void HighlightUnit(bool bOn);
 
 	/** Gets the unit's current health. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const int32 GetHealth() { return Health; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	int32 GetHealth() { return Health; };
 
 	/** Gets the unit's maximum possible health. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const int32 GetMaxHealth() { return MaxHealth; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const int32 GetMaxHealth() { return MaxHealth; };
 
 	/** Gets the amount of time in turns left before the unit can launch. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const int32 GetTimeToLaunch() { return TimeToLaunch; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const int32 GetTimeToLaunch() { return TimeToLaunch; };
 
 	/** Gets the unit's faction. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const EUnitFactions GetFaction() { return UnitFaction; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const EUnitFactions GetFaction() { return UnitFaction; };
 
 	/**
 	 * Sets the unit's faction.
 	 * @param Faction - The faction to set the unit to. See EUnitFactions in DropPointEnums.h for the list of possible factions.
 	 */
-	UFUNCTION(Category = Unit, BlueprintSetter)
-	FORCEINLINE void SetFaction(EUnitFactions& Faction) { UnitFaction = Faction; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintSetter)
+	void SetFaction(EUnitFactions& Faction) { UnitFaction = Faction; };
 
 	/** Gets the unit's layer on the grid tile. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const EUnitLayers GetLayer() { return UnitLayer; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const EUnitLayers GetLayer() { return UnitLayer; };
 
 	/**
 	 * Sets the unit's layer.
 	 * @param Layer - The layer to set the unit to. See EUnitLayers in DropPointEnums.h for the list of possible layers.
 	 */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE void SetLayer(EUnitLayers& Layer) { UnitLayer = Layer; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	void SetLayer(EUnitLayers& Layer) { UnitLayer = Layer; };
 
 	/** Gets the unit's current grid tile. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE class ADropPointTile* GetConnectedTile() { return ConnectedTile; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	class ADropPointTile* GetConnectedTile() { return ConnectedTile; };
 
 	/**
 	 * Sets the unit's current grid tile.
 	 * @param Tile - The new tile to occupy.
 	 */
-	UFUNCTION(Category = Unit, BlueprintSetter)
-	void SetConnectedTile(class ADropPointTile* Tile);
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintSetter)
+	void SetConnectedTile(class ADropPointTile* Tile) {	ConnectedTile = Tile; };
 
 	/** Gets the unit's UI thumbnail. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE void GetThumbnail() { };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	void GetThumbnail() { };
 
 	/** Gets the unit's UI name. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const FString& GetName() { return UnitName; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const FString& GetName() { return UnitName; };
 
 	/** Gets the unit's UI description. */
-	UFUNCTION(Category = Unit, BlueprintGetter)
-	FORCEINLINE const FString& GetDescription() { return UnitDesc; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const FString& GetDescription() { return UnitDesc; };
 
 	/**
 	 * Checks to see if the unit has the input property flag.
 	 * @param Value - The flag to check.
 	 */
-	UFUNCTION(Category = Unit, BlueprintCallable)
-	FORCEINLINE bool HasUnitFlag(EUnitFlags Value) { return UnitFlags & (uint8)Value; };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)
+	bool HasUnitFlag(EUnitFlags Value) { return UnitFlags & (uint8)Value; };
 
 	/** Change the unit's material. */
-	UFUNCTION(Category = Unit, BlueprintCallable)
-	FORCEINLINE void ChangeMaterial(UMaterialInstance* NewMaterial) { UnitMesh->SetMaterial(0, NewMaterial); };
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)
+	void ChangeMaterial(UMaterialInstance* NewMaterial) { UnitMesh->SetMaterial(0, NewMaterial); };
 
 	/**
 	 * Check to see which two units' factions predicates one another within the enum define. Used to sort units in the game's unit turn order.

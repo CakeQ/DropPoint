@@ -94,8 +94,8 @@ ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& Coor
 ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const
 {
 	FDropPointGridCoord newCoords;
-	newCoords.x = origin.x + offset.x;
-	newCoords.y = origin.y + offset.y;
+	newCoords.x = Origin.x + Offset.x;
+	newCoords.y = Origin.y + Offset.y;
 	return GetTileAtPos(newCoords);
 }
 
@@ -106,11 +106,11 @@ void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPoin
 		return;
 	}
 	ADropPointTile* RefTile = GetTileAtPos(Coord);
-	if (RefTile->HasUnit(NewUnit->GetLayer()) && !bForce)
+	if (RefTile->HasUnit(Unit->GetLayer()) && !bForce)
 	{
 		return;
 	}
-	RefTile->SetUnit(NewUnit, bForce);
+	RefTile->SetUnit(Unit, bForce);
 }
 
 bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, EUnitLayers Layer = EUnitLayers::Ground) const

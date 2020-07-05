@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "DropPointAbility.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DROPPOINT_API UDropPointAbility : public UActorComponent
 {
 	GENERATED_BODY()
@@ -43,19 +43,19 @@ protected:
 
 public:
 	/** Set the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */
-	UFUNCTION(Category = Ability, BlueprintSetter)
+	//UFUNCTION(Category = Ability, BlueprintCallable)
 	virtual void SetAbilityType(EAbilityTypes NewType);
 
 	/** Get the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */
-	UFUNCTION(Category = Ability, BlueprintGetter)
-	FORCEINLINE EAbilityTypes GetAbilityType() { return AbilityType; };
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
+	EAbilityTypes GetAbilityType() { return AbilityType; };
 
 	/**
 	 * Called when the ability component is selected to fire.
 	 * @param Owner - The unit to handle functionality with.
 	 */
 	UFUNCTION(Category = Ability, BlueprintCallable)
-	virtual void Trigger(class ADropPointUnit* Owner) = 0;
+	virtual void Trigger(class ADropPointUnit* Owner);
 
 	/**
 	 * Queue the ability to start counting down.
@@ -73,14 +73,14 @@ public:
 	virtual void TickCooldown();
 
 	/** Returns whether or not the ability is ready to trigger after cooldown. */
-	UFUNCTION(Category = Ability, BlueprintCallable)
-	FORCEINLINE bool ReadyToTrigger() { return AbilityCooldownLeft <= 0 && AbilityWindupLeft <= 0; };
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintCallable)
+	bool ReadyToTrigger() { return AbilityCooldownLeft <= 0 && AbilityWindupLeft <= 0; };
 
 	/** See if there are any queued triggers awaiting call. */
-	UFUNCTION(Category = Ability, BlueprintCallable)
-	FORCEINLINE bool HasQueuedTriggers() { return QueuedUnits.Num() > 0; };
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintCallable)
+	bool HasQueuedTriggers() { return QueuedUnits.Num() > 0; };
 
 	/** Returns how many more turns the ability will be on cooldown. */
-	UFUNCTION(Category = Ability, BlueprintGetter)
-	FORCEINLINE int32 CheckCooldown() { return AbilityCooldownLeft; };
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
+	int32 CheckCooldown() { return AbilityCooldownLeft; };
 };

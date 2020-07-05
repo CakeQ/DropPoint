@@ -128,10 +128,10 @@ public:
 	void NextAction();
 
 	/** Gets the current unit spawn type class. */
-	UFUNCTION(Category = DropPoint, BlueprintGetter)
-	FORCEINLINE TSubclassOf<class ADropPointUnit> GetUnitSpawnType() { return UnitSpawnTypeClass; };
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	TSubclassOf<class ADropPointUnit> GetUnitSpawnType() { return UnitSpawnTypeClass; };
 
 	/** Sets the current unit spawn type class. */
 	UFUNCTION(Category = DropPoint, BlueprintSetter)
-	FORCEINLINE void SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType) { UnitSpawnTypeClass = NewType; };
+	void SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType);
 };
