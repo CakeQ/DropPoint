@@ -60,11 +60,6 @@ void ADropPointTileInteractive::DeactivateTile()
 
 void ADropPointTileInteractive::HighlightTile(bool bOn)
 {
-	if (HasTileFlag(ETileFlags::Selected))
-	{
-		return;
-	}
-
 	if (bOn)
 	{
 		AddTileFlag(ETileFlags::Highlighted);
