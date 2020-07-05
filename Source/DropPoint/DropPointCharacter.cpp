@@ -40,13 +40,11 @@ ADropPointCharacter::ADropPointCharacter()
 	{
 		PawnSpringArm->TargetArmLength = 800.f;
 		PawnCamera->OrthoWidth = 1500.0f;
-		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnCamera->OrthoWidth);
 	}
 	else
 	{
 		PawnSpringArm->TargetArmLength = 3000.f;
 		PawnCamera->FieldOfView = 35.0f;
-		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnSpringArm->TargetArmLength);
 	}
 }
 
@@ -101,7 +99,15 @@ void ADropPointCharacter::BeginPlay()
 	if (HighlightParameterCollection)
 	{
 		HighlightParameters = GetWorld()->GetParameterCollectionInstance(HighlightParameterCollection);
-	}
+		if (PawnCamera->ProjectionMode == ECameraProjectionMode::Orthographic)
+		{
+			HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnCamera->OrthoWidth);
+		}
+		else
+		{
+			HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnSpringArm->TargetArmLength);
+		}
+	}	
 }
 
 void ADropPointCharacter::TriggerClick()
