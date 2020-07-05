@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DropPointEnums.h"
 #include "Components/ActorComponent.h"
 #include "DropPointAbility.generated.h"
 
