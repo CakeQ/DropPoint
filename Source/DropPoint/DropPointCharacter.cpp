@@ -40,11 +40,13 @@ ADropPointCharacter::ADropPointCharacter()
 	{
 		PawnSpringArm->TargetArmLength = 800.f;
 		PawnCamera->OrthoWidth = 1500.0f;
+		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnCamera->OrthoWidth);
 	}
 	else
 	{
 		PawnSpringArm->TargetArmLength = 3000.f;
 		PawnCamera->FieldOfView = 35.0f;
+		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnSpringArm->TargetArmLength);
 	}
 }
 
@@ -137,10 +139,12 @@ void ADropPointCharacter::ScrollZoom(float Value)
 	if (PawnCamera->ProjectionMode == ECameraProjectionMode::Orthographic)
 	{
 		PawnCamera->OrthoWidth = FMath::Clamp(PawnCamera->OrthoWidth - (Value * 100.0f), 300.0f, 3000.0f);
+		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnCamera->OrthoWidth);
 	}
 	else
 	{
 		PawnSpringArm->TargetArmLength = FMath::Clamp(PawnSpringArm->TargetArmLength - (Value * 200.0f), 600.0f, 6000.0f);
+		HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnSpringArm->TargetArmLength);
 	}
 }
 
