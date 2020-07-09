@@ -7,7 +7,7 @@
 #include "DropPointUnit.h"
 #include "DropPointAbility.h"
 #include "Widgets/DropPointWidgetTurn.h"
-#include "Widgets/DropPointWidgetUnitMenu.h"
+#include "Widgets/DropPointWidgetInventory.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "CoreMinimal.h"
@@ -45,7 +45,7 @@ void ADropPointGameMode::BeginPlay()
 
 	if (UnitMenuWidgetClass && UnitSpawnClasses.Num())
 	{
-		UnitMenuWidget = CreateWidget<UDropPointWidgetUnitMenu>(GetWorld(), UnitMenuWidgetClass);
+		UnitMenuWidget = CreateWidget<UDropPointWidgetInventory>(GetWorld(), UnitMenuWidgetClass);
 		if (UnitMenuWidget)
 		{
 			UnitMenuWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);

@@ -50,7 +50,7 @@ protected:
 
 	/** Reference to the unit spawning menu widget. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
-	class UDropPointWidgetUnitMenu* UnitMenuWidget;
+	class UDropPointWidgetInventory* UnitMenuWidget;
 
 	/** Linearly indexed array of the entire game grid's tiles.*/
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)

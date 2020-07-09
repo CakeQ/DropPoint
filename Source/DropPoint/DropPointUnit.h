@@ -110,15 +110,15 @@ public:
 
 	/** Gets the unit's maximum possible health. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const int32 GetMaxHealth() { return MaxHealth; };
+	const int32& GetMaxHealth() { return MaxHealth; };
 
 	/** Gets the amount of time in turns left before the unit can launch. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const int32 GetTimeToLaunch() { return TimeToLaunch; };
+	const int32& GetTimeToLaunch() { return TimeToLaunch; };
 
 	/** Gets the unit's faction. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const EUnitFactions GetFaction() { return UnitFaction; };
+	const EUnitFactions& GetFaction() { return UnitFaction; };
 
 	/**
 	 * Sets the unit's faction.
@@ -129,7 +129,7 @@ public:
 
 	/** Gets the unit's layer on the grid tile. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const EUnitLayers GetLayer() { return UnitLayer; };
+	const EUnitLayers& GetLayer() { return UnitLayer; };
 
 	/**
 	 * Sets the unit's layer.

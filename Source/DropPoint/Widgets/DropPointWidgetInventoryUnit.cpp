@@ -1,22 +1,22 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 
-#include "DropPointWidgetUnit.h"
+#include "DropPointWidgetInventoryUnit.h"
 #include "DropPointUnit.h"
 #include "DropPointCharacter.h"
 #include "Engine/Texture2D.h"
 #include "Components/Button.h"
 
-void UDropPointWidgetUnit::NativeConstruct()
+void UDropPointWidgetInventoryUnit::NativeConstruct()
 {
 	Super::NativeConstruct();
 	if (Button_Unit)
 	{
-		Button_Unit->OnClicked.AddDynamic(this, &UDropPointWidgetUnit::ActivateButton);
+		Button_Unit->OnClicked.AddDynamic(this, &UDropPointWidgetInventoryUnit::ActivateButton);
 	}
 }
 
-void UDropPointWidgetUnit::SetUnitType(TSubclassOf<class ADropPointUnit> NewType)
+void UDropPointWidgetInventoryUnit::SetUnitType(TSubclassOf<class ADropPointUnit> NewType)
 {
 	UnitType = Cast<ADropPointUnit>(NewType->GetDefaultObject());
 	if (Image_Thumbnail)
@@ -29,7 +29,7 @@ void UDropPointWidgetUnit::SetUnitType(TSubclassOf<class ADropPointUnit> NewType
 	}
 }
 
-void UDropPointWidgetUnit::ActivateButton()
+void UDropPointWidgetInventoryUnit::ActivateButton()
 {
 	if (PlayerCharacter && UnitType)
 	{

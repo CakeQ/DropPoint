@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DropPointWidgetUnitMenu.generated.h"
+#include "DropPointWidgetInventory.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DROPPOINT_API UDropPointWidgetUnitMenu : public UUserWidget
+class DROPPOINT_API UDropPointWidgetInventory : public UUserWidget
 {
 	GENERATED_BODY()
 

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "DropPointWidgetUnit.generated.h"
+#include "DropPointWidgetInventoryUnit.generated.h"
 
 /**
  * A user widget that displays an inventory of units that the player can use.
  */
 UCLASS()
-class DROPPOINT_API UDropPointWidgetUnit : public UUserWidget
+class DROPPOINT_API UDropPointWidgetInventoryUnit : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
