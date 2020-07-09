@@ -69,6 +69,10 @@ public:
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
 	EAbilityTypes GetAbilityType() { return AbilityType; };
 
+	/** Get the ability category. See EAbilityCats in DropPointEnums.h for descriptions. */
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
+	EAbilityCats GetAbilityCategory() { return AbilityCategory; };
+
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
 	const FString& GetName() { return AbilityName; };

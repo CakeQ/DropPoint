@@ -9,7 +9,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "DropPointGameMode.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEndTurnDelegate, int32, NewCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEndTurnDelegate, const int32&, NewCount);
 
 /** The DropPoint Game mode. This handles the game grid, tiles, units, tile/unit spawning, and turn progression. It also sets up the UI with referenced values.*/
 UCLASS(minimalapi)
@@ -30,9 +30,9 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
 
-	/** Widget used to display the unit spawning inventory. */
+	/** Widget used to display the player inventory. */
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class UUserWidget> UnitMenuWidgetClass;
+	TSubclassOf<class UUserWidget> UnitInventoryWidgetClass;
 
 	/** WIP: The current tile class used to populate the map. This will be replaced. */
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
@@ -50,9 +50,9 @@ protected:
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	class UDropPointWidgetTurn* TurnCountWidget;
 
-	/** Reference to the unit spawning menu widget. */
+	/** Reference to the inventory spawning menu widget. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
-	class UDropPointWidgetInventory* UnitMenuWidget;
+	class UDropPointWidgetInventory* UnitInventoryWidget;
 
 	/** Linearly indexed array of the entire game grid's tiles.*/
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
@@ -76,7 +76,7 @@ protected:
 
 public:
 	/** Delegate binding for turn ending. */
-	UPROPERTY()
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
 	FEndTurnDelegate OnEndTurn;
 
 	virtual void BeginPlay() override;

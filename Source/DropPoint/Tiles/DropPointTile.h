@@ -92,4 +92,10 @@ public:
 	UFUNCTION(Category = Tile, BlueprintCallable)
 	void SetUnit(class ADropPointUnit* NewUnit, bool bForce);
 
+	/**
+	 * Checks to see if this tile has a unit in the given layer.
+	 * @param Layer - The layer to check.
+	 */
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	ADropPointUnit* GetUnit(EUnitLayers Layer);
 };

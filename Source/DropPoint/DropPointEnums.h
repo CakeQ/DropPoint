@@ -75,14 +75,14 @@ enum class EUnitLayers : uint8
 /**
  * Ability types.
  * Instant - Called as soon as the player triggers this ability.
- * InstantTarget - Called as soon as the player triggers this ability. Requires a selected target.
+ * Targetable - Called as soon as the player triggers this ability. Requires a selected target.
  * Passive - Called on turn end, all passive abilities fire between turns if they exist on a unit.
  */
 UENUM()
 enum class EAbilityTypes
 {
     Instant,
-    InstantTarget,
+    Targetable,
     Passive
 };
 

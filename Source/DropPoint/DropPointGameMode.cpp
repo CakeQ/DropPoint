@@ -40,17 +40,17 @@ void ADropPointGameMode::BeginPlay()
 		{
 			TurnCountWidget->UpdateTurn(TurnCount);
 			TurnCountWidget->AddToViewport();
-			//OnEndTurn.AddDynamic(TurnCountWidget, &UDropPointWidgetTurn::UpdateTurn);
+			OnEndTurn.AddDynamic(TurnCountWidget, &UDropPointWidgetTurn::UpdateTurn);
 		}
 	}
 
-	if (UnitMenuWidgetClass && UnitSpawnClasses.Num())
+	if (UnitInventoryWidgetClass && UnitSpawnClasses.Num())
 	{
-		UnitMenuWidget = CreateWidget<UDropPointWidgetInventory>(GetWorld(), UnitMenuWidgetClass);
-		if (UnitMenuWidget)
+		UnitInventoryWidget = CreateWidget<UDropPointWidgetInventory>(GetWorld(), UnitInventoryWidgetClass);
+		if (UnitInventoryWidget)
 		{
-			UnitMenuWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);
-			UnitMenuWidget->AddToViewport();
+			UnitInventoryWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);
+			UnitInventoryWidget->AddToViewport();
 		}
 	}
 
@@ -180,12 +180,7 @@ void ADropPointGameMode::EndTurn()
 	//Hazard Progression
 	//Apply Damage
 
-	TurnCount++;
-	if (TurnCountWidget)
-	{
-		//TurnCountWidget->UpdateTurn(TurnCount);
-		OnEndTurn.Broadcast(TurnCount);
-	}
+	OnEndTurn.Broadcast(++TurnCount);
 }
 
 void ADropPointGameMode::SpawnArena()

@@ -51,6 +51,18 @@ void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 	NewUnit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
 }
 
+ADropPointUnit* ADropPointTile::GetUnit(EUnitLayers Layer = EUnitLayers::Ground)
+{
+	for (ADropPointUnit* Unit : Units)
+	{
+		if (Unit->GetLayer() == Layer)
+		{
+			return Unit;
+		}
+	}
+	return nullptr;
+}
+
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)
 {
 	TileFlags = (uint8)Value;

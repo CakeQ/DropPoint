@@ -6,7 +6,7 @@
 
 UDropPointAbilityTest::UDropPointAbilityTest()
 {
-	SetAbilityType(EAbilityTypes::Passive);
+
 }
 
 void UDropPointAbilityTest::Trigger(ADropPointUnit* Owner)

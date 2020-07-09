@@ -64,6 +64,7 @@ void ADropPointUnit::AddMinerals(const int32& Amount)
 void ADropPointUnit::AdjustHealth(const int32& Amount)
 {
 	Health = FMath::Clamp(Health + Amount, 0, MaxHealth);
+	OnUpdateHealth.Broadcast(Health);
 	if (Health <= 0)
 	{
 		Die();

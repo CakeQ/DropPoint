@@ -7,6 +7,8 @@
 #include "DropPointEnums.h"
 #include "DropPointUnit.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthDelegate, const int32&, NewVal);
+
 /**
  * The base unit type used within the DropPoint game mode. Handles all functionality for units, including calling their abilities. All units within the game should be a blueprint subtype, as the abilities and properties are inhereted from the class defaults.
  */
@@ -24,15 +26,15 @@ public:
 
 protected:
 	/** Name of the unit. Used by UI. */
-	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	FString UnitName;
 
 	/** Description of the unit. Used by UI. */
-	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	FString UnitDesc;
 
 	/** Thumbnail of the unit. Used by UI. */
-	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	class UTexture2D* UnitThumbnail;
 
 	/** Unit Mesh. */
@@ -67,9 +69,13 @@ protected:
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	int32 StoredMinerals;
 
+public:
+	/** Delegate binding for updating health. */
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
+	FUpdateHealthDelegate OnUpdateHealth;
+
 	virtual void BeginPlay() override;
 
-public:	
 	virtual void Tick(float DeltaTime) override;
 
 	/** Set the unit to start launching. */

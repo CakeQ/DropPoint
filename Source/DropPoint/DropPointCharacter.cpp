@@ -3,6 +3,7 @@
 #include "DropPointCharacter.h"
 #include "DropPointGameMode.h"
 #include "DropPointUnit.h"
+#include "Widgets/DropPointWidgetUnit.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -107,7 +108,17 @@ void ADropPointCharacter::BeginPlay()
 		{
 			HighlightParameters->SetScalarParameterValue(TEXT("CameraZoom"), PawnSpringArm->TargetArmLength);
 		}
-	}	
+	}
+
+	if (UnitMenuWidgetClass)
+	{
+		UnitMenuWidget = CreateWidget<UDropPointWidgetUnit>(GetWorld(), UnitMenuWidgetClass);
+		if (UnitMenuWidget)
+		{
+			UnitMenuWidget->AddToViewport();
+			UnitMenuWidget->UpdateWidgets();
+		}
+	}
 }
 
 void ADropPointCharacter::TriggerClick()
@@ -120,6 +131,10 @@ void ADropPointCharacter::TriggerClick()
 			if (CurrentTileFocus == CurrentActiveTile)
 			{
 				CurrentActiveTile = nullptr;
+				if (UnitMenuWidget)
+				{
+					UnitMenuWidget->SetCurrentUnit(nullptr);
+				}
 				return;
 			}
 		}
@@ -135,6 +150,14 @@ void ADropPointCharacter::TriggerClick()
 			if (gamemode)
 			{
 				gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, EUnitFactions::Player, false);
+				SetUnitSpawnType(nullptr);
+			}
+		}
+		if (UnitMenuWidget)
+		{
+			if (CurrentActiveTile)
+			{
+				UnitMenuWidget->SetCurrentUnit(CurrentActiveTile->GetUnit(EUnitLayers::Ground));
 			}
 		}
 	}

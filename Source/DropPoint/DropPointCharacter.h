@@ -27,6 +27,10 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class ADropPointUnit> UnitSpawnTypeClass;
 
+	/** Widget used to display the unit and its abilities. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> UnitMenuWidgetClass;
+
 	/** Whether or not the player is using the pan camera feature. Disables grid tracing when active. */
 	UPROPERTY(Category = Camera, EditInstanceOnly, BlueprintReadWrite)
 	bool bPanCamera = false;
@@ -46,6 +50,10 @@ protected:
 	/** The current selected tile that has been clicked on. */
 	UPROPERTY(Category = References, EditInstanceOnly, BlueprintReadWrite)
 	class ADropPointTileInteractive* CurrentActiveTile;
+
+	/** Reference to the unit menu widget. */
+	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
+	class UDropPointWidgetUnit* UnitMenuWidget;
 
 	/** Spring arm for the camera. */
 	UPROPERTY(Category = Components, VisibleAnywhere, BlueprintReadWrite)

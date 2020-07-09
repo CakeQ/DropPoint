@@ -12,14 +12,15 @@
 void UDropPointWidgetAbility::NativeConstruct()
 {
 	Super::NativeConstruct();
-	if (Button_Ability)
-	{
-		//Button_Ability->OnClicked.AddDynamic(this, &UDropPointWidgetAbility::ActivateButton);
-	}
 }
 
 void UDropPointWidgetAbility::SetAbilityType(UDropPointAbility* NewType)
 {
+	if (Ability)
+	{
+		//We shouldn't really be resetting a button's ability type, but just in case we don't want to trigger a runtime.
+		Button_Ability->OnClicked.RemoveDynamic(this, &UDropPointWidgetAbility::ActivateButton);
+	}
 	Ability = NewType;
 	if (Image_Thumbnail)
 	{
@@ -28,6 +29,7 @@ void UDropPointWidgetAbility::SetAbilityType(UDropPointAbility* NewType)
 	if (Button_Ability)
 	{
 		Button_Ability->SetToolTipText(FText::FromString(Ability->GetName()));
+		Button_Ability->OnClicked.AddDynamic(this, &UDropPointWidgetAbility::ActivateButton);
 	}
 }
 
@@ -40,7 +42,7 @@ void UDropPointWidgetAbility::ActivateButton()
 			Ability->QueueTrigger(OwnerUnit);
 		}
 		//Acquire target from player.
-		else if(Ability->GetAbilityType() == EAbilityTypes::InstantTarget)
+		else if(Ability->GetAbilityType() == EAbilityTypes::Targetable)
 		{
 			
 		}
