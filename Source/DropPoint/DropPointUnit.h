@@ -31,6 +31,10 @@ protected:
 	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
 	FString UnitDesc;
 
+	/** Thumbnail of the unit. Used by UI. */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	class UTexture2D* UnitThumbnail;
+
 	/** Unit Mesh. */
 	UPROPERTY(Category = References, EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* UnitMesh;
@@ -149,10 +153,6 @@ public:
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintSetter)
 	void SetConnectedTile(class ADropPointTile* Tile) {	ConnectedTile = Tile; };
 
-	/** Gets the unit's UI thumbnail. */
-	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	void GetThumbnail() { };
-
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
 	const FString& GetName() { return UnitName; };
@@ -160,6 +160,10 @@ public:
 	/** Gets the unit's UI description. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
 	const FString& GetDescription() { return UnitDesc; };
+
+	/** Gets the unit's UI thumbnail. */
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	class UTexture2D* GetThumbnail() { return UnitThumbnail; };
 
 	/**
 	 * Checks to see if the unit has the input property flag.

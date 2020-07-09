@@ -6,6 +6,7 @@
 #include "DropPointCharacter.h"
 #include "Engine/Texture2D.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 
 void UDropPointWidgetInventoryUnit::NativeConstruct()
 {
@@ -21,7 +22,7 @@ void UDropPointWidgetInventoryUnit::SetUnitType(TSubclassOf<class ADropPointUnit
 	UnitType = Cast<ADropPointUnit>(NewType->GetDefaultObject());
 	if (Image_Thumbnail)
 	{
-		
+		Image_Thumbnail->SetBrushFromTexture(UnitType->GetThumbnail());
 	}
 	if (Button_Unit)
 	{

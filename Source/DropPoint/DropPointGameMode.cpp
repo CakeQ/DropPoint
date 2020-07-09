@@ -40,6 +40,7 @@ void ADropPointGameMode::BeginPlay()
 		{
 			TurnCountWidget->UpdateTurn(TurnCount);
 			TurnCountWidget->AddToViewport();
+			//OnEndTurn.AddDynamic(TurnCountWidget, &UDropPointWidgetTurn::UpdateTurn);
 		}
 	}
 
@@ -182,7 +183,8 @@ void ADropPointGameMode::EndTurn()
 	TurnCount++;
 	if (TurnCountWidget)
 	{
-		TurnCountWidget->UpdateTurn(TurnCount);
+		//TurnCountWidget->UpdateTurn(TurnCount);
+		OnEndTurn.Broadcast(TurnCount);
 	}
 }
 

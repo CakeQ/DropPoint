@@ -9,6 +9,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "DropPointGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FEndTurnDelegate, int32, NewCount);
+
 /** The DropPoint Game mode. This handles the game grid, tiles, units, tile/unit spawning, and turn progression. It also sets up the UI with referenced values.*/
 UCLASS(minimalapi)
 class ADropPointGameMode : public AGameModeBase
@@ -73,6 +75,10 @@ protected:
 	float TileSize = 100.0f;
 
 public:
+	/** Delegate binding for turn ending. */
+	UPROPERTY()
+	FEndTurnDelegate OnEndTurn;
+
 	virtual void BeginPlay() override;
 
 	/** 

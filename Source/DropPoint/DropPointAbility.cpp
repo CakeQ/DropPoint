@@ -19,19 +19,19 @@ void UDropPointAbility::BeginPlay()
 	
 }
 
-void UDropPointAbility::SetAbilityType(EAbilityTypes NewType)
-{
-	AbilityType = NewType;
-}
-
 void UDropPointAbility::Trigger(class ADropPointUnit* Owner)
 {
-
+	AbilityCooldownLeft = AbilityCooldown;
 }
 
 // Called by the unit, either on activation (active ability) or on turn end (passive ability).
 void UDropPointAbility::QueueTrigger(ADropPointUnit* Owner)
 {
+	//Ability is on cooldown.
+	if (AbilityCooldownLeft)
+	{
+		return;
+	}
 	// If the ability has no windup, trigger it immediately.
 	if (AbilityWindup <= 0)
 	{
@@ -61,6 +61,11 @@ void UDropPointAbility::HandleQueuedTriggers()
 
 void UDropPointAbility::TickCooldown()
 {
+	//Ability is still being performed.
+	if (AbilityWindupLeft)
+	{
+		return;
+	}
 	AbilityCooldownLeft = FMath::Clamp(AbilityCooldownLeft - 1, 0, AbilityCooldown);
 }
 

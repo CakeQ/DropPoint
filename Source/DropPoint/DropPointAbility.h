@@ -15,11 +15,26 @@ class DROPPOINT_API UDropPointAbility : public UActorComponent
 public:	
 	UDropPointAbility();
 
+protected:
+	virtual void BeginPlay() override;
+
+	/** Name of the unit. ability by UI. */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	FString AbilityName;
+
+	/** Description of the ability. Used by UI. */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	FString AbilityDesc;
+
+	/** Thumbnail of the ability. Used by UI. */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
+	class UTexture2D* AbilityThumbnail;
+
 	/** How the ability handles active calls (instantly, delayed..) */
 	EAbilityTypes AbilityType = EAbilityTypes::Instant;
 
-protected:
-	virtual void BeginPlay() override;
+	/** How the ability is categorized and sorted in the UI (standard, biome..) */
+	EAbilityCats AbilityCategory = EAbilityCats::Standard;
 
 	/** The cooldown amount used between ability uses. */
 	UPROPERTY(Category = Ability, EditAnywhere, BlueprintReadWrite)
@@ -43,12 +58,28 @@ protected:
 
 public:
 	/** Set the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */
-	//UFUNCTION(Category = Ability, BlueprintCallable)
-	virtual void SetAbilityType(EAbilityTypes NewType);
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintSetter)
+	virtual void SetAbilityType(EAbilityTypes NewType) { AbilityType = NewType; };
+
+	/** Set the ability category. See EAbilityCats in DropPointEnums.h for descriptions. */
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintSetter)
+	virtual void SetAbilityCategory(EAbilityCats NewCat) { AbilityCategory = NewCat; };
 
 	/** Get the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
 	EAbilityTypes GetAbilityType() { return AbilityType; };
+
+	/** Gets the unit's UI name. */
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const FString& GetName() { return AbilityName; };
+
+	/** Gets the unit's UI description. */
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	const FString& GetDescription() { return AbilityDesc; };
+
+	/** Gets the unit's UI thumbnail. */
+	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
+	class UTexture2D* GetThumbnail() { return AbilityThumbnail; };
 
 	/**
 	 * Called when the ability component is selected to fire.

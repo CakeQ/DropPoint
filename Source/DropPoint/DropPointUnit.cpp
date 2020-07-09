@@ -47,6 +47,7 @@ void ADropPointUnit::TriggerAbilities()
 		{
 			Ability->QueueTrigger(this);
 		}
+		Ability->TickCooldown();
 	}
 }
 

@@ -7,7 +7,7 @@
 #include "DropPointWidgetInventory.generated.h"
 
 /**
- * 
+ * The user inventory widget that displays all available units that the player can deploy within the game.
  */
 UCLASS()
 class DROPPOINT_API UDropPointWidgetInventory : public UUserWidget
@@ -25,7 +25,7 @@ protected:
 
 	/** The list of all unit buttons */
 	UPROPERTY(Category = Components, EditAnywhere, BlueprintReadOnly)
-	TArray<class UCheckBox*> UnitButtons;
+	TArray<class UDropPointWidgetInventoryUnit*> UnitButtons;
 
 public:
 	/**
