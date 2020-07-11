@@ -34,6 +34,10 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> UnitInventoryWidgetClass;
 
+	/** Widget used to display the resource tracker. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> ResourcesWidgetClass;
+
 	/** WIP: The current tile class used to populate the map. This will be replaced. */
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> TileTypeClass;
@@ -53,6 +57,10 @@ protected:
 	/** Reference to the inventory spawning menu widget. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	class UDropPointWidgetInventory* UnitInventoryWidget;
+
+	/** Reference to the resource tracker widget. */
+	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
+	class UDropPointWidgetResources* ResourcesWidget;
 
 	/** Linearly indexed array of the entire game grid's tiles.*/
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)

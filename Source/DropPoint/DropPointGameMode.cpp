@@ -8,6 +8,7 @@
 #include "DropPointAbility.h"
 #include "Widgets/DropPointWidgetTurn.h"
 #include "Widgets/DropPointWidgetInventory.h"
+#include "Widgets/DropPointWidgetResources.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "CoreMinimal.h"
@@ -51,6 +52,15 @@ void ADropPointGameMode::BeginPlay()
 		{
 			UnitInventoryWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);
 			UnitInventoryWidget->AddToViewport();
+		}
+	}
+
+	if (ResourcesWidgetClass)
+	{
+		ResourcesWidget = CreateWidget<UDropPointWidgetResources>(GetWorld(), ResourcesWidgetClass);
+		if (ResourcesWidget)
+		{
+			ResourcesWidget->AddToViewport();
 		}
 	}
 
