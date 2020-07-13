@@ -74,6 +74,10 @@ protected:
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	int32 TurnCount = 0;
 
+	/** The starting expenditures for the player. */
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	int32 StartingExpenditure = 620;
+
 	/** The length and width of the arena that will be generated, in tiles. */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	int32 GridSize = 7;
@@ -81,6 +85,9 @@ protected:
 	/** The size (in UE4 units) that each tile within the grid will occupy. */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	float TileSize = 100.0f;
+
+	/** WIP: The core unit this unit is connected to. Should be replaced with the pylon network when possible. */
+	class ADropPointUnit* ConnectedCore;
 
 public:
 	/** Delegate binding for turn ending. */
@@ -110,7 +117,7 @@ public:
 	 * @param Tile - The referenced tile to move.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	void SetTilePos(const FDropPointGridCoord& Coord, class ADropPointTileInteractive* tile);
+	void SetTilePos(const FDropPointGridCoord& Coord, class ADropPointTile* tile);
 
 	/**
 	 * Returns the tile at the given coordinates, if it exists.

@@ -16,16 +16,16 @@ class DROPPOINT_API UDropPointWidgetResources : public UUserWidget
 	
 protected:
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-	class UTextBlock* TextBlock_Resources;
+	class UTextBlock* TextBlock_Minerals;
 
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* TextBlock_Spenditure;
 
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-	class UProgressBar* ProgressBar_Resources;
+	class UProgressBar* ProgressBar_Minerals;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
-	int32 ResourcesValue = 0;
+	int32 MineralsValue = 0;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	int32 SpentValue = 0;
@@ -47,8 +47,8 @@ public:
 	void AddResources(const int32& Value);
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void SetSpenditure(const int32& Value);
+	void SetExpenditure(const int32& Value);
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void AddSpenditure(const int32& Value);
+	void AddExpenditure(const int32& Value);
 };

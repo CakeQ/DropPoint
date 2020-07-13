@@ -31,9 +31,11 @@ protected:
 	class UTexture2D* AbilityThumbnail;
 
 	/** How the ability handles active calls (instantly, delayed..) */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
 	EAbilityTypes AbilityType = EAbilityTypes::Instant;
 
 	/** How the ability is categorized and sorted in the UI (standard, biome..) */
+	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
 	EAbilityCats AbilityCategory = EAbilityCats::Standard;
 
 	/** The cooldown amount used between ability uses. */

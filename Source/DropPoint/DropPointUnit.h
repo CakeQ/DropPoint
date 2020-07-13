@@ -8,6 +8,7 @@
 #include "DropPointUnit.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthDelegate, const int32&, NewVal);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGatherMineralsDelegate, const int32&, Amount);
 
 /**
  * The base unit type used within the DropPoint game mode. Handles all functionality for units, including calling their abilities. All units within the game should be a blueprint subtype, as the abilities and properties are inhereted from the class defaults.
@@ -69,10 +70,16 @@ protected:
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	int32 StoredMinerals;
 
+	/** WIP: The core unit this unit is connected to. Should be replaced with the pylon network when possible. */
+	class ADropPointUnit* ConnectedCore;
+
 public:
 	/** Delegate binding for updating health. */
 	UPROPERTY(Category = DropPoint, BlueprintAssignable)
 	FUpdateHealthDelegate OnUpdateHealth;
+
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
+	FGatherMineralsDelegate OnGatherMinerals;
 
 	virtual void BeginPlay() override;
 
@@ -91,7 +98,7 @@ public:
 	 * @param Amount - The amount of minerals to give.
 	 */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void AddMinerals(const int32& Amount);
+	void AddResources(const int32& Amount);
 
 	/**
 	 * Adjusts the unit's health value. Will Die() if health drops to zero.
@@ -147,6 +154,13 @@ public:
 	 */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
 	void SetLayer(EUnitLayers& Layer) { UnitLayer = Layer; };
+
+	/**
+	 * WIP: Sets the unit's connected core unit. Should use pylon network when possible.
+	 * @param NewCore - The new core unit to use.
+	 */
+	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
+	void SetCore(ADropPointUnit* NewCore) { ConnectedCore = NewCore; };
 
 	/** Gets the unit's current grid tile. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)

@@ -107,6 +107,10 @@ void UDropPointWidgetUnit::UpdateButtons()
 
 		for (UDropPointAbility* UnitAbility : Abilities)
 		{
+			if (UnitAbility->GetAbilityType() == EAbilityTypes::Passive)
+			{
+				continue;
+			}
 			UDropPointWidgetAbility* NewAbilityButton;
 			switch (UnitAbility->GetAbilityCategory())
 			{

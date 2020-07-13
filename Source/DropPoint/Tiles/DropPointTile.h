@@ -29,7 +29,7 @@ protected:
 	TArray<class ADropPointUnit*> Units;
 
 	/** Tile property flags. See EUnitFlags in DropPointEnums.h for flag descriptions. */
-	UPROPERTY(Category = Tile, EditAnywhere, BlueprintReadWrite, meta = (Bitmask, BitmaskEnum = "ETileFlags"))
+	UPROPERTY(Category = Tile, EditAnywhere, BlueprintReadWrite, meta = (Bitmask, BitmaskEnum = ETileFlags))
 	uint8 TileFlags;
 
 	/** Tile coordinates within the game grid */

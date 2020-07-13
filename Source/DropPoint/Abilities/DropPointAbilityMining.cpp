@@ -7,9 +7,7 @@
 
 UDropPointAbilityMining::UDropPointAbilityMining()
 {
-	SetAbilityType(EAbilityTypes::Passive);
-	AbilityWindup = 0;
-	AbilityCooldown = 0;
+
 }
 
 void UDropPointAbilityMining::Trigger(ADropPointUnit* Owner)
@@ -19,6 +17,6 @@ void UDropPointAbilityMining::Trigger(ADropPointUnit* Owner)
 	ADropPointTile* RefTile = Owner->GetConnectedTile();
 	if (RefTile->HasTileFlag(ETileFlags::HasMinerals))
 	{
-		Owner->AddMinerals(1);
+		Owner->AddResources(10);
 	}
 }

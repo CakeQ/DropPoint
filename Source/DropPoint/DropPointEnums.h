@@ -14,15 +14,14 @@
  * IncomingDamage - This tile and its contents will receive damage in the coming turns.
  * HasMinerals - This tile contains minerals.
  */
-UENUM()
+UENUM(meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 enum class ETileFlags : uint8
 {
-	None = 0,
-	Highlighted,
-	Selected,
-	IncomingUnit,
-	IncomingDamage,
-	HasMinerals
+	Highlighted = (1 << 0),
+	Selected = (1 << 1),
+	IncomingUnit = (1  << 2),
+	IncomingDamage = (1 << 3),
+	HasMinerals = (1 << 4)
 };
 ENUM_CLASS_FLAGS(ETileFlags)
 
@@ -32,13 +31,13 @@ ENUM_CLASS_FLAGS(ETileFlags)
  * Overheating - This unit has overheated and is stunned.
  * Invulnerable - This unit is incapable of being damaged or destroyed.
  */
-UENUM()
+UENUM(meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
 enum class EUnitFlags : uint8
 {
-	None = 0,
-	TakingOff,
-	Overheating,
-	Invulnerable
+    Core = (1 << 0),
+	TakingOff = (1 << 1),
+	Overheating = (1 << 2),
+	Invulnerable = (1 << 3)
 };
 ENUM_CLASS_FLAGS(EUnitFlags)
 

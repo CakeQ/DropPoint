@@ -51,14 +51,15 @@ void ADropPointUnit::TriggerAbilities()
 	}
 }
 
-void ADropPointUnit::AddMinerals(const int32& Amount)
+void ADropPointUnit::AddResources(const int32& Amount)
 {
-	//if (ConnectedCore)
-	//{
-	//	ConnectedCore->AddMinerals(Amount);
-	//	return;
-	//}
+	if (ConnectedCore)
+	{
+		ConnectedCore->AddResources(Amount);
+		return;
+	}
 	StoredMinerals += Amount;
+	OnGatherMinerals.Broadcast(Amount);
 }
 
 void ADropPointUnit::AdjustHealth(const int32& Amount)

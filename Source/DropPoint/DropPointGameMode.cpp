@@ -60,6 +60,7 @@ void ADropPointGameMode::BeginPlay()
 		ResourcesWidget = CreateWidget<UDropPointWidgetResources>(GetWorld(), ResourcesWidgetClass);
 		if (ResourcesWidget)
 		{
+			ResourcesWidget->SetExpenditure(StartingExpenditure);
 			ResourcesWidget->AddToViewport();
 		}
 	}
@@ -82,7 +83,7 @@ int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size)
 	return false;
 }
 
-void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& Coord, ADropPointTileInteractive* tile)
+void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& Coord, ADropPointTile* tile)
 {
 	check(IsInsideArena(Coord));
 	const int32 Index = GetLinearIndex(Coord);
@@ -165,6 +166,20 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassO
 
 	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
 	NewUnit->SetFaction(Faction);
+	if (NewUnit->HasUnitFlag(EUnitFlags::Core))
+	{
+		for (ADropPointUnit* LoopUnit : Units)
+		{
+			if (LoopUnit->GetFaction() == NewUnit->GetFaction())
+			{
+				LoopUnit->SetCore(NewUnit);
+			}
+		}
+	}
+	if (ResourcesWidget)
+	{
+		NewUnit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
+	}
 	Units.Add(NewUnit);
 	SetTileUnit(Coord, NewUnit, bForce);
 }
@@ -214,7 +229,7 @@ void ADropPointGameMode::SpawnArena()
 			const FVector blockLocation = FVector(XOffset, YOffset, 0.f);
 
 			// Spawn a block
-			ADropPointTileInteractive* newTile = GetWorld()->SpawnActor<ADropPointTileInteractive>(TileTypeClass, blockLocation, FRotator(0, 0, 0));
+			ADropPointTile* newTile = GetWorld()->SpawnActor<ADropPointTile>(TileTypeClass, blockLocation, FRotator(0, 0, 0));
 
 			// Tell the block about its owner
 			if (newTile != nullptr)

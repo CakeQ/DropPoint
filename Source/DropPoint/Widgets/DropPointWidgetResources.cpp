@@ -7,40 +7,40 @@
 
 void UDropPointWidgetResources::UpdateCounters()
 {
-	if (TextBlock_Resources)
+	if (TextBlock_Minerals)
 	{
-		TextBlock_Resources->SetText(FText::Format(FText::FromString("{0} RUs"), ResourcesValue));
+		TextBlock_Minerals->SetText(FText::Format(FText::FromString("{0} RUs"), MineralsValue - SpentValue));
 	}
 	if (TextBlock_Spenditure)
 	{
 		TextBlock_Spenditure->SetText(FText::Format(FText::FromString("SPENT: {0}"), SpentValue));
 	}
-	if (ProgressBar_Resources)
+	if (ProgressBar_Minerals)
 	{
-		int32 NetAmount = FMath::Clamp(ResourcesValue - SpentValue, BarMin, BarMax);
-		ProgressBar_Resources->SetPercent(NetAmount / (BarMax - BarMin));
+		int32 NetAmount = FMath::Clamp(MineralsValue - SpentValue, BarMin, BarMax);
+		ProgressBar_Minerals->SetPercent((NetAmount + BarMin) / (BarMax + BarMin));
 	}
 }
 
 void UDropPointWidgetResources::SetResources(const int32& Value)
 {
-	ResourcesValue = Value;
+	MineralsValue = Value;
 	UpdateCounters();
 }
 
 void UDropPointWidgetResources::AddResources(const int32& Value)
 {
-	ResourcesValue += Value;
+	MineralsValue += Value;
 	UpdateCounters();
 }
 
-void UDropPointWidgetResources::SetSpenditure(const int32& Value)
+void UDropPointWidgetResources::SetExpenditure(const int32& Value)
 {
 	SpentValue = Value;
 	UpdateCounters();
 }
 
-void UDropPointWidgetResources::AddSpenditure(const int32& Value)
+void UDropPointWidgetResources::AddExpenditure(const int32& Value)
 {
 	SpentValue += Value;
 	UpdateCounters();
