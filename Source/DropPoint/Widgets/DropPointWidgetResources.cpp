@@ -18,7 +18,8 @@ void UDropPointWidgetResources::UpdateCounters()
 	if (ProgressBar_Minerals)
 	{
 		int32 NetAmount = FMath::Clamp(MineralsValue - SpentValue, BarMin, BarMax);
-		ProgressBar_Minerals->SetPercent((NetAmount + BarMin) / (BarMax + BarMin));
+		double BarPercent = (double)(NetAmount - BarMin) / (double)(BarMax - BarMin);
+		ProgressBar_Minerals->SetPercent(BarPercent);
 	}
 }
 
