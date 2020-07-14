@@ -30,21 +30,9 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
 
-	/** Widget used to display the player inventory. */
-	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class UUserWidget> UnitInventoryWidgetClass;
-
-	/** Widget used to display the resource tracker. */
-	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<class UUserWidget> ResourcesWidgetClass;
-
 	/** WIP: The current tile class used to populate the map. This will be replaced. */
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<AActor> TileTypeClass;
-
-	/** The unit class types used to populate the unit spawning inventory. Dictates what the player is allowed to spawn. */
-	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
-	TArray<TSubclassOf<class ADropPointUnit>> UnitSpawnClasses;
 
 	/** Reference to the player character. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadWrite)
@@ -53,14 +41,6 @@ protected:
 	/** Reference to the turn tracking widget. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	class UDropPointWidgetTurn* TurnCountWidget;
-
-	/** Reference to the inventory spawning menu widget. */
-	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
-	class UDropPointWidgetInventory* UnitInventoryWidget;
-
-	/** Reference to the resource tracker widget. */
-	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
-	class UDropPointWidgetResources* ResourcesWidget;
 
 	/** Linearly indexed array of the entire game grid's tiles.*/
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
@@ -73,10 +53,6 @@ protected:
 	/** Current turn in the game. */
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	int32 TurnCount = 0;
-
-	/** The starting expenditures for the player. */
-	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
-	int32 StartingExpenditure = 620;
 
 	/** The length and width of the arena that will be generated, in tiles. */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
@@ -171,14 +147,14 @@ public:
 	virtual void SpawnArena();
 
 	/**
-	 * Creates a unit and places it into the arena.
+	 * Creates a unit and places it into the arena. Returns the new unit if successful.
 	 * @param Coord - The X and Y values of the desired Coordinate.
 	 * @param UnitType - The type of unit to spawn. Should be a defined BP subclass.
 	 * @param Faction - The desired faction to give the new unit.
 	 * @param bForce - Whether to replace any existing units at the given coordinates. Takes layering into account.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce);
+	class ADropPointUnit* CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce);
 };
 
 

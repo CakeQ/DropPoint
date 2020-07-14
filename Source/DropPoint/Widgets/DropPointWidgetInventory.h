@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DropPointUnitItem.h"
 #include "Blueprint/UserWidget.h"
 #include "DropPointWidgetInventory.generated.h"
 
@@ -34,5 +35,5 @@ public:
 	 * @param Player - Reference to the player the button will be bound to. Used to tell the player what type of unit it should spawn after clicking the buttons.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateButtons(TArray<TSubclassOf<class ADropPointUnit>> Units, class ADropPointCharacter* Player);
+	void CreateButtons(TArray<FDropPointUnitItem> Inventory, class ADropPointCharacter* Player);
 };

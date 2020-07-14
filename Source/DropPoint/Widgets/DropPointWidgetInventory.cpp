@@ -7,14 +7,16 @@
 #include "DropPointCharacter.h"
 #include "Components/WrapBox.h"
 
-void UDropPointWidgetInventory::CreateButtons(TArray<TSubclassOf<ADropPointUnit>> Units, ADropPointCharacter* Player)
+void UDropPointWidgetInventory::CreateButtons(TArray<FDropPointUnitItem> Inventory, ADropPointCharacter* Player)
 {
-	if (UnitButtonClass && Units.Num())
+	if (UnitButtonClass && Inventory.Num())
 	{
-		for (TSubclassOf<ADropPointUnit> UnitType : Units)
+		for (FDropPointUnitItem UnitItem : Inventory)
 		{
 			UDropPointWidgetInventoryUnit* NewButton = CreateWidget<UDropPointWidgetInventoryUnit>(GetWorld(), UnitButtonClass);
-			NewButton->SetUnitType(UnitType);
+			NewButton->SetUnitType(UnitItem.UnitType);
+			NewButton->SetUnitQuantity(UnitItem.Quantity);
+			NewButton->SetUnitCost(UnitItem.Cost);
 			NewButton->SetPlayer(Player);
 			if (WrapBox_Units)
 			{

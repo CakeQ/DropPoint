@@ -3,8 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DropPointUnitItem.h"
 #include "GameFramework/Character.h"
 #include "DropPointCharacter.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlaceUnitDelegate, TSubclassOf<class ADropPointUnit>, CompareType, const int32&, Amount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPurchaseDelegate, const int32&, Cost);
 
 /**
  * The character class used by the DropPoint game mode. Handles all interactions with the game grid, units, and UI.
@@ -31,6 +35,18 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> UnitMenuWidgetClass;
 
+	/** Widget used to display the player inventory. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> UnitInventoryWidgetClass;
+
+	/** Widget used to display the resource tracker. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> ResourcesWidgetClass;
+
+	/** The player's unit inventory. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
+	TArray<FDropPointUnitItem> UnitInventory;
+
 	/** Whether or not the player is using the pan camera feature. Disables grid tracing when active. */
 	UPROPERTY(Category = Camera, EditInstanceOnly, BlueprintReadWrite)
 	bool bPanCamera = false;
@@ -55,6 +71,14 @@ protected:
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	class UDropPointWidgetUnit* UnitMenuWidget;
 
+	/** Reference to the inventory spawning menu widget. */
+	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
+	class UDropPointWidgetInventory* UnitInventoryWidget;
+
+	/** Reference to the resource tracker widget. */
+	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
+	class UDropPointWidgetResources* ResourcesWidget;
+
 	/** Spring arm for the camera. */
 	UPROPERTY(Category = Components, VisibleAnywhere, BlueprintReadWrite)
 	class USpringArmComponent* PawnSpringArm;
@@ -67,6 +91,28 @@ protected:
 	UPROPERTY(Category = Material, VisibleAnywhere, BlueprintReadWrite)
 	class UMaterialParameterCollectionInstance* HighlightParameters;
 
+	/** The player's faction. */
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	EUnitFactions PlayerFaction = EUnitFactions::Player;
+
+	/** The starting expenditures for the player. */
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	int32 StartingExpenditure = 620;
+
+	/** The amount of minerals the player can spend on units. */
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	int32 MineralsAvailable = 2000;
+
+public:
+	/** Delegate binding for unit placement. */
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
+	FPlaceUnitDelegate OnUnitPlaced;
+
+	/** Delegate binding for purchasing units. */
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
+	FPurchaseDelegate OnPurchaseUnit;
+
+protected:
 	/**
 	 * Traces the world space from the camera position based on the mouse cursor to select and highlight tiles and units within the game arena.
 	 * @param Start - The starting coordinate to trace from.
@@ -77,6 +123,7 @@ protected:
 	void TraceForBlock(const FVector& Start, const FVector& End, bool bDrawDebugHelpers);
 
 public:
+
 	/** Override that sets up the player camera and spring arm. */
 	virtual void BeginPlay() override;
 
@@ -142,4 +189,8 @@ public:
 	/** Sets the current unit spawn type class. */
 	UFUNCTION(Category = DropPoint, BlueprintSetter)
 	void SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType);
+
+	/** Gets the current amount of minerals the player has access to. */
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	const int32& GetMineralBudget() { return MineralsAvailable; };
 };

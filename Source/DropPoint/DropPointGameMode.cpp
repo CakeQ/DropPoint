@@ -7,8 +7,6 @@
 #include "DropPointUnit.h"
 #include "DropPointAbility.h"
 #include "Widgets/DropPointWidgetTurn.h"
-#include "Widgets/DropPointWidgetInventory.h"
-#include "Widgets/DropPointWidgetResources.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "CoreMinimal.h"
@@ -42,26 +40,6 @@ void ADropPointGameMode::BeginPlay()
 			TurnCountWidget->UpdateTurn(TurnCount);
 			TurnCountWidget->AddToViewport();
 			OnEndTurn.AddDynamic(TurnCountWidget, &UDropPointWidgetTurn::UpdateTurn);
-		}
-	}
-
-	if (UnitInventoryWidgetClass && UnitSpawnClasses.Num())
-	{
-		UnitInventoryWidget = CreateWidget<UDropPointWidgetInventory>(GetWorld(), UnitInventoryWidgetClass);
-		if (UnitInventoryWidget)
-		{
-			UnitInventoryWidget->CreateButtons(UnitSpawnClasses, PlayerCharacter);
-			UnitInventoryWidget->AddToViewport();
-		}
-	}
-
-	if (ResourcesWidgetClass)
-	{
-		ResourcesWidget = CreateWidget<UDropPointWidgetResources>(GetWorld(), ResourcesWidgetClass);
-		if (ResourcesWidget)
-		{
-			ResourcesWidget->SetExpenditure(StartingExpenditure);
-			ResourcesWidget->AddToViewport();
 		}
 	}
 
@@ -151,17 +129,17 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& Coord) const
 	return false;
 }
 
-void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
+ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
 {
 	if (!UnitType || !IsInsideArena(Coord))
 	{
-		return;
+		return nullptr;
 	}
 
 	ADropPointTile* RefTile = GetTileAtPos(Coord);
 	if (RefTile->HasUnit(UnitType->GetDefaultObject<ADropPointUnit>()->GetLayer()) && !bForce)
 	{
-		return;
+		return nullptr;
 	}
 
 	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
@@ -176,12 +154,10 @@ void ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassO
 			}
 		}
 	}
-	if (ResourcesWidget)
-	{
-		NewUnit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
-	}
+
 	Units.Add(NewUnit);
 	SetTileUnit(Coord, NewUnit, bForce);
+	return NewUnit;
 }
 
 void ADropPointGameMode::EndTurn()

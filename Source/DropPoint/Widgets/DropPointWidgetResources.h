@@ -22,6 +22,9 @@ protected:
 	class UTextBlock* TextBlock_Spenditure;
 
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* TextBlock_Budget;
+
+	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
 	class UProgressBar* ProgressBar_Minerals;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
@@ -31,15 +34,15 @@ protected:
 	int32 SpentValue = 0;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
+	int32 BudgetValue = 0;
+
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	int32 BarMin = -250;
 
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	int32 BarMax = 500;
 
 public:
-	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void UpdateCounters();
-
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void SetResources(const int32& Value);
 
@@ -51,4 +54,10 @@ public:
 
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void AddExpenditure(const int32& Value);
+
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	void SetBudget(const int32& Value);
+
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	void AddBudget(const int32& Value);
 };

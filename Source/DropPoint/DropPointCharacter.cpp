@@ -4,6 +4,8 @@
 #include "DropPointGameMode.h"
 #include "DropPointUnit.h"
 #include "Widgets/DropPointWidgetUnit.h"
+#include "Widgets/DropPointWidgetInventory.h"
+#include "Widgets/DropPointWidgetResources.h"
 #include "Tiles/DropPointTile.h"
 #include "Tiles/DropPointTileInteractive.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
@@ -119,6 +121,27 @@ void ADropPointCharacter::BeginPlay()
 			UnitMenuWidget->UpdateWidgets();
 		}
 	}
+
+	if (UnitInventoryWidgetClass && UnitInventory.Num())
+	{
+		UnitInventoryWidget = CreateWidget<UDropPointWidgetInventory>(GetWorld(), UnitInventoryWidgetClass);
+		if (UnitInventoryWidget)
+		{
+			UnitInventoryWidget->CreateButtons(UnitInventory, this);
+			UnitInventoryWidget->AddToViewport();
+		}
+	}
+
+	if (ResourcesWidgetClass)
+	{
+		ResourcesWidget = CreateWidget<UDropPointWidgetResources>(GetWorld(), ResourcesWidgetClass);
+		if (ResourcesWidget)
+		{
+			ResourcesWidget->SetExpenditure(StartingExpenditure);
+			ResourcesWidget->SetBudget(MineralsAvailable);
+			ResourcesWidget->AddToViewport();
+		}
+	}
 }
 
 void ADropPointCharacter::TriggerClick()
@@ -149,7 +172,52 @@ void ADropPointCharacter::TriggerClick()
 			ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
 			if (gamemode)
 			{
-				gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, EUnitFactions::Player, false);
+				for (FDropPointUnitItem& UnitItem : UnitInventory)
+				{
+					if (UnitItem.UnitType == UnitSpawnTypeClass)
+					{
+						if (UnitItem.Cost > MineralsAvailable)
+						{
+							return;
+						}
+						break;
+					}
+				}
+
+				ADropPointUnit* NewUnit = gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, PlayerFaction, false);
+
+				if (!NewUnit)
+				{
+					UnitSpawnTypeClass = nullptr;
+					return;
+				}
+
+
+				if (ResourcesWidget)
+				{
+					NewUnit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
+				}
+
+				for (FDropPointUnitItem& UnitItem : UnitInventory)
+				{
+					if (UnitItem.UnitType == UnitSpawnTypeClass)
+					{
+						if (!UnitItem.Quantity)
+						{
+							MineralsAvailable -= UnitItem.Cost;
+							if (ResourcesWidget)
+							{
+								ResourcesWidget->AddBudget(-UnitItem.Cost);
+							}
+							OnPurchaseUnit.Broadcast(UnitItem.Cost);
+							break;
+						}
+						UnitItem.SetQuantity(FMath::Max(UnitItem.Quantity - 1, 0));
+						break;
+					}
+				}
+
+				OnUnitPlaced.Broadcast(UnitSpawnTypeClass, -1);
 				SetUnitSpawnType(nullptr);
 			}
 		}
