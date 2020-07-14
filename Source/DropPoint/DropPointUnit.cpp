@@ -55,7 +55,9 @@ void ADropPointUnit::AddResources(const int32& Amount)
 {
 	if (ConnectedCore)
 	{
-		ConnectedCore->AddResources(Amount);
+		const int32 TotalAmount = StoredMinerals + Amount;
+		ConnectedCore->AddResources(TotalAmount);
+		StoredMinerals = 0;
 		return;
 	}
 	StoredMinerals += Amount;
