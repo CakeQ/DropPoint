@@ -4,12 +4,15 @@
 #include "DropPointWidgetUnit.h"
 #include "DropPointUnit.h"
 #include "Widgets/DropPointWidgetAbility.h"
+#include "Widgets/DropPointWidgetHealth.h"
 #include "DropPointAbility.h"
 #include "Components/TextBlock.h"
 #include "Components/WrapBox.h"
 #include "Components/Image.h"
-#include "Components/ProgressBar.h"
 #include "Components/HorizontalBox.h"
+#include "Components/VerticalBox.h"
+#include "Components/PanelSlot.h"
+#include "Components/HorizontalBoxSlot.h"
 
 void UDropPointWidgetUnit::SetCurrentUnit(class ADropPointUnit* Unit)
 {
@@ -28,18 +31,59 @@ void UDropPointWidgetUnit::SetCurrentUnit(class ADropPointUnit* Unit)
 
 	if (OwnerUnit)
 	{
+		UpdateMaxHealth(OwnerUnit->GetMaxHealth());
+		UpdateHealth(OwnerUnit->GetHealth());
+		UpdateButtons();
+
 		OwnerUnit->OnUpdateHealth.AddDynamic(this, &UDropPointWidgetUnit::UpdateHealth);
 	}
 
 	UpdateWidgets();
-	UpdateButtons();
+}
+
+void UDropPointWidgetUnit::UpdateMaxHealth(const int32& Value)
+{
+	if (HorizontalBox_Health)
+	{
+		const int32& CurrCount = HorizontalBox_Health->GetChildrenCount();
+		if (CurrCount == Value)
+		{
+			return;
+		}
+		else if (CurrCount < Value)
+		{
+			for (int32 i = HorizontalBox_Health->GetChildrenCount(); i < Value; i++)
+			{
+				UDropPointWidgetHealth* NewBlip = CreateWidget<UDropPointWidgetHealth>(GetWorld(), HealthWidgetClass);
+				UPanelSlot* NewSlot = HorizontalBox_Health->AddChild(NewBlip);
+				if (UHorizontalBoxSlot* HorSlot = Cast<UHorizontalBoxSlot>(NewSlot))
+				{
+					FSlateChildSize Size(ESlateSizeRule::Type::Fill);
+					HorSlot->SetSize(Size);
+				}
+			}
+		}
+		else
+		{
+			for (int32 i = HorizontalBox_Health->GetChildrenCount(); i > Value; i--)
+			{
+				HorizontalBox_Health->RemoveChildAt(i - 1);
+			}
+		}
+	}
 }
 
 void UDropPointWidgetUnit::UpdateHealth(const int32& Value)
 {
-	if (ProgressBar_Health)
+	if (HorizontalBox_Health)
 	{
-		ProgressBar_Health->SetPercent(OwnerUnit->GetHealth() / OwnerUnit->GetMaxHealth());
+		for (UWidget* Child : HorizontalBox_Health->GetAllChildren())
+		{
+			if (UDropPointWidgetHealth* Blip = Cast<UDropPointWidgetHealth>(Child))
+			{
+				Blip->SetState(HorizontalBox_Health->GetChildIndex(Blip) < Value);
+			}
+		}
 	}
 }
 

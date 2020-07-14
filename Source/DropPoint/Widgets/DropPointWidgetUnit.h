@@ -36,13 +36,17 @@ protected:
 	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> AbilityButtonClassBiome;
 
+	/** The widget class for the health display */
+	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> HealthWidgetClass;
+
 	/** The unit this widget is bound to. */
 	UPROPERTY(Category = References, EditAnywhere, BlueprintReadWrite)
 	class ADropPointUnit* OwnerUnit;
 
 	/** The container for all the standard ability buttons */
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-	class UWrapBox* WrapBox_Abilities_Standard;
+		class UWrapBox* WrapBox_Abilities_Standard;
 
 	/** The container for all the biome ability buttons */
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
@@ -62,7 +66,7 @@ protected:
 
 	/** The bar that will display the unit health. */
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-	class UProgressBar* ProgressBar_Health;
+	class UHorizontalBox* HorizontalBox_Health;
 
 	/** The list of all ability buttons, stored per-unit in a struct */
 	UPROPERTY(Category = Components, EditAnywhere, BlueprintReadOnly)
@@ -77,8 +81,15 @@ public:
 	void SetCurrentUnit(class ADropPointUnit* Unit);
 
 	/**
-	 * Sets the current active unit to display on the widget.
-	 * @param Unit - The unit to pull data from.
+	 * Sets the current max health for the display.
+	 * @param Value - The value to use.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	void UpdateMaxHealth(const int32& Value);
+
+	/**
+	 * Sets the current health for the display.
+	 * @param Value - The value to use.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void UpdateHealth(const int32& Value);
