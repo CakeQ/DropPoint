@@ -79,6 +79,11 @@ void ADropPointCharacter::NextAction()
 void ADropPointCharacter::SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType)
 {
 	UnitSpawnTypeClass = NewType;
+	if (UnitSpawnTypeClass && CurrentActiveTile)
+	{
+		CurrentActiveTile->DeactivateTile();
+		CurrentActiveTile = nullptr;
+	}
 }
 
 void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

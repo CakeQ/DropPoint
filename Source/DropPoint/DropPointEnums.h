@@ -26,6 +26,22 @@ enum class ETileFlags : uint8
 ENUM_CLASS_FLAGS(ETileFlags)
 
 /**
+ * Tile priorities.
+ * Standard - Default. Anything unimportant.
+ * Hazard - Things like pits and boulders.
+ * Multitile - Multi-tile entities that are connected to other neighboring tiles.
+ * Resource - The sweet nectar of our game. Must never be overwritten.
+ */
+    UENUM()
+    enum class ETilePriorities : uint8
+{
+    Standard,
+    Hazard,
+    Multitile,
+    Resource
+};
+
+/**
  * Unit property flags.
  * TakingOff - This unit is attempting to take off.
  * Overheating - This unit has overheated and is stunned.

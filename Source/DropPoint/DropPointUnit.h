@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "DropPointEnums.h"
+#include "DropPointGridCoord.h"
 #include "DropPointUnit.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthDelegate, const int32&, NewVal);
@@ -20,10 +21,6 @@ class DROPPOINT_API ADropPointUnit : public AActor
 	
 public:	
 	ADropPointUnit();
-
-	/** The unit's faction. Dictates if the player can interact with it or if it's hostile/neutral. */
-	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	EUnitFactions UnitFaction = EUnitFactions::Neutral;
 
 protected:
 	/** Name of the unit. Used by UI. */
@@ -57,6 +54,14 @@ protected:
 	/** Time in turns required for this unit to take off when told to do so. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
 	int32 TimeToLaunch = 3;
+
+	/** Unit coordinates within the game grid */
+	UPROPERTY(Category = Unit, VisibleInstanceOnly, BlueprintReadOnly)
+	FDropPointGridCoord UnitCoordinates;
+
+	/** The unit's faction. Dictates if the player can interact with it or if it's hostile/neutral. */
+	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
+	EUnitFactions UnitFaction = EUnitFactions::Neutral;
 
 	/** The layer which the unit occupies on a tile. */
 	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
@@ -121,6 +126,10 @@ public:
 	UFUNCTION(Category = Unit, BlueprintCallable)
 	void HighlightUnit(bool bOn);
 
+	/** Triggers any post-create components (such as multi-tiled or scatter replication logic). */
+	UFUNCTION(Category = Unit, BlueprintCallable)
+	void PostCreateUnit(class ADropPointGameMode* OwnerMode);
+
 	/** Gets the unit's current health. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
 	int32 GetHealth() { return Health; };
@@ -172,6 +181,13 @@ public:
 	 */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintSetter)
 	void SetConnectedTile(class ADropPointTile* Tile) {	ConnectedTile = Tile; };
+
+	/**
+	 * Sets the unit to have the given coordinates within the grid.
+	 * @param NewCoord - The coordinates to use.
+	 */
+	UFUNCTION(Category = Tile, BlueprintSetter)
+	virtual void SetUnitCoords(const FDropPointGridCoord& NewCoord);
 
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)

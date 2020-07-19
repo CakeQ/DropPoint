@@ -15,9 +15,13 @@ struct DROPPOINT_API FDropPointGridCoord
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
-	int32 x;
+	FDropPointGridCoord();
+
+	FDropPointGridCoord(const int32& NewX, const int32& NewY);
 
 	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
-	int32 y;	
+	int32 GridX;
+
+	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
+	int32 GridY;	
 };

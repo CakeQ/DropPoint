@@ -43,13 +43,21 @@ void ADropPointGameMode::BeginPlay()
 		}
 	}
 
+	// Init tile indexed array size
 	Tiles.SetNum(GridSize* GridSize);
+
+	// Set level seed
+	FMath::SRandInit(FCString::Atoi(*LevelSeed));
+
+	// Calculate grid offset
+	GridOffset = floor(((GridSize * TileSize) / 2) / 100) * 100;
+
 	SpawnArena();
 }
 
 int32 ADropPointGameMode::GetLinearIndex(const FDropPointGridCoord& Coord) const
 {
-	return (Coord.y * GridSize) + Coord.x;
+	return (Coord.GridY * GridSize) + Coord.GridX;
 }
 
 int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size) const
@@ -83,24 +91,18 @@ ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& Coor
 
 ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const
 {
-	FDropPointGridCoord newCoords;
-	newCoords.x = Origin.x + Offset.x;
-	newCoords.y = Origin.y + Offset.y;
-	return GetTileAtPos(newCoords);
+	return GetTileAtPos(FDropPointGridCoord(Origin.GridX + Offset.GridX, Origin.GridY + Offset.GridY));
 }
 
-void ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, bool bForce = false)
+bool ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, bool bForce = false)
 {
 	if (!IsInsideArena(Coord))
 	{
-		return;
+		return false;
 	}
 	ADropPointTile* RefTile = GetTileAtPos(Coord);
-	if (RefTile->HasUnit(Unit->GetLayer()) && !bForce)
-	{
-		return;
-	}
-	RefTile->SetUnit(Unit, bForce);
+
+	return RefTile->SetUnit(Unit, bForce);
 }
 
 bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, EUnitLayers Layer = EUnitLayers::Ground) const
@@ -119,9 +121,9 @@ bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, EUnitLaye
 
 bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& Coord) const
 {
-	if (Coord.x >= 0 && Coord.x < GridSize)
+	if (Coord.GridX >= 0 && Coord.GridX < GridSize)
 	{
-		if (Coord.y >= 0 && Coord.y < GridSize)
+		if (Coord.GridY >= 0 && Coord.GridY < GridSize)
 		{
 			return true;
 		}
@@ -155,9 +157,48 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 		}
 	}
 
-	Units.Add(NewUnit);
-	SetTileUnit(Coord, NewUnit, bForce);
+	if (!SetTileUnit(Coord, NewUnit, bForce) && NewUnit)
+	{
+		NewUnit->Destroy();
+		return nullptr;
+	}
+
+	if (NewUnit)
+	{
+		Units.Add(NewUnit);
+		NewUnit->PostCreateUnit(this);
+	}
+
 	return NewUnit;
+}
+
+ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointTile> TileType, bool bForce)
+{
+	const float XOffset = (Coord.GridX * TileSize) - GridOffset; // Divide by dimension
+	const float YOffset = ((Coord.GridY % GridSize) * TileSize) - GridOffset; // Modulo gives remainder
+
+	// Make position vector, offset from Grid location
+	const FVector BlockLocation = FVector(XOffset, YOffset, 0.f);
+
+	ADropPointTile* ExistingTile = GetTileAtPos(Coord);
+	if (ExistingTile && ExistingTile->GetPriority() >= TileType->GetDefaultObject<ADropPointTile>()->GetPriority())
+	{
+		if (!bForce)
+		{
+			return nullptr;
+		}
+		ExistingTile->Destroy();
+	}
+
+	ADropPointTile* NewTile = GetWorld()->SpawnActor<ADropPointTile>(TileType, BlockLocation, FRotator(0, 0, 0));
+
+	if (NewTile)
+	{
+		SetTilePos(Coord, NewTile);
+		NewTile->PostCreateTile(this);
+	}
+
+	return NewTile;
 }
 
 void ADropPointGameMode::EndTurn()
@@ -184,37 +225,57 @@ void ADropPointGameMode::EndTurn()
 	OnEndTurn.Broadcast(++TurnCount);
 }
 
+TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(float DistToCenter)
+{
+	if (!TilePool.Num())
+	{
+		return nullptr;
+	}
+
+	// Generate a weighted array to pick a candidate from.
+	TArray<int32> Pool;
+	for (int32 Index = 0; Index < TilePool.Num(); Index++)
+	{
+		FDropPointPoolItem PoolItem = TilePool[Index];
+		int32 ItemWeight = floor((PoolItem.GetWeight(DistToCenter)) * 100);
+
+		for (int32 Counter = 0; Counter < ItemWeight; Counter++)
+		{
+			Pool.Add(Index);
+		}
+	}
+
+	if (!Pool.Num())
+	{
+		return nullptr;
+	}
+
+	int32 IndexToUse = round(FMath::SRand() * (Pool.Num() - 1));
+
+	// Pick the candidate.
+	return TilePool[Pool[IndexToUse]].TileClass;
+}
+
 void ADropPointGameMode::SpawnArena()
 {
-	if (!TileTypeClass)
+	if (!TilePool.Num())
 	{
+		// The tile pool is empty! Get outta here!
 		return;
 	}
-	// Calculate grid offset
-	const int32 gridOffset = floor(((GridSize * TileSize) / 2) / 100) * 100;
+
+	// Get grid central coordinate. For use with distancing.
+	FVector GridCenter = FVector(GridSize / 2, GridSize / 2, 0);
 
 	// Loop to spawn each block
-	for (int32 blockXIndex = 0; blockXIndex < GridSize; blockXIndex++)
+	for (int32 BlockXIndex = 0; BlockXIndex < GridSize; BlockXIndex++)
 	{
-		for (int32 blockYIndex = 0; blockYIndex < GridSize; blockYIndex++)
+		for (int32 BlockYIndex = 0; BlockYIndex < GridSize; BlockYIndex++)
 		{
-			const float XOffset = (blockXIndex * TileSize) - gridOffset; // Divide by dimension
-			const float YOffset = ((blockYIndex % GridSize) * TileSize) - gridOffset; // Modulo gives remainder
-
-			// Make position vector, offset from Grid location
-			const FVector blockLocation = FVector(XOffset, YOffset, 0.f);
-
-			// Spawn a block
-			ADropPointTile* newTile = GetWorld()->SpawnActor<ADropPointTile>(TileTypeClass, blockLocation, FRotator(0, 0, 0));
-
-			// Tell the block about its owner
-			if (newTile != nullptr)
-			{
-				FDropPointGridCoord tileCoord;
-				tileCoord.x = (newTile->GetActorLocation().X + gridOffset) / TileSize;
-				tileCoord.y = (newTile->GetActorLocation().Y + gridOffset) / TileSize;
-				SetTilePos(tileCoord, newTile);
-			}
+			// Get distance to center, for positional spawn pool bonuses.
+			float DistToCenter = FVector::DistXY(FVector(BlockXIndex, BlockYIndex, 0), GridCenter);
+			TSubclassOf<ADropPointTile> TileTypeClass = PickTileFromPool(DistToCenter);
+			CreateTile(FDropPointGridCoord(BlockXIndex, BlockYIndex), TileTypeClass, false);
 		}
 	}
 }

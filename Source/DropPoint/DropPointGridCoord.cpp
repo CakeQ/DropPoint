@@ -2,3 +2,13 @@
 
 #include "DropPointGridCoord.h"
 
+FDropPointGridCoord::FDropPointGridCoord()
+{
+
+}
+
+FDropPointGridCoord::FDropPointGridCoord(const int32& NewX, const int32& NewY)
+{
+	GridX = NewX;
+	GridY = NewY;
+}

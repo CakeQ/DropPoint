@@ -16,8 +16,6 @@ public:
 	UDropPointAbility();
 
 protected:
-	virtual void BeginPlay() override;
-
 	/** Name of the unit. ability by UI. */
 	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
 	FString AbilityName;
@@ -57,6 +55,8 @@ protected:
 	/** Units awaiting trigger. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadWrite)
 	TArray<class ADropPointUnit*> QueuedUnits;
+
+	virtual void BeginPlay() override;
 
 public:
 	/** Set the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */

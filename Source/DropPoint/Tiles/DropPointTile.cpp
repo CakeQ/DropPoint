@@ -2,6 +2,7 @@
 
 #include "DropPointTile.h"
 #include "DropPointUnit.h"
+#include "DropPointSpawnComponent.h"
 #include "DropPointGridCoord.h"
 #include "Engine/StaticMesh.h"
 #include "Components/StaticMeshComponent.h"
@@ -17,8 +18,8 @@ ADropPointTile::ADropPointTile()
 void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 {
 	TileCoordinates = NewCoord;
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileX"), TileCoordinates.x);
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileY"), TileCoordinates.y);
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileX"), TileCoordinates.GridX);
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileY"), TileCoordinates.GridY);
 }
 
 bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
@@ -33,22 +34,25 @@ bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
 	return false;
 }
 
-void ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
+bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 {
 	for (ADropPointUnit* Unit : Units)
 	{
-		if (Unit->GetLayer() == NewUnit->GetLayer() && !bForce)
+		if (Unit->GetLayer() == NewUnit->GetLayer())
 		{
 			if (!bForce)
 			{
-				return;
+				return false;
 			}
 			Units.Remove(Unit);
+			Unit->Destroy();
 		}
 	}
 	Units.Add(NewUnit);
 	NewUnit->SetConnectedTile(this);
+	NewUnit->SetUnitCoords(TileCoordinates);
 	NewUnit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
+	return true;
 }
 
 ADropPointUnit* ADropPointTile::GetUnit(EUnitLayers Layer = EUnitLayers::Ground)
@@ -61,6 +65,16 @@ ADropPointUnit* ADropPointTile::GetUnit(EUnitLayers Layer = EUnitLayers::Ground)
 		}
 	}
 	return nullptr;
+}
+
+void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode)
+{
+	TArray<UDropPointSpawnComponent*> LogicComponents;
+	GetComponents<UDropPointSpawnComponent>(LogicComponents);
+	for (UDropPointSpawnComponent* LogicComponent : LogicComponents)
+	{
+		LogicComponent->Fire(OwnerMode, TileCoordinates);
+	}
 }
 
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)

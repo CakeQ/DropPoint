@@ -3,6 +3,8 @@
 
 #include "DropPointUnit.h"
 #include "DropPointAbility.h"
+#include "DropPointGameMode.h"
+#include "DropPointSpawnComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstance.h"
 
@@ -88,4 +90,19 @@ void ADropPointUnit::Die()
 void ADropPointUnit::HighlightUnit(bool bOn)
 {
 	UnitMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), (float)bOn);
+}
+
+void ADropPointUnit::PostCreateUnit(class ADropPointGameMode* OwnerMode)
+{
+	TArray<UDropPointSpawnComponent*> LogicComponents;
+	GetComponents<UDropPointSpawnComponent>(LogicComponents);
+	for (UDropPointSpawnComponent* LogicComponent : LogicComponents)
+	{
+		LogicComponent->Fire(OwnerMode, UnitCoordinates);
+	}
+}
+
+void ADropPointUnit::SetUnitCoords(const FDropPointGridCoord& NewCoord)
+{
+	UnitCoordinates = NewCoord;
 }

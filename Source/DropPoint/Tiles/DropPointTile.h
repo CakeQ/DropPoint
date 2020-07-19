@@ -28,6 +28,10 @@ protected:
 	UPROPERTY(Category = References, VisibleAnywhere, BlueprintReadWrite)
 	TArray<class ADropPointUnit*> Units;
 
+	/** The tile's spawn priority. Dictates if the tile can overwrite any existing tiles on the coordinate it's spawning to. */
+	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
+	ETilePriorities TilePriority = ETilePriorities::Standard;
+
 	/** Tile property flags. See EUnitFlags in DropPointEnums.h for flag descriptions. */
 	UPROPERTY(Category = Tile, EditAnywhere, BlueprintReadWrite, meta = (Bitmask, BitmaskEnum = ETileFlags))
 	uint8 TileFlags;
@@ -36,8 +40,7 @@ protected:
 	UPROPERTY(Category = Tile, VisibleAnywhere, BlueprintReadWrite)
 	FDropPointGridCoord TileCoordinates;
 
-public:	
-
+public:
 	/**
 	 * Set the unit to have only the input flag.
 	 * @param Value - The input flag to set.
@@ -77,6 +80,10 @@ public:
 	UFUNCTION(Category = Tile, BlueprintSetter)
 	virtual void SetTileCoords(const FDropPointGridCoord& NewCoord);
 
+	/** Gets the tile's existence priority. Some tiles are just more important than others. :( */
+	FORCEINLINE UFUNCTION(Category = Tile, BlueprintGetter)
+	const ETilePriorities& GetPriority() { return TilePriority; };
+
 	/**
 	 * Checks to see if this tile has a unit in the given layer.
 	 * @param Layer - The layer to check.
@@ -85,12 +92,12 @@ public:
 	bool HasUnit(EUnitLayers Layer);
 
 	/**
-	 * Sets the tile to have the input unit.
+	 * Sets the tile to have the input unit. Returns true if successful.
 	 * @param NewUnit - The new unit to take ownership of. Takes layering into account.
 	 * @param bForce - Will override and replace any existing unit if it exists on the same layer.
 	 */
 	UFUNCTION(Category = Tile, BlueprintCallable)
-	void SetUnit(class ADropPointUnit* NewUnit, bool bForce);
+	bool SetUnit(class ADropPointUnit* NewUnit, bool bForce);
 
 	/**
 	 * Checks to see if this tile has a unit in the given layer.
@@ -98,4 +105,8 @@ public:
 	 */
 	UFUNCTION(Category = Tile, BlueprintCallable)
 	ADropPointUnit* GetUnit(EUnitLayers Layer);
+
+	/** Triggers any post-create components (such as multi-tiled or scatter replication logic). */
+	UFUNCTION(Category = Unit, BlueprintCallable)
+	void PostCreateTile(class ADropPointGameMode* OwnerMode);
 };

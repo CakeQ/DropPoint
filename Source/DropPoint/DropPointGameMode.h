@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "DropPointEnums.h"
 #include "DropPointGridCoord.h"
+#include "DropPointPoolItem.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/GameModeBase.h"
 #include "DropPointGameMode.generated.h"
@@ -30,9 +31,9 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
 
-	/** WIP: The current tile class used to populate the map. This will be replaced. */
-	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AActor> TileTypeClass;
+	/** The pool of tiles that will be used by the arena generator. */
+	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FDropPointPoolItem> TilePool;
 
 	/** Reference to the player character. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadWrite)
@@ -58,9 +59,17 @@ protected:
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	int32 GridSize = 7;
 
+	/** The grid offset of the arena that will be generated, in UE4 units. */
+	UPROPERTY(Category = Grid, VisibleInstanceOnly, BlueprintReadOnly)
+	int32 GridOffset = 0;
+
 	/** The size (in UE4 units) that each tile within the grid will occupy. */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadWrite)
 	float TileSize = 100.0f;
+
+	/** The random seed used to generate the level with. */
+	UPROPERTY(Category = Grid, EditDefaultsOnly, BlueprintReadOnly)
+	FString LevelSeed;
 
 	/** WIP: The core unit this unit is connected to. Should be replaced with the pylon network when possible. */
 	class ADropPointUnit* ConnectedCore;
@@ -111,13 +120,13 @@ public:
 	class ADropPointTile* GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const;
 
 	/**
-	 * Sets a referenced unit at the given coordinates. Takes the unit's layer into account.
+	 * Sets a referenced unit at the given coordinates. Takes the unit's layer into account. Returns true if successful.
 	 * @param Coord - The X and Y values of the desired Coordinate.
 	 * @param Unit - The referenced unit to move.
 	 * @param bForce - Will replace existing units if set to true.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	void SetTileUnit(const FDropPointGridCoord& Coord, class ADropPointUnit* Unit, bool bForce);
+	bool SetTileUnit(const FDropPointGridCoord& Coord, class ADropPointUnit* Unit, bool bForce);
 
 	/**
 	 * Checks to see if the tile at the given coordinate has a unit at the given layer.
@@ -135,18 +144,6 @@ public:
 	bool IsInsideArena(const FDropPointGridCoord& Coord) const;
 
 	/**
-	 * Ends the current turn, calling all functionality that occurs between turns.
-	 */
-	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	virtual void EndTurn();
-
-	/**
-	 * Spawns the arena.
-	 */
-	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	virtual void SpawnArena();
-
-	/**
 	 * Creates a unit and places it into the arena. Returns the new unit if successful.
 	 * @param Coord - The X and Y values of the desired Coordinate.
 	 * @param UnitType - The type of unit to spawn. Should be a defined BP subclass.
@@ -155,6 +152,33 @@ public:
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	class ADropPointUnit* CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce);
+
+	/**
+	 * Creates a tile and places it into the arena. Returns the new tile if successful.
+	 * @param Coord - The X and Y values of the desired Coordinate.
+	 * @param TileType - The type of tile to spawn. Should be a defined BP subclass.
+	 * @param bForce - Whether to force replace any existing tile at the given coordinates. If false, will take tile priority into account and might still replace any existing tiles.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	class ADropPointTile* CreateTile(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointTile> TileType, bool bForce);
+
+	/**
+	 * Ends the current turn, calling all functionality that occurs between turns.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	virtual void EndTurn();
+
+	/**
+	 * Ends the current turn, calling all functionality that occurs between turns.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	TSubclassOf<class ADropPointTile> PickTileFromPool(float DistToCenter);
+
+	/**
+	 * Spawns the arena.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	virtual void SpawnArena();
 };
 
 
