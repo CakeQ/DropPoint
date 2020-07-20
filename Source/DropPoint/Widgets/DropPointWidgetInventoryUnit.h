@@ -59,6 +59,10 @@ public:
 	UFUNCTION(Category = DropPoint, BlueprintSetter)
 	void SetPlayer(class ADropPointCharacter* Player);
 
+	/** Overarching function that sets the button's properties. */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	void SetProperties(const FDropPointUnitItem& NewUnit, ADropPointCharacter* NewPlayer);
+
 	/** Sets the unit cost. */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void SetUnitCost(const int32& Amount);

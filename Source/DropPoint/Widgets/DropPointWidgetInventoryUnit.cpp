@@ -4,6 +4,7 @@
 #include "DropPointWidgetInventoryUnit.h"
 #include "DropPointUnit.h"
 #include "DropPointCharacter.h"
+#include "DropPointUnitItem.h"
 #include "Engine/Texture2D.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -39,6 +40,14 @@ void UDropPointWidgetInventoryUnit::SetPlayer(class ADropPointCharacter* Player)
 	}
 	PlayerCharacter = Player;
 	PlayerCharacter->OnUnitPlaced.AddDynamic(this, &UDropPointWidgetInventoryUnit::UpdateQuantity);
+}
+
+void UDropPointWidgetInventoryUnit::SetProperties(const FDropPointUnitItem& NewUnit, ADropPointCharacter* NewPlayer)
+{
+	SetUnitType(NewUnit.UnitType);
+	SetUnitCost(NewUnit.Cost);
+	SetUnitQuantity(NewUnit.Quantity);
+	SetPlayer(NewPlayer);
 }
 
 void UDropPointWidgetInventoryUnit::SetUnitCost(const int32& Amount)

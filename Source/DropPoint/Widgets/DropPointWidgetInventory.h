@@ -35,5 +35,5 @@ public:
 	 * @param Player - Reference to the player the button will be bound to. Used to tell the player what type of unit it should spawn after clicking the buttons.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	void CreateButtons(TArray<FDropPointUnitItem> Inventory, class ADropPointCharacter* Player);
+	void CreateButtons(const TArray<FDropPointUnitItem>& Inventory, class ADropPointCharacter* Player);
 };
