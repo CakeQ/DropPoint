@@ -344,6 +344,7 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 		//If we still fail to cast, just return.
 		if (!hitTile)
 		{
+			HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), FVector(80000, 80000, 0));
 			return;
 		}
 
