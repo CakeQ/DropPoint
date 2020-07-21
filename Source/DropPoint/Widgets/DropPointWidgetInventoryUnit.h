@@ -85,5 +85,5 @@ public:
 
 	/** Gets the unit class type this button stores. */
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
-	class ADropPointUnit* GetUnitType() { return UnitType; };
+	class ADropPointUnit* GetUnitType() const { return UnitType; };
 };

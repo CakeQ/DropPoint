@@ -19,7 +19,7 @@ void UDropPointAbility::BeginPlay()
 	
 }
 
-void UDropPointAbility::Trigger(class ADropPointUnit* Owner)
+void UDropPointAbility::Trigger(ADropPointUnit* Owner)
 {
 	AbilityCooldownLeft = AbilityCooldown;
 }

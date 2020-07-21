@@ -94,7 +94,7 @@ public:
 	 * @param Size - The grid size to compare with.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	int32 IsInLinearRange(const int32& Index, const int32& Size) const;
+	static int32 IsInLinearRange(const int32& Index, const int32& Size);
 
 	/**
 	 * Sets a referenced tile at the given coordinates.
@@ -102,7 +102,7 @@ public:
 	 * @param Tile - The referenced tile to move.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	void SetTilePos(const FDropPointGridCoord& Coord, class ADropPointTile* tile);
+	void SetTilePos(const FDropPointGridCoord& Coord, class ADropPointTile* Tile);
 
 	/**
 	 * Returns the tile at the given coordinates, if it exists.
@@ -126,7 +126,7 @@ public:
 	 * @param bForce - Will replace existing units if set to true.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	bool SetTileUnit(const FDropPointGridCoord& Coord, class ADropPointUnit* Unit, bool bForce);
+	bool SetTileUnit(const FDropPointGridCoord& Coord, class ADropPointUnit* Unit, bool bForce) const;
 
 	/**
 	 * Checks to see if the tile at the given coordinate has a unit at the given layer.
@@ -134,7 +134,7 @@ public:
 	 * @param Layer - The unit layer to check.
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
-	bool TileHasUnit(const FDropPointGridCoord& Coord, EUnitLayers layer) const;
+	bool TileHasUnit(const FDropPointGridCoord& Coord, const EUnitLayers& Layer) const;
 
 	/**
 	 * Checks to see if the given coordinates are within the current arena bounds.
@@ -142,6 +142,9 @@ public:
 	 */
 	UFUNCTION(Category = Grid, BlueprintCallable)
 	bool IsInsideArena(const FDropPointGridCoord& Coord) const;
+
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	const TArray<ADropPointUnit*>& GetUnits() const { return Units; };
 
 	/**
 	 * Creates a unit and places it into the arena. Returns the new unit if successful.
@@ -151,7 +154,7 @@ public:
 	 * @param bForce - Whether to replace any existing units at the given coordinates. Takes layering into account.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	class ADropPointUnit* CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce);
+	class ADropPointUnit* CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit>& UnitType, EUnitFactions& Faction, const bool bForce);
 
 	/**
 	 * Creates a tile and places it into the arena. Returns the new tile if successful.
@@ -160,7 +163,7 @@ public:
 	 * @param bForce - Whether to force replace any existing tile at the given coordinates. If false, will take tile priority into account and might still replace any existing tiles.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	class ADropPointTile* CreateTile(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointTile> TileType, bool bForce);
+	class ADropPointTile* CreateTile(const FDropPointGridCoord& Coord, const TSubclassOf<ADropPointTile>& TileType, const bool bForce);
 
 	/**
 	 * Ends the current turn, calling all functionality that occurs between turns.
@@ -172,7 +175,7 @@ public:
 	 * Ends the current turn, calling all functionality that occurs between turns.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
-	TSubclassOf<class ADropPointTile> PickTileFromPool(float DistToCenter);
+	TSubclassOf<class ADropPointTile> PickTileFromPool(const float& DistToCenter);
 
 	/**
 	 * Spawns the arena.

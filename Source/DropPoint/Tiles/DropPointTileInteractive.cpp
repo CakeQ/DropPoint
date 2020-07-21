@@ -2,10 +2,7 @@
 
 #include "DropPointTileInteractive.h"
 #include "DropPointUnit.h"
-#include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/StaticMesh.h"
-#include "Materials/MaterialInstance.h"
 
 ADropPointTileInteractive::ADropPointTileInteractive()
 {

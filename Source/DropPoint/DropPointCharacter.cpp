@@ -1,24 +1,21 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2020 All Rights Reserved.
 
 #include "DropPointCharacter.h"
+#include "DrawDebugHelpers.h"
 #include "DropPointGameMode.h"
 #include "DropPointUnit.h"
-#include "Widgets/DropPointWidgetUnit.h"
-#include "Widgets/DropPointWidgetInventory.h"
-#include "Widgets/DropPointWidgetResources.h"
-#include "Tiles/DropPointTile.h"
-#include "Tiles/DropPointTileInteractive.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
+#include "Camera/CameraComponent.h"
 #include "Engine/World.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Materials/MaterialParameterCollection.h"
-#include "Materials/MaterialParameterCollectionInstance.h"
-#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
+#include "Materials/MaterialParameterCollectionInstance.h"
+#include "Tiles/DropPointTile.h"
+#include "Tiles/DropPointTileInteractive.h"
+#include "Widgets/DropPointWidgetInventory.h"
+#include "Widgets/DropPointWidgetResources.h"
+#include "Widgets/DropPointWidgetUnit.h"
 
 //#define PrintDebug(x) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT(x));}
 
@@ -63,17 +60,17 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		FVector Start, Dir, End;
+		FVector Start, Dir;
 		PC->DeprojectMousePositionToWorld(Start, Dir);
-		End = Start + (Dir * 30000.0f);
+		const FVector End = Start + (Dir * 30000.0f);
 		TraceForBlock(Start, End, false);
 	}
 }
 
 void ADropPointCharacter::NextAction()
 {
-	ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
-	gamemode->EndTurn();
+	ADropPointGameMode* Gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+	Gamemode->EndTurn();
 }
 
 void ADropPointCharacter::SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType)
@@ -147,6 +144,18 @@ void ADropPointCharacter::BeginPlay()
 			ResourcesWidget->AddToViewport();
 		}
 	}
+
+	ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+	if (gamemode && ResourcesWidget)
+	{
+		for (ADropPointUnit* Unit : gamemode->GetUnits())
+		{
+			if (Unit->GetFaction() == GetFaction())
+			{
+				Unit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
+			}
+		}
+	}
 }
 
 void ADropPointCharacter::TriggerClick()
@@ -196,7 +205,6 @@ void ADropPointCharacter::TriggerClick()
 					UnitSpawnTypeClass = nullptr;
 					return;
 				}
-
 
 				if (ResourcesWidget)
 				{
@@ -344,7 +352,6 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 		//If we still fail to cast, just return.
 		if (!hitTile)
 		{
-			HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), FVector(80000, 80000, 0));
 			return;
 		}
 
@@ -359,11 +366,11 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 				hitTile->HighlightTile(true);
 				if (HighlightParameters)
 				{
-					FVector loc = hitTile->GetActorLocation();
-					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), loc);
+					const FVector Loc = hitTile->GetActorLocation();
+					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), Loc);
 					if (!CurrentActiveTile)
 					{
-						HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), loc);
+						HighlightParameters->SetVectorParameterValue(TEXT("SelectedPos"), Loc);
 					}
 				}
 			}

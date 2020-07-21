@@ -25,5 +25,5 @@ protected:
 	EUnitFactions UnitSpawnFaction = EUnitFactions::Neutral;
 
 public:
-	void Fire(class ADropPointGameMode* OwnerMode, const FDropPointGridCoord& Coordinates) override;
+	virtual void Fire(class ADropPointGameMode* OwnerMode, const FDropPointGridCoord& Coordinates) override;
 };

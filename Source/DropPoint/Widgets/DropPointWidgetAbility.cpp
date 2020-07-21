@@ -3,9 +3,7 @@
 
 #include "DropPointWidgetAbility.h"
 #include "DropPointAbility.h"
-#include "DropPointCharacter.h"
 #include "DropPointEnums.h"
-#include "Engine/Texture2D.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 

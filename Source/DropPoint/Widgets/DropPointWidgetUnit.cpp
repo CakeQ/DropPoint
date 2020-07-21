@@ -10,8 +10,6 @@
 #include "Components/WrapBox.h"
 #include "Components/Image.h"
 #include "Components/HorizontalBox.h"
-#include "Components/VerticalBox.h"
-#include "Components/PanelSlot.h"
 #include "Components/HorizontalBoxSlot.h"
 
 void UDropPointWidgetUnit::SetCurrentUnit(class ADropPointUnit* Unit)
@@ -58,7 +56,7 @@ void UDropPointWidgetUnit::UpdateMaxHealth(const int32& Value)
 				UPanelSlot* NewSlot = HorizontalBox_Health->AddChild(NewBlip);
 				if (UHorizontalBoxSlot* HorSlot = Cast<UHorizontalBoxSlot>(NewSlot))
 				{
-					FSlateChildSize Size(ESlateSizeRule::Type::Fill);
+					const FSlateChildSize Size(ESlateSizeRule::Type::Fill);
 					HorSlot->SetSize(Size);
 				}
 			}
@@ -101,15 +99,15 @@ void UDropPointWidgetUnit::UpdateWidgets()
 
 	if (TextBlock_UnitName)
 	{
-		TextBlock_UnitName->SetText(FText::FromString(OwnerUnit->GetName()));
+		TextBlock_UnitName->SetText(FText::FromString(OwnerUnit->GetUnitName()));
 	}
 	if (TextBlock_UnitDesc)
 	{
-		TextBlock_UnitDesc->SetText(FText::FromString(OwnerUnit->GetDescription()));
+		TextBlock_UnitDesc->SetText(FText::FromString(OwnerUnit->GetUnitDescription()));
 	}
 	if (Image_Thumbnail)
 	{
-		Image_Thumbnail->SetBrushFromTexture(OwnerUnit->GetThumbnail());
+		Image_Thumbnail->SetBrushFromTexture(OwnerUnit->GetUnitThumbnail());
 	}
 }
 
@@ -133,7 +131,7 @@ void UDropPointWidgetUnit::UpdateButtons()
 	FDropPointUnitButtons ButtonSet;
 
 	bool bFound = false;
-	for (FDropPointUnitButtons UnitButtons : AbilityButtons)
+	for (FDropPointUnitButtons& UnitButtons : AbilityButtons)
 	{
 		if (UnitButtons.Parent == OwnerUnit)
 		{

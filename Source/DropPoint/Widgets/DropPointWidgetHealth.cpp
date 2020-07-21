@@ -4,7 +4,7 @@
 #include "DropPointWidgetHealth.h"
 #include "Components/Image.h"
 
-void UDropPointWidgetHealth::SetState(bool bOn)
+void UDropPointWidgetHealth::SetState(const bool bOn)
 {
 	if (bOn)
 	{

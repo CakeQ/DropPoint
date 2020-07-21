@@ -8,12 +8,10 @@
 #include "DropPointAbility.h"
 #include "Widgets/DropPointWidgetTurn.h"
 #include "Tiles/DropPointTile.h"
-#include "Tiles/DropPointTileInteractive.h"
 #include "CoreMinimal.h"
 #include "Engine/World.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Actor.h"
-#include "Components/TextRenderComponent.h"
 #include "Blueprint/UserWidget.h"
 
 ADropPointGameMode::ADropPointGameMode()
@@ -60,7 +58,7 @@ int32 ADropPointGameMode::GetLinearIndex(const FDropPointGridCoord& Coord) const
 	return (Coord.GridY * GridSize) + Coord.GridX;
 }
 
-int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size) const
+int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size)
 {
 	if (Index >= 0 && Index <= (((Size - 1) * Size) + (Size - 1)))
 	{
@@ -69,13 +67,13 @@ int32 ADropPointGameMode::IsInLinearRange(const int32& Index, const int32& Size)
 	return false;
 }
 
-void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& Coord, ADropPointTile* tile)
+void ADropPointGameMode::SetTilePos(const FDropPointGridCoord& Coord, ADropPointTile* Tile)
 {
 	check(IsInsideArena(Coord));
 	const int32 Index = GetLinearIndex(Coord);
 	check(IsInLinearRange(Index, GridSize));
-	tile->SetTileCoords(Coord);
-	Tiles[Index] = tile;
+	Tile->SetTileCoords(Coord);
+	Tiles[Index] = Tile;
 }
 
 ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& Coord) const
@@ -94,7 +92,7 @@ ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origi
 	return GetTileAtPos(FDropPointGridCoord(Origin.GridX + Offset.GridX, Origin.GridY + Offset.GridY));
 }
 
-bool ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, bool bForce = false)
+bool ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, const bool bForce = false) const
 {
 	if (!IsInsideArena(Coord))
 	{
@@ -105,7 +103,7 @@ bool ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPoin
 	return RefTile->SetUnit(Unit, bForce);
 }
 
-bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, EUnitLayers Layer = EUnitLayers::Ground) const
+bool ADropPointGameMode::TileHasUnit(const FDropPointGridCoord& Coord, const EUnitLayers& Layer = EUnitLayers::Ground) const
 {
 	if (!IsInsideArena(Coord))
 	{
@@ -131,7 +129,7 @@ bool ADropPointGameMode::IsInsideArena(const FDropPointGridCoord& Coord) const
 	return false;
 }
 
-ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit> UnitType, EUnitFactions Faction, bool bForce = false)
+ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit>& UnitType, EUnitFactions& Faction, const bool bForce = false)
 {
 	if (!UnitType || !IsInsideArena(Coord))
 	{
@@ -156,6 +154,17 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 			}
 		}
 	}
+	else
+	{
+		for (ADropPointUnit* ExistingUnit : Units)
+		{
+			if (ExistingUnit->HasUnitFlag(EUnitFlags::Core) && ExistingUnit->GetFaction() == NewUnit->GetFaction())
+			{
+				NewUnit->SetCore(ExistingUnit);
+				break;
+			}
+		}
+	}
 
 	if (!SetTileUnit(Coord, NewUnit, bForce) && NewUnit)
 	{
@@ -172,7 +181,7 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 	return NewUnit;
 }
 
-ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord, TSubclassOf<class ADropPointTile> TileType, bool bForce)
+ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord, const TSubclassOf<class ADropPointTile>& TileType, const bool bForce = false)
 {
 	const float XOffset = (Coord.GridX * TileSize) - GridOffset; // Divide by dimension
 	const float YOffset = ((Coord.GridY % GridSize) * TileSize) - GridOffset; // Modulo gives remainder
@@ -225,7 +234,7 @@ void ADropPointGameMode::EndTurn()
 	OnEndTurn.Broadcast(++TurnCount);
 }
 
-TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(float DistToCenter)
+TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(const float& DistToCenter)
 {
 	if (!TilePool.Num())
 	{
@@ -236,8 +245,8 @@ TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(float DistToCen
 	TArray<int32> Pool;
 	for (int32 Index = 0; Index < TilePool.Num(); Index++)
 	{
-		FDropPointPoolItem PoolItem = TilePool[Index];
-		int32 ItemWeight = floor((PoolItem.GetWeight(DistToCenter)) * 100);
+		FDropPointPoolItem& PoolItem = TilePool[Index];
+		const int32 ItemWeight = floor((PoolItem.GetWeight(DistToCenter)) * 100);
 
 		for (int32 Counter = 0; Counter < ItemWeight; Counter++)
 		{
@@ -250,7 +259,7 @@ TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(float DistToCen
 		return nullptr;
 	}
 
-	int32 IndexToUse = round(FMath::SRand() * (Pool.Num() - 1));
+	const int32 IndexToUse = round(FMath::SRand() * (Pool.Num() - 1));
 
 	// Pick the candidate.
 	return TilePool[Pool[IndexToUse]].TileClass;
@@ -265,7 +274,7 @@ void ADropPointGameMode::SpawnArena()
 	}
 
 	// Get grid central coordinate. For use with distancing.
-	FVector GridCenter = FVector(GridSize / 2, GridSize / 2, 0);
+	const FVector GridCenter = FVector(GridSize / 2, GridSize / 2, 0);
 
 	// Loop to spawn each block
 	for (int32 BlockXIndex = 0; BlockXIndex < GridSize; BlockXIndex++)
@@ -273,8 +282,8 @@ void ADropPointGameMode::SpawnArena()
 		for (int32 BlockYIndex = 0; BlockYIndex < GridSize; BlockYIndex++)
 		{
 			// Get distance to center, for positional spawn pool bonuses.
-			float DistToCenter = FVector::DistXY(FVector(BlockXIndex, BlockYIndex, 0), GridCenter);
-			TSubclassOf<ADropPointTile> TileTypeClass = PickTileFromPool(DistToCenter);
+			const float DistToCenter = FVector::DistXY(FVector(BlockXIndex, BlockYIndex, 0), GridCenter);
+			const TSubclassOf<ADropPointTile>& TileTypeClass = PickTileFromPool(DistToCenter);
 			CreateTile(FDropPointGridCoord(BlockXIndex, BlockYIndex), TileTypeClass, false);
 		}
 	}

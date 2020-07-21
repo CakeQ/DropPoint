@@ -12,7 +12,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateHealthDelegate, const int32&,
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGatherMineralsDelegate, const int32&, Amount);
 
 /**
- * The base unit type used within the DropPoint game mode. Handles all functionality for units, including calling their abilities. All units within the game should be a blueprint subtype, as the abilities and properties are inhereted from the class defaults.
+ * The base unit type used within the DropPoint game mode. Handles all functionality for units, including calling their abilities.
+ * All units within the game should be a blueprint subtype, as the abilities and properties are inherited from the class defaults.
  */
 UCLASS()
 class DROPPOINT_API ADropPointUnit : public AActor
@@ -92,7 +93,7 @@ public:
 
 	/** Set the unit to start launching. */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void TryLaunch();
+	void TryLaunch() const;
 
 	/** Trigger all passive abilities the unit has. */
 	UFUNCTION(Category = Unit, BlueprintCallable)
@@ -113,7 +114,7 @@ public:
 	void AdjustHealth(const int32& Amount);
 
 	/** Override base actor TakeDamage. Calls AdjustHealth() with a negative value. */
-	float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	/** WIP: Kills the unit. Should be different from Destroy() as it should leave behind debris. */
 	UFUNCTION(Category = Unit, BlueprintCallable)
@@ -124,27 +125,27 @@ public:
 	 * @param bOn - The highlight state.
 	 */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void HighlightUnit(bool bOn);
+	void HighlightUnit(bool bOn) const;
 
 	/** Triggers any post-create components (such as multi-tiled or scatter replication logic). */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void PostCreateUnit(class ADropPointGameMode* OwnerMode);
+	void PostCreateUnit(class ADropPointGameMode* OwnerMode) const;
 
 	/** Gets the unit's current health. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	int32 GetHealth() { return Health; };
+	int32 GetHealth() const { return Health; };
 
 	/** Gets the unit's maximum possible health. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const int32& GetMaxHealth() { return MaxHealth; };
+	const int32& GetMaxHealth() const { return MaxHealth; };
 
 	/** Gets the amount of time in turns left before the unit can launch. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const int32& GetTimeToLaunch() { return TimeToLaunch; };
+	const int32& GetTimeToLaunch() const { return TimeToLaunch; };
 
 	/** Gets the unit's faction. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const EUnitFactions& GetFaction() { return UnitFaction; };
+	const EUnitFactions& GetFaction() const { return UnitFaction; };
 
 	/**
 	 * Sets the unit's faction.
@@ -155,7 +156,7 @@ public:
 
 	/** Gets the unit's layer on the grid tile. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const EUnitLayers& GetLayer() { return UnitLayer; };
+	const EUnitLayers& GetLayer() const { return UnitLayer; };
 
 	/**
 	 * Sets the unit's layer.
@@ -173,7 +174,7 @@ public:
 
 	/** Gets the unit's current grid tile. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	class ADropPointTile* GetConnectedTile() { return ConnectedTile; };
+	class ADropPointTile* GetConnectedTile() const { return ConnectedTile; };
 
 	/**
 	 * Sets the unit's current grid tile.
@@ -191,26 +192,26 @@ public:
 
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetName() { return UnitName; };
+	const FString& GetUnitName() const { return UnitName; };
 
 	/** Gets the unit's UI description. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetDescription() { return UnitDesc; };
+	const FString& GetUnitDescription() const { return UnitDesc; };
 
 	/** Gets the unit's UI thumbnail. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	class UTexture2D* GetThumbnail() { return UnitThumbnail; };
+	class UTexture2D* GetUnitThumbnail() const { return UnitThumbnail; };
 
 	/**
 	 * Checks to see if the unit has the input property flag.
 	 * @param Value - The flag to check.
 	 */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)
-	bool HasUnitFlag(EUnitFlags Value) { return UnitFlags & (uint8)Value; };
+	bool HasUnitFlag(EUnitFlags Value) const { return UnitFlags & (uint8)Value; };
 
 	/** Change the unit's material. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)
-	void ChangeMaterial(UMaterialInstance* NewMaterial) { UnitMesh->SetMaterial(0, NewMaterial); };
+	void ChangeMaterial(UMaterialInstance* NewMaterial) const { UnitMesh->SetMaterial(0, NewMaterial); };
 
 	/**
 	 * Check to see which two units' factions predicates one another within the enum define. Used to sort units in the game's unit turn order.

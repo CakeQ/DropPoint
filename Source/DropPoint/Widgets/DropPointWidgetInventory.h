@@ -31,7 +31,7 @@ protected:
 public:
 	/**
 	 * Creates a button for each unit class given to the function.
-	 * @param Units - The list of all the unit classes to generate buttons for.
+	 * @param Inventory - The list of all the unit classes to generate buttons for.
 	 * @param Player - Reference to the player the button will be bound to. Used to tell the player what type of unit it should spawn after clicking the buttons.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)

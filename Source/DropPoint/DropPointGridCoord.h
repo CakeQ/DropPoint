@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/UserDefinedStruct.h"
 #include "DropPointGridCoord.generated.h"
 
 /**
@@ -20,8 +19,8 @@ public:
 	FDropPointGridCoord(const int32& NewX, const int32& NewY);
 
 	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
-	int32 GridX;
+	int32 GridX = 0;
 
 	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
-	int32 GridY;	
+	int32 GridY = 0;	
 };

@@ -26,5 +26,5 @@ public:
 	 * Called when the ability component is selected to fire. Changes the material of the owning unit to the TestMaterial.
 	 * @param Owner - The unit to handle functionality with.
 	 */
-	void Trigger(class ADropPointUnit* Owner) override;
+	virtual void Trigger(class ADropPointUnit* Owner) override;
 };

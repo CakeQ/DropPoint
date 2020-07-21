@@ -21,5 +21,5 @@ public:
 	 * Called when the ability component is selected to fire. Gives the unit minerals passively if the tile it sits on contains minerals.
 	 * @param Owner - The unit to handle functionality with.
 	 */
-	void Trigger(class ADropPointUnit* Owner) override;
+	virtual void Trigger(class ADropPointUnit* Owner) override;
 };

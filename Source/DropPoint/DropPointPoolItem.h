@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/UserDefinedStruct.h"
 #include "DropPointPoolItem.generated.h"
 
 /**
@@ -24,8 +23,8 @@ public:
 	UPROPERTY(Category = Weights, EditInstanceOnly, BlueprintReadOnly)
 	int32 BonusDistanceMax = -1;
 
-	FORCEINLINE UFUNCTION()
-	float GetLocationBonus(const int32& CurrentDistance) { return (BonusDistanceMin <= CurrentDistance && CurrentDistance <= BonusDistanceMax) ? BonusWeight : 0; };
+	FORCEINLINE UFUNCTION(Category = Weights, EditInstanceOnly, BlueprintReadOnly)
+	float GetLocationBonus(const int32& CurrentDistance) const { return (BonusDistanceMin <= CurrentDistance && CurrentDistance <= BonusDistanceMax) ? BonusWeight : 0; };
 };
 
 /**
@@ -49,13 +48,3 @@ public:
 	FORCEINLINE UFUNCTION()
 	float GetWeight(const int32& CurrentDistance);
 };
-
-float FDropPointPoolItem::GetWeight(const int32& CurrentDistance)
-{
-	float ReturnWeight = BaseWeight;
-	for (FDropPointPoolBonus Bonus : BonusWeights)
-	{
-		ReturnWeight += Bonus.GetLocationBonus(CurrentDistance);
-	}
-	return FMath::Max(0.0f, ReturnWeight);
-}

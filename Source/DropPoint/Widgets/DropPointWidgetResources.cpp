@@ -14,8 +14,8 @@ void UDropPointWidgetResources::SetResources(const int32& Value)
 	}
 	if (ProgressBar_Minerals)
 	{
-		int32 NetAmount = FMath::Clamp(MineralsValue - SpentValue, BarMin, BarMax);
-		double BarPercent = (double)(NetAmount - BarMin) / (double)(BarMax - BarMin);
+		const int32 NetAmount = FMath::Clamp(MineralsValue - SpentValue, BarMin, BarMax);
+		const double BarPercent = (double)(NetAmount - BarMin) / (double)(BarMax - BarMin);
 		ProgressBar_Minerals->SetPercent(BarPercent);
 	}
 }
@@ -28,9 +28,9 @@ void UDropPointWidgetResources::AddResources(const int32& Value)
 void UDropPointWidgetResources::SetExpenditure(const int32& Value)
 {
 	SpentValue = Value;
-	if (TextBlock_Spenditure)
+	if (TextBlock_Expenditure)
 	{
-		TextBlock_Spenditure->SetText(FText::Format(FText::FromString("SPENT: {0}"), SpentValue));
+		TextBlock_Expenditure->SetText(FText::Format(FText::FromString("SPENT: {0}"), SpentValue));
 	}
 	if (TextBlock_Minerals)
 	{

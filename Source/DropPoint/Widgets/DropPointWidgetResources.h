@@ -19,7 +19,7 @@ protected:
 	class UTextBlock* TextBlock_Minerals;
 
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-	class UTextBlock* TextBlock_Spenditure;
+	class UTextBlock* TextBlock_Expenditure;
 
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* TextBlock_Budget;

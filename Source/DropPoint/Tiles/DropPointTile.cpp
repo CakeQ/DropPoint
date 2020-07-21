@@ -4,10 +4,7 @@
 #include "DropPointUnit.h"
 #include "DropPointSpawnComponent.h"
 #include "DropPointGridCoord.h"
-#include "Engine/StaticMesh.h"
 #include "Components/StaticMeshComponent.h"
-#include "Materials/MaterialInstance.h"
-#include "UObject/ConstructorHelpers.h"
 
 ADropPointTile::ADropPointTile()
 {
@@ -67,7 +64,7 @@ ADropPointUnit* ADropPointTile::GetUnit(EUnitLayers Layer = EUnitLayers::Ground)
 	return nullptr;
 }
 
-void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode)
+void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode) const
 {
 	TArray<UDropPointSpawnComponent*> LogicComponents;
 	GetComponents<UDropPointSpawnComponent>(LogicComponents);
@@ -92,7 +89,7 @@ void ADropPointTile::RemoveTileFlag(const ETileFlags& Value)
 	TileFlags &= ~(uint8)Value;
 }
 
-bool ADropPointTile::HasTileFlag(const ETileFlags& Value)
+bool ADropPointTile::HasTileFlag(const ETileFlags& Value) const
 {
 	return TileFlags & (uint8)Value;
 }

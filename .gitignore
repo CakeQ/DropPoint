@@ -75,3 +75,7 @@ DerivedDataCache/*
 
 # Local WIP screenshots
 WIP Progress/*
+
+# Rider files
+*.iml
+.idea/*

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "DropPointUnit.h"
-#include "Engine/UserDefinedStruct.h"
 #include "DropPointUnitItem.generated.h"
 
 /**

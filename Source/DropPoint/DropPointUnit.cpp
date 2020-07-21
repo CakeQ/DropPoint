@@ -6,7 +6,6 @@
 #include "DropPointGameMode.h"
 #include "DropPointSpawnComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "Materials/MaterialInstance.h"
 
 // Sets default values
 ADropPointUnit::ADropPointUnit()
@@ -28,7 +27,7 @@ void ADropPointUnit::Tick(float DeltaTime)
 
 }
 
-void ADropPointUnit::TryLaunch()
+void ADropPointUnit::TryLaunch() const
 {
 	if (GetTimeToLaunch() > 0)
 	{
@@ -87,12 +86,12 @@ void ADropPointUnit::Die()
 	Destroy();
 }
 
-void ADropPointUnit::HighlightUnit(bool bOn)
+void ADropPointUnit::HighlightUnit(const bool bOn) const
 {
-	UnitMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), (float)bOn);
+	UnitMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), static_cast<float>(bOn));
 }
 
-void ADropPointUnit::PostCreateUnit(class ADropPointGameMode* OwnerMode)
+void ADropPointUnit::PostCreateUnit(class ADropPointGameMode* OwnerMode) const
 {
 	TArray<UDropPointSpawnComponent*> LogicComponents;
 	GetComponents<UDropPointSpawnComponent>(LogicComponents);

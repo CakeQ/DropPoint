@@ -184,7 +184,7 @@ public:
 
 	/** Gets the current unit spawn type class. */
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
-	TSubclassOf<class ADropPointUnit> GetUnitSpawnType() { return UnitSpawnTypeClass; };
+	TSubclassOf<class ADropPointUnit> GetUnitSpawnType() const { return UnitSpawnTypeClass; };
 
 	/** Sets the current unit spawn type class. */
 	UFUNCTION(Category = DropPoint, BlueprintSetter)
@@ -192,5 +192,8 @@ public:
 
 	/** Gets the current amount of minerals the player has access to. */
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
-	const int32& GetMineralBudget() { return MineralsAvailable; };
+	const int32& GetMineralBudget() const { return MineralsAvailable; };
+
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	const EUnitFactions& GetFaction() const { return PlayerFaction; };
 };

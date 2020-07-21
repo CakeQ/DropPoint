@@ -67,7 +67,7 @@ public:
 	 * @param Value - The flag to check.
 	 */
 	UFUNCTION(Category = Tile, BlueprintCallable)
-	bool HasTileFlag(const ETileFlags& Value);
+	bool HasTileFlag(const ETileFlags& Value) const;
 
 	/** Gets the tile's current grid coordinates. */
 	FORCEINLINE UFUNCTION(Category = Tile, BlueprintGetter)
@@ -82,7 +82,7 @@ public:
 
 	/** Gets the tile's existence priority. Some tiles are just more important than others. :( */
 	FORCEINLINE UFUNCTION(Category = Tile, BlueprintGetter)
-	const ETilePriorities& GetPriority() { return TilePriority; };
+	const ETilePriorities& GetPriority() const { return TilePriority; };
 
 	/**
 	 * Checks to see if this tile has a unit in the given layer.
@@ -108,5 +108,5 @@ public:
 
 	/** Triggers any post-create components (such as multi-tiled or scatter replication logic). */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void PostCreateTile(class ADropPointGameMode* OwnerMode);
+	void PostCreateTile(class ADropPointGameMode* OwnerMode) const;
 };

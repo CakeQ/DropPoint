@@ -24,11 +24,11 @@ void UDropPointWidgetInventoryUnit::SetUnitType(TSubclassOf<class ADropPointUnit
 	UnitType = Cast<ADropPointUnit>(NewType->GetDefaultObject());
 	if (Image_Thumbnail)
 	{
-		Image_Thumbnail->SetBrushFromTexture(UnitType->GetThumbnail());
+		Image_Thumbnail->SetBrushFromTexture(UnitType->GetUnitThumbnail());
 	}
 	if (Button_Unit)
 	{
-		Button_Unit->SetToolTipText(FText::FromString(UnitType->GetName()));
+		Button_Unit->SetToolTipText(FText::FromString(UnitType->GetUnitName()));
 	}
 }
 

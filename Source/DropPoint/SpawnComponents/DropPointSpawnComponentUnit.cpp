@@ -3,7 +3,6 @@
 
 #include "DropPointSpawnComponentUnit.h"
 #include "DropPointGameMode.h"
-#include "DropPointUnit.h"
 
 void UDropPointSpawnComponentUnit::Fire(class ADropPointGameMode* OwnerMode, const FDropPointGridCoord& Coordinates)
 {
