@@ -196,4 +196,10 @@ public:
 
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
 	const EUnitFactions& GetFaction() const { return PlayerFaction; };
+	
+	/**
+	* Gives the player a unit to take ownership of. Mostly for connecting up widgets correctly.
+	* @param NewUnit - The unit to take ownership of.
+	*/
+	void AddUnit(class ADropPointUnit* NewUnit) const;
 };

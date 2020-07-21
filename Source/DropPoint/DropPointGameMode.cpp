@@ -51,6 +51,14 @@ void ADropPointGameMode::BeginPlay()
 	GridOffset = floor(((GridSize * TileSize) / 2) / 100) * 100;
 
 	SpawnArena();
+
+	for (ADropPointUnit* Unit : GetUnits())
+	{
+		if (Unit->GetFaction() == PlayerCharacter->GetFaction())
+		{
+			PlayerCharacter->AddUnit(Unit);
+		}
+	}
 }
 
 int32 ADropPointGameMode::GetLinearIndex(const FDropPointGridCoord& Coord) const

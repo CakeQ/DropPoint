@@ -83,6 +83,15 @@ void ADropPointCharacter::SetUnitSpawnType(TSubclassOf<class ADropPointUnit> New
 	}
 }
 
+void ADropPointCharacter::AddUnit(ADropPointUnit* NewUnit) const
+{
+	if(ResourcesWidget)
+	{
+		NewUnit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
+	}
+}
+
+
 void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -142,18 +151,6 @@ void ADropPointCharacter::BeginPlay()
 			ResourcesWidget->SetExpenditure(StartingExpenditure);
 			ResourcesWidget->SetBudget(MineralsAvailable);
 			ResourcesWidget->AddToViewport();
-		}
-	}
-
-	ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
-	if (gamemode && ResourcesWidget)
-	{
-		for (ADropPointUnit* Unit : gamemode->GetUnits())
-		{
-			if (Unit->GetFaction() == GetFaction())
-			{
-				Unit->OnGatherMinerals.AddDynamic(ResourcesWidget, &UDropPointWidgetResources::AddResources);
-			}
 		}
 	}
 }
