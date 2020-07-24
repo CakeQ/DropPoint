@@ -22,5 +22,20 @@ public:
 	int32 GridX = 0;
 
 	UPROPERTY(Category = Coordinates, EditAnywhere, BlueprintReadWrite)
-	int32 GridY = 0;	
+	int32 GridY = 0;
+	
+	bool operator==(const FDropPointGridCoord& Coord2) const;
+
+	FDropPointGridCoord operator+=(const FDropPointGridCoord& Coord2);
+	FDropPointGridCoord operator-=(const FDropPointGridCoord& Coord2);
+	
+	friend FDropPointGridCoord operator+(FDropPointGridCoord Coord1, const FDropPointGridCoord& Coord2)
+	{
+		return Coord1 += Coord2;
+	}
+
+	friend FDropPointGridCoord operator-(FDropPointGridCoord Coord1, const FDropPointGridCoord& Coord2)
+	{
+		return Coord1 -= Coord2;
+	}
 };

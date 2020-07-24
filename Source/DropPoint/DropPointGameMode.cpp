@@ -97,7 +97,69 @@ ADropPointTile* ADropPointGameMode::GetTileAtPos(const FDropPointGridCoord& Coor
 
 ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const
 {
-	return GetTileAtPos(FDropPointGridCoord(Origin.GridX + Offset.GridX, Origin.GridY + Offset.GridY));
+	return GetTileAtPos(Origin + Offset);
+}
+
+TArray<ADropPointTile*> ADropPointGameMode::GetTileORange(const FDropPointGridCoord& Origin, const int32& Range) const
+{
+	return GetTileRange(Origin, Range, false);
+}
+
+TArray<ADropPointTile*> ADropPointGameMode::GetTileRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin = true) const
+{
+	TArray<ADropPointTile*> Ret;
+	const FVector OriginVector(Origin.GridX, Origin.GridY, 0);
+	
+	for(int i = -Range; i <= Range; i++)
+	{
+		for(int j = -Range; j <= Range; j++)
+		{
+			FDropPointGridCoord Coord = Origin + FDropPointGridCoord(i, j);
+			if(IsInLinearRange(GetLinearIndex(Coord), GridSize))
+			{
+				if(Coord == Origin && !bIncludeOrigin)
+				{
+					continue;
+				}
+				ADropPointTile* Tile = GetTileAtPos(Coord);
+				if(Tile)
+				{
+					Ret.Add(Tile);
+				}
+			}
+		}
+	}
+
+	return Ret;
+}
+
+TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordORange(const FDropPointGridCoord& Origin, const int32& Range) const
+{
+	return GetCoordRange(Origin, Range, false);
+}
+
+TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin = true) const
+{
+	TArray<FDropPointGridCoord> Ret;
+	const FVector OriginVector(Origin.GridX, Origin.GridY, 0);
+	
+	for(int i = -Range; i <= Range; i++)
+	{
+		for(int j = -Range; j <= Range; j++)
+		{
+			FDropPointGridCoord Coord = Origin + FDropPointGridCoord(i, j);
+			if(IsInLinearRange(GetLinearIndex(Coord), GridSize))
+			{
+				if(Coord == Origin && !bIncludeOrigin)
+				{
+					continue;
+				}
+				Ret.Add(Coord);
+			}
+		}
+	}
+
+	return Ret;
 }
 
 bool ADropPointGameMode::SetTileUnit(const FDropPointGridCoord& Coord, ADropPointUnit* Unit, const bool bForce = false) const
@@ -198,13 +260,16 @@ ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord,
 	const FVector BlockLocation = FVector(XOffset, YOffset, 0.f);
 
 	ADropPointTile* ExistingTile = GetTileAtPos(Coord);
-	if (ExistingTile && ExistingTile->GetPriority() >= TileType->GetDefaultObject<ADropPointTile>()->GetPriority())
+	if(ExistingTile)
 	{
-		if (!bForce)
+		if (ExistingTile->GetPriority() <= TileType->GetDefaultObject<ADropPointTile>()->GetPriority() || bForce)
+		{
+			ExistingTile->Destroy();
+		}
+		else
 		{
 			return nullptr;
 		}
-		ExistingTile->Destroy();
 	}
 
 	ADropPointTile* NewTile = GetWorld()->SpawnActor<ADropPointTile>(TileType, BlockLocation, FRotator(0, 0, 0));

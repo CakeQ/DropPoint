@@ -91,7 +91,6 @@ void ADropPointCharacter::AddUnit(ADropPointUnit* NewUnit) const
 	}
 }
 
-
 void ADropPointCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -180,8 +179,8 @@ void ADropPointCharacter::TriggerClick()
 		}
 		if (UnitSpawnTypeClass)
 		{
-			ADropPointGameMode* gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
-			if (gamemode)
+			ADropPointGameMode* Gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+			if (Gamemode)
 			{
 				for (FDropPointUnitItem& UnitItem : UnitInventory)
 				{
@@ -195,7 +194,7 @@ void ADropPointCharacter::TriggerClick()
 					}
 				}
 
-				ADropPointUnit* NewUnit = gamemode->CreateUnit(CurrentTileFocus->GetGridCoords(), UnitSpawnTypeClass, PlayerFaction, false);
+				ADropPointUnit* NewUnit = Gamemode->CreateUnit(CurrentTileFocus->GetTileCoords(), UnitSpawnTypeClass, PlayerFaction, false);
 
 				if (!NewUnit)
 				{

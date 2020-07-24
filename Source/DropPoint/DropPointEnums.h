@@ -3,8 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/UserDefinedEnum.h"
+#include "DropPointGridCoord.h"
 #include "DropPointEnums.generated.h"
+
+/**
+ * Directional coordinate enums. Great for directional based coordinate manipulation.
+ */
+UENUM()
+enum class EGridDirections : uint8
+{
+	North,
+	NorthEast,
+    East,
+	SouthEast,
+	South,
+	SouthWest,
+	West,
+	NorthWest
+};
 
 /**
  * Tile property flags.

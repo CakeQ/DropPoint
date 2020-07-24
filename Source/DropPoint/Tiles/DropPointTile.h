@@ -71,7 +71,7 @@ public:
 
 	/** Gets the tile's current grid coordinates. */
 	FORCEINLINE UFUNCTION(Category = Tile, BlueprintGetter)
-	FDropPointGridCoord& GetGridCoords() { return TileCoordinates; };
+	const FDropPointGridCoord& GetTileCoords() const { return TileCoordinates; };
 
 	/**
 	 * Sets the tile to have the given coordinates within the grid.

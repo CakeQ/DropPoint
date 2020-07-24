@@ -120,6 +120,40 @@ public:
 	class ADropPointTile* GetTileStep(const FDropPointGridCoord& Origin, const FDropPointGridCoord& Offset) const;
 
 	/**
+	* Returns an array of tiles around the origin coordinates, excluding the origin tile.
+	* @param Origin - The origin coordinates.
+	* @param Range - The range to iterate through.
+	*/
+	UFUNCTION(Category = Grid, BlueprintCallable)
+    TArray<class ADropPointTile*> GetTileORange(const FDropPointGridCoord& Origin, const int32& Range) const;
+	
+	/**
+	* Returns an array of tiles around the origin coordinates, including the origin tile.
+	* @param Origin - The origin coordinates.
+	* @param Range - The range to iterate through.
+	* @param bIncludeOrigin - Include the origin tile or not.
+	*/
+	UFUNCTION(Category = Grid, BlueprintCallable)
+    TArray<class ADropPointTile*> GetTileRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin) const;
+	
+	/**
+	* Returns an array of coordinates around the origin coordinates, excluding the origin coordinate.
+	* @param Origin - The origin coordinates.
+	* @param Range - The range to iterate through.
+	*/
+	UFUNCTION(Category = Grid, BlueprintCallable)
+    TArray<FDropPointGridCoord> GetCoordORange(const FDropPointGridCoord& Origin, const int32& Range) const;
+	
+	/**
+	* Returns an array of coordinates around the origin coordinates.
+	* @param Origin - The origin coordinates.
+	* @param Range - The range to iterate through.
+	* @param bIncludeOrigin - Include the origin tile or not.
+	*/
+	UFUNCTION(Category = Grid, BlueprintCallable)
+    TArray<FDropPointGridCoord> GetCoordRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin) const;
+	
+	/**
 	 * Sets a referenced unit at the given coordinates. Takes the unit's layer into account. Returns true if successful.
 	 * @param Coord - The X and Y values of the desired Coordinate.
 	 * @param Unit - The referenced unit to move.

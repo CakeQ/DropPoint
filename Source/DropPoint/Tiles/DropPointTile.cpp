@@ -52,7 +52,7 @@ bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 	return true;
 }
 
-ADropPointUnit* ADropPointTile::GetUnit(EUnitLayers Layer = EUnitLayers::Ground)
+ADropPointUnit* ADropPointTile::GetUnit(const EUnitLayers Layer = EUnitLayers::Ground)
 {
 	for (ADropPointUnit* Unit : Units)
 	{
@@ -70,7 +70,7 @@ void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode) const
 	GetComponents<UDropPointSpawnComponent>(LogicComponents);
 	for (UDropPointSpawnComponent* LogicComponent : LogicComponents)
 	{
-		LogicComponent->Fire(OwnerMode, TileCoordinates);
+		LogicComponent->Fire(OwnerMode, GetTileCoords());
 	}
 }
 
