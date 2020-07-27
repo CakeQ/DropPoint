@@ -120,6 +120,9 @@ public:
 	UFUNCTION(Category = Unit, BlueprintCallable)
 	void Die();
 
+	/** Destroys the unit. */
+	bool DestroyUnit();
+
 	/**
 	 * Toggles whether or not the unit appears to be highlighted.
 	 * @param bOn - The highlight state.

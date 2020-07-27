@@ -86,6 +86,11 @@ void ADropPointUnit::Die()
 	Destroy();
 }
 
+bool ADropPointUnit::DestroyUnit()
+{
+	return GetWorld()->DestroyActor(this);
+}
+
 void ADropPointUnit::HighlightUnit(const bool bOn) const
 {
 	UnitMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), static_cast<float>(bOn));

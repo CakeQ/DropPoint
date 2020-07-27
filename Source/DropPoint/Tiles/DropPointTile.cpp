@@ -31,7 +31,7 @@ bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
 	return false;
 }
 
-bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
+bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, const bool bForce = false)
 {
 	for (ADropPointUnit* Unit : Units)
 	{
@@ -42,7 +42,7 @@ bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, bool bForce = false)
 				return false;
 			}
 			Units.Remove(Unit);
-			Unit->Destroy();
+			GetWorld()->DestroyActor(Unit);
 		}
 	}
 	Units.Add(NewUnit);
@@ -72,6 +72,18 @@ void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode) const
 	{
 		LogicComponent->Fire(OwnerMode, GetTileCoords());
 	}
+}
+
+bool ADropPointTile::DestroyTile(bool bUnits)
+{
+	if(bUnits)
+	{
+		for(ADropPointUnit* Unit : Units)
+		{
+			Unit->DestroyUnit();
+		}
+	}
+	return GetWorld()->DestroyActor(this);
 }
 
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)

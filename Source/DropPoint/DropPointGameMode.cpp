@@ -9,6 +9,7 @@
 #include "Widgets/DropPointWidgetTurn.h"
 #include "Tiles/DropPointTile.h"
 #include "CoreMinimal.h"
+#include "TextLocalizationResource.h"
 #include "Engine/World.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Actor.h"
@@ -45,7 +46,7 @@ void ADropPointGameMode::BeginPlay()
 	Tiles.SetNum(GridSize* GridSize);
 
 	// Set level seed
-	FMath::SRandInit(FCString::Atoi(*LevelSeed));
+	FMath::SRandInit(FTextLocalizationResource::HashString(*LevelSeed));
 
 	// Calculate grid offset
 	GridOffset = floor(((GridSize * TileSize) / 2) / 100) * 100;
@@ -238,7 +239,7 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 
 	if (!SetTileUnit(Coord, NewUnit, bForce) && NewUnit)
 	{
-		NewUnit->Destroy();
+		NewUnit->DestroyUnit();
 		return nullptr;
 	}
 
@@ -259,20 +260,24 @@ ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord,
 	// Make position vector, offset from Grid location
 	const FVector BlockLocation = FVector(XOffset, YOffset, 0.f);
 
+	// Get reference to any existing tiles at the coord.
 	ADropPointTile* ExistingTile = GetTileAtPos(Coord);
+
+	// Because the default object doesn't work here, we need to create the tile before checking for existing tiles.
+	ADropPointTile* NewTile = GetWorld()->SpawnActor<ADropPointTile>(TileType, BlockLocation, FRotator(0, 0, 0));
+
 	if(ExistingTile)
 	{
-		if (ExistingTile->GetPriority() <= TileType->GetDefaultObject<ADropPointTile>()->GetPriority() || bForce)
+		if (ExistingTile->GetPriority() < NewTile->GetPriority() || bForce)
 		{
-			ExistingTile->Destroy();
+			ExistingTile->DestroyTile(true);
 		}
 		else
 		{
+			NewTile->DestroyTile(true);
 			return nullptr;
 		}
 	}
-
-	ADropPointTile* NewTile = GetWorld()->SpawnActor<ADropPointTile>(TileType, BlockLocation, FRotator(0, 0, 0));
 
 	if (NewTile)
 	{

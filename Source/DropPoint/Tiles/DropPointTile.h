@@ -29,8 +29,8 @@ protected:
 	TArray<class ADropPointUnit*> Units;
 
 	/** The tile's spawn priority. Dictates if the tile can overwrite any existing tiles on the coordinate it's spawning to. */
-	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	ETilePriorities TilePriority = ETilePriorities::Standard;
+	UPROPERTY(Category = Tile, EditAnywhere, BlueprintReadWrite)
+	ETilePriorities TilePriority;
 
 	/** Tile property flags. See EUnitFlags in DropPointEnums.h for flag descriptions. */
 	UPROPERTY(Category = Tile, EditAnywhere, BlueprintReadWrite, meta = (Bitmask, BitmaskEnum = ETileFlags))
@@ -109,4 +109,11 @@ public:
 	/** Triggers any post-create components (such as multi-tiled or scatter replication logic). */
 	UFUNCTION(Category = Unit, BlueprintCallable)
 	void PostCreateTile(class ADropPointGameMode* OwnerMode) const;
+
+	/**
+	 * Destroys the tile, with the option to destroy all units as well.
+	 * @param bUnits - Whether or not units on this tile should be destroyed.
+	 */
+	UFUNCTION(Category = Unit, BlueprintCallable)
+	bool DestroyTile(bool bUnits);
 };
