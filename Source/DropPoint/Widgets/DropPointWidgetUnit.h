@@ -20,7 +20,8 @@ public:
 };
 
 /**
- * 
+ * The unit display widget that displays a unit's properties and abilities. Generates buttons for a units abilities.
+ * Stores unit ability buttons for re-use after generation.
  */
 UCLASS()
 class DROPPOINT_API UDropPointWidgetUnit : public UUserWidget
@@ -28,15 +29,15 @@ class DROPPOINT_API UDropPointWidgetUnit : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-	/** The button class to use within the widget for standard abilities */
+	/** The button class to use within the widget for standard abilities. */
 	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> AbilityButtonClassStandard;
 
-	/** The button class to use within the widget for biome abilities */
+	/** The button class to use within the widget for biome abilities. */
 	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> AbilityButtonClassBiome;
 
-	/** The widget class for the health display */
+	/** The widget class for the health display. */
 	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> HealthWidgetClass;
 
@@ -44,11 +45,11 @@ protected:
 	UPROPERTY(Category = References, EditAnywhere, BlueprintReadWrite)
 	class ADropPointUnit* OwnerUnit;
 
-	/** The container for all the standard ability buttons */
+	/** The container for all the standard ability buttons. */
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
-		class UWrapBox* WrapBox_Abilities_Standard;
+	class UWrapBox* WrapBox_Abilities_Standard;
 
-	/** The container for all the biome ability buttons */
+	/** The container for all the biome ability buttons. */
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
 	class UWrapBox* WrapBox_Abilities_Biome;
 
@@ -68,7 +69,7 @@ protected:
 	UPROPERTY(Category = Components, BlueprintReadOnly, meta = (BindWidget))
 	class UHorizontalBox* HorizontalBox_Health;
 
-	/** The list of all ability buttons, stored per-unit in a struct */
+	/** The list of all ability buttons, stored per-unit in a struct. */
 	UPROPERTY(Category = Components, EditAnywhere, BlueprintReadOnly)
 	TArray<FDropPointUnitButtons> AbilityButtons;
 

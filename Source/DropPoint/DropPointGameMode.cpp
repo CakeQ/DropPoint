@@ -7,6 +7,7 @@
 #include "DropPointUnit.h"
 #include "DropPointAbility.h"
 #include "Widgets/DropPointWidgetTurn.h"
+#include "Widgets/DropPointWidgetLevelDebug.h"
 #include "Tiles/DropPointTile.h"
 #include "CoreMinimal.h"
 #include "TextLocalizationResource.h"
@@ -42,6 +43,13 @@ void ADropPointGameMode::BeginPlay()
 		}
 	}
 
+	if(LevelDebugWidgetClass)
+	{
+		UDropPointWidgetLevelDebug* DebugWidget = CreateWidget<UDropPointWidgetLevelDebug>(GetWorld(), LevelDebugWidgetClass);
+		DebugWidget->SetGameMode(this);
+		DebugWidget->AddToViewport();
+	}
+	
 	// Init tile indexed array size
 	Tiles.SetNum(GridSize* GridSize);
 
@@ -215,7 +223,7 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 
 	ADropPointUnit* NewUnit = GetWorld()->SpawnActor<ADropPointUnit>(UnitType);
 	NewUnit->SetFaction(Faction);
-	if (NewUnit->HasUnitFlag(EUnitFlags::Core))
+	if (NewUnit->HasUnitFlag(EUnitFlags::Core) && Units.Num())
 	{
 		for (ADropPointUnit* LoopUnit : Units)
 		{
@@ -225,7 +233,7 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 			}
 		}
 	}
-	else
+	else if (Units.Num())
 	{
 		for (ADropPointUnit* ExistingUnit : Units)
 		{
@@ -343,6 +351,11 @@ TSubclassOf<ADropPointTile> ADropPointGameMode::PickTileFromPool(const float& Di
 	return TilePool[Pool[IndexToUse]].TileClass;
 }
 
+void ADropPointGameMode::SetSeed(const FText& NewSeed)
+{
+	FMath::SRandInit(FTextLocalizationResource::HashString(*NewSeed.ToString()));
+}
+
 void ADropPointGameMode::SpawnArena()
 {
 	if (!TilePool.Num())
@@ -365,4 +378,25 @@ void ADropPointGameMode::SpawnArena()
 			CreateTile(FDropPointGridCoord(BlockXIndex, BlockYIndex), TileTypeClass, false);
 		}
 	}
+}
+
+void ADropPointGameMode::ClearArena()
+{
+	if(!Tiles.Num())
+	{
+		return;
+	}
+	for(ADropPointTile* Tile : Tiles)
+	{
+		Tile->DestroyTile(true);
+	}
+	Tiles.Empty();
+	Units.Empty();
+}
+
+void ADropPointGameMode::RegenerateArena()
+{
+	ClearArena();
+	Tiles.SetNum(GridSize * GridSize);
+	SpawnArena();
 }

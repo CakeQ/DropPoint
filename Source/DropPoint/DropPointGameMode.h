@@ -31,6 +31,10 @@ protected:
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> TurnCountWidgetClass;
 
+	/** Widget used to debug the level seed. */
+	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> LevelDebugWidgetClass;
+
 	/** The pool of tiles that will be used by the arena generator. */
 	UPROPERTY(Category = Classes, EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FDropPointPoolItem> TilePool;
@@ -42,7 +46,7 @@ protected:
 	/** Reference to the turn tracking widget. */
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	class UDropPointWidgetTurn* TurnCountWidget;
-
+	
 	/** Linearly indexed array of the entire game grid's tiles.*/
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadOnly)
 	TArray<class ADropPointTile*> Tiles;
@@ -211,11 +215,33 @@ public:
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	TSubclassOf<class ADropPointTile> PickTileFromPool(const float& DistToCenter);
 
+	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
+	const FString& GetSeed() const { return LevelSeed; };
+	
+	/**
+	* Changes the currently used seed for the gamemode.
+	* @param NewSeed - The seed to use.
+	*/
+	UFUNCTION(Category = DropPoint, BlueprintSetter)
+	virtual void SetSeed(const FText& NewSeed);
+
 	/**
 	 * Spawns the arena.
 	 */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	virtual void SpawnArena();
+
+	/**
+	* Clears the arena.
+	*/
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	virtual void ClearArena();
+	
+	/**
+	* Helper function that clears the arena before regenerating it.
+	*/
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+    virtual void RegenerateArena();
 };
 
 

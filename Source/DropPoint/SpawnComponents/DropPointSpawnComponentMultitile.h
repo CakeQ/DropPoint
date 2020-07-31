@@ -9,7 +9,7 @@
 #include "DropPointSpawnComponentMultitile.generated.h"
 
 /**
- * 
+ * A spawn component that spawns a set of tiles around the parent actor based on an array of predefined tiles and offsets.
  */
 UCLASS(Blueprintable, Category = DropPoint, meta = (BlueprintSpawnableComponent))
 class DROPPOINT_API UDropPointSpawnComponentMultitile : public UDropPointSpawnComponent
@@ -17,10 +17,15 @@ class DROPPOINT_API UDropPointSpawnComponentMultitile : public UDropPointSpawnCo
 	GENERATED_BODY()
 	
 protected:
-	/** The current unit type class that will be spawned. */
+	/** The array that stores all the multi-tile items to spawn. */
 	UPROPERTY(Category = Classes, EditAnywhere, BlueprintReadWrite)
 	TArray<FDropPointMultitileItem> Tiles;
 
 public:
+	/**
+	 * Spawns all the multi-tile items.
+	 * @param OwnerMode - The owner gamemode to send spawn information to.
+	 * @param Coordinates - The origin coordinates of the parent actor.
+	 */
 	virtual void Fire(class ADropPointGameMode* OwnerMode, const FDropPointGridCoord& Coordinates) override;
 };

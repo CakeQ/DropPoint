@@ -74,9 +74,9 @@ void ADropPointTile::PostCreateTile(ADropPointGameMode* OwnerMode) const
 	}
 }
 
-bool ADropPointTile::DestroyTile(bool bUnits)
+bool ADropPointTile::DestroyTile(const bool bUnits)
 {
-	if(bUnits)
+	if(bUnits && Units.Num())
 	{
 		for(ADropPointUnit* Unit : Units)
 		{
