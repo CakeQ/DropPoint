@@ -158,6 +158,13 @@ void ADropPointCharacter::TriggerClick()
 {
 	if (CurrentTileFocus)
 	{
+		OnTileSelect.Broadcast(CurrentTileFocus);
+		if(HasPlayerFlag(EPlayerFlags::Targeting))
+		{
+			RemovePlayerFlag(EPlayerFlags::Targeting);
+			return;
+		}
+		
 		if (CurrentActiveTile)
 		{
 			CurrentActiveTile->DeactivateTile();
@@ -379,3 +386,24 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 		CurrentTileFocus = nullptr;
 	}
 }
+
+void ADropPointCharacter::SetPlayerFlag(const EPlayerFlags& Value)
+{
+	PlayerFlags = (uint8)Value;
+}
+
+void ADropPointCharacter::AddPlayerFlag(const EPlayerFlags& Value)
+{
+	PlayerFlags |= (uint8)Value;
+}
+
+void ADropPointCharacter::RemovePlayerFlag(const EPlayerFlags& Value)
+{
+	PlayerFlags &= ~(uint8)Value;
+}
+
+bool ADropPointCharacter::HasPlayerFlag(const EPlayerFlags& Value) const
+{
+	return PlayerFlags & (uint8)Value;
+}
+

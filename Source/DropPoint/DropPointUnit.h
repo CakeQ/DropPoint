@@ -116,6 +116,10 @@ public:
 	/** Override base actor TakeDamage. Calls AdjustHealth() with a negative value. */
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	/** More simplified TakeDamage. */
+	UFUNCTION(Category = Unit, BlueprintCallable)
+	float TakeDamage(float DamageAmount);
+
 	/** WIP: Kills the unit. Should be different from Destroy() as it should leave behind debris. */
 	UFUNCTION(Category = Unit, BlueprintCallable)
 	void Die();
@@ -206,11 +210,32 @@ public:
 	class UTexture2D* GetUnitThumbnail() const { return UnitThumbnail; };
 
 	/**
-	 * Checks to see if the unit has the input property flag.
-	 * @param Value - The flag to check.
-	 */
-	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)
-	bool HasUnitFlag(EUnitFlags Value) const { return UnitFlags & (uint8)Value; };
+	* Set the unit to have only the input flag.
+	* @param Value - The input flag to set.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void SetUnitFlag(const EUnitFlags& Value);
+
+	/**
+	* Adds the input flag to the unit's flags.
+	* @param Value - The input flag to add.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void AddUnitFlag(const EUnitFlags& Value);
+
+	/**
+	* Removes the input flag from the unit's flags.
+	* @param Value - The input flag to remove.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void RemoveUnitFlag(const EUnitFlags& Value);
+
+	/**
+	* Checks to see if the unit has the input property flag.
+	* @param Value - The flag to check.
+	*/
+	UFUNCTION(Category = Unit, BlueprintCallable)
+    bool HasUnitFlag(const EUnitFlags& Value) const;
 
 	/** Change the unit's material. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)

@@ -81,6 +81,12 @@ float ADropPointUnit::TakeDamage(float DamageAmount, struct FDamageEvent const& 
 	return DamageAmount;
 }
 
+float ADropPointUnit::TakeDamage(const float DamageAmount)
+{
+	AdjustHealth(-DamageAmount);
+	return DamageAmount;
+}
+
 void ADropPointUnit::Die()
 {
 	Destroy();
@@ -110,3 +116,24 @@ void ADropPointUnit::SetUnitCoords(const FDropPointGridCoord& NewCoord)
 {
 	UnitCoordinates = NewCoord;
 }
+
+void ADropPointUnit::SetUnitFlag(const EUnitFlags& Value)
+{
+	UnitFlags = (uint8)Value;
+}
+
+void ADropPointUnit::AddUnitFlag(const EUnitFlags& Value)
+{
+	UnitFlags |= (uint8)Value;
+}
+
+void ADropPointUnit::RemoveUnitFlag(const EUnitFlags& Value)
+{
+	UnitFlags &= ~(uint8)Value;
+}
+
+bool ADropPointUnit::HasUnitFlag(const EUnitFlags& Value) const
+{
+	return UnitFlags & (uint8)Value;
+}
+

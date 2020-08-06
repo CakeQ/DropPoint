@@ -49,5 +49,5 @@ public:
 
 	/** Gets the ability class type this button stores. */
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
-	class UDropPointAbility* GetAbility() { return Ability; };
+	class UDropPointAbility* GetAbility() const { return Ability; };
 };

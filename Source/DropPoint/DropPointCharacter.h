@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FPlaceUnitDelegate, TSubclassOf<class ADropPointUnit>, CompareType, const int32&, Amount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPurchaseDelegate, const int32&, Cost);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTileDelegate, class ADropPointTile*, Tile);
 
 /**
  * The character class used by the DropPoint game mode. Handles all interactions with the game grid, units, and UI.
@@ -94,6 +95,10 @@ protected:
 	/** The player's faction. */
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
 	EUnitFactions PlayerFaction = EUnitFactions::Player;
+	
+	/** Player properties, stored into a bitmask. See EPlayerFlags in DropPointEnums.h for flag descriptions. */
+	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite, meta=(Bitmask, BitmaskEnum = "EPlayerFlags"))
+	uint8 PlayerFlags;
 
 	/** The starting expenditures for the player. */
 	UPROPERTY(Category = DropPoint, EditAnywhere, BlueprintReadWrite)
@@ -112,6 +117,10 @@ public:
 	UPROPERTY(Category = DropPoint, BlueprintAssignable)
 	FPurchaseDelegate OnPurchaseUnit;
 
+	/** Delegate binding for selecting tiles. */
+	UPROPERTY(Category = DropPoint, BlueprintAssignable)
+	FTileDelegate OnTileSelect;
+	
 protected:
 	/**
 	 * Traces the world space from the camera position based on the mouse cursor to select and highlight tiles and units within the game arena.
@@ -202,4 +211,33 @@ public:
 	* @param NewUnit - The unit to take ownership of.
 	*/
 	void AddUnit(class ADropPointUnit* NewUnit) const;
+	
+	/**
+	* Set the player to have only the input flag.
+	* @param Value - The input flag to set.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void SetPlayerFlag(const EPlayerFlags& Value);
+
+	/**
+	* Adds the input flag to the player's flags.
+	* @param Value - The input flag to add.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void AddPlayerFlag(const EPlayerFlags& Value);
+
+	/**
+	* Removes the input flag from the player's flags.
+	* @param Value - The input flag to remove.
+	*/
+	UFUNCTION(Category = Tile, BlueprintCallable)
+    void RemovePlayerFlag(const EPlayerFlags& Value);
+
+	/**
+	* Checks to see if the player has the input property flag.
+	* @param Value - The flag to check.
+	*/
+	UFUNCTION(Category = Unit, BlueprintCallable)
+    bool HasPlayerFlag(const EPlayerFlags& Value) const;
+
 };

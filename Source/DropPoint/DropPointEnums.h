@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "DropPointGridCoord.h"
 #include "DropPointEnums.generated.h"
 
 /**
@@ -21,6 +20,20 @@ enum class EGridDirections : uint8
 	West,
 	NorthWest
 };
+
+/**
+* Player property flags.
+* Targeting - This character is attempting to target something.
+*/
+UENUM(meta = (Bitflags, UseEnumValuesAsMaskValuesInEditor = "true"))
+enum class EPlayerFlags : uint8
+{
+	Targeting = (1 << 0)
+    // TakingOff = (1 << 1),
+    // Overheating = (1 << 2),
+    // Invulnerable = (1 << 3)
+};
+ENUM_CLASS_FLAGS(EPlayerFlags)
 
 /**
  * Tile property flags.

@@ -45,10 +45,25 @@ bool ADropPointTile::SetUnit(ADropPointUnit* NewUnit, const bool bForce = false)
 			GetWorld()->DestroyActor(Unit);
 		}
 	}
+	if(NewUnit->GetConnectedTile())
+	{
+		ADropPointTile* OldTile = NewUnit->GetConnectedTile();
+		OldTile->RemoveUnit(NewUnit);
+	}
 	Units.Add(NewUnit);
 	NewUnit->SetConnectedTile(this);
 	NewUnit->SetUnitCoords(TileCoordinates);
 	NewUnit->SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, 50.0f));
+	return true;
+}
+
+bool ADropPointTile::RemoveUnit(ADropPointUnit* Unit)
+{
+	if(!Units.Find(Unit))
+	{
+		return false;
+	}
+	Units.Remove(Unit);
 	return true;
 }
 
@@ -105,4 +120,3 @@ bool ADropPointTile::HasTileFlag(const ETileFlags& Value) const
 {
 	return TileFlags & (uint8)Value;
 }
-

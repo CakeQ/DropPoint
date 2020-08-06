@@ -69,23 +69,23 @@ public:
 
 	/** Get the ability type. See EAbilityTypes in DropPointEnums.h for descriptions. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
-	EAbilityTypes GetAbilityType() { return AbilityType; };
+	EAbilityTypes GetAbilityType() const { return AbilityType; };
 
 	/** Get the ability category. See EAbilityCats in DropPointEnums.h for descriptions. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
-	EAbilityCats GetAbilityCategory() { return AbilityCategory; };
+	EAbilityCats GetAbilityCategory() const { return AbilityCategory; };
 
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetName() { return AbilityName; };
+	const FString& GetName() const { return AbilityName; };
 
 	/** Gets the unit's UI description. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetDescription() { return AbilityDesc; };
+	const FString& GetDescription() const { return AbilityDesc; };
 
 	/** Gets the unit's UI thumbnail. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
-	class UTexture2D* GetThumbnail() { return AbilityThumbnail; };
+	class UTexture2D* GetThumbnail() const { return AbilityThumbnail; };
 
 	/**
 	 * Called when the ability component is selected to fire.
@@ -111,13 +111,13 @@ public:
 
 	/** Returns whether or not the ability is ready to trigger after cooldown. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintCallable)
-	bool ReadyToTrigger() { return AbilityCooldownLeft <= 0 && AbilityWindupLeft <= 0; };
+	bool ReadyToTrigger() const { return AbilityCooldownLeft <= 0 && AbilityWindupLeft <= 0; };
 
 	/** See if there are any queued triggers awaiting call. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintCallable)
-	bool HasQueuedTriggers() { return QueuedUnits.Num() > 0; };
+	bool HasQueuedTriggers() const { return QueuedUnits.Num() > 0; };
 
 	/** Returns how many more turns the ability will be on cooldown. */
 	FORCEINLINE UFUNCTION(Category = Ability, BlueprintGetter)
-	int32 CheckCooldown() { return AbilityCooldownLeft; };
+	int32 CheckCooldown() const { return AbilityCooldownLeft; };
 };

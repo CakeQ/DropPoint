@@ -42,7 +42,7 @@ protected:
 
 public:
 	/**
-	 * Set the unit to have only the input flag.
+	 * Set the tile to have only the input flag.
 	 * @param Value - The input flag to set.
 	 */
 	UFUNCTION(Category = Tile, BlueprintCallable)
@@ -98,6 +98,7 @@ public:
 	 */
 	UFUNCTION(Category = Tile, BlueprintCallable)
 	bool SetUnit(class ADropPointUnit* NewUnit, bool bForce);
+	bool RemoveUnit(ADropPointUnit* Unit);
 
 	/**
 	 * Checks to see if this tile has a unit in the given layer.

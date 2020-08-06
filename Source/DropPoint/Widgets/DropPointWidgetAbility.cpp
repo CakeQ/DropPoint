@@ -3,7 +3,9 @@
 
 #include "DropPointWidgetAbility.h"
 #include "DropPointAbility.h"
+#include "DropPointCharacter.h"
 #include "DropPointEnums.h"
+#include "Abilities/DropPointAbilityTarget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 
@@ -35,6 +37,8 @@ void UDropPointWidgetAbility::ActivateButton()
 {
 	if (OwnerUnit && Ability)
 	{
+		ADropPointCharacter* OwnerPlayer = this->GetOwningPlayerPawn<ADropPointCharacter>();
+		OwnerPlayer->OnTileSelect.Clear();
 		if (Ability->GetAbilityType() == EAbilityTypes::Instant)
 		{
 			Ability->QueueTrigger(OwnerUnit);
@@ -42,7 +46,10 @@ void UDropPointWidgetAbility::ActivateButton()
 		//Acquire target from player.
 		else if(Ability->GetAbilityType() == EAbilityTypes::Targetable)
 		{
-			
+			UDropPointAbilityTarget* AbilityTarget = Cast<UDropPointAbilityTarget>(Ability);
+			AbilityTarget->SetOwner(OwnerUnit);
+			OwnerPlayer->OnTileSelect.AddDynamic(AbilityTarget, &UDropPointAbilityTarget::SetTarget);
+			OwnerPlayer->AddPlayerFlag(EPlayerFlags::Targeting);
 		}
 	}
 }
