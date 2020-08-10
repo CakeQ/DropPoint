@@ -31,7 +31,13 @@ protected:
 	UPROPERTY(Category = References, VisibleInstanceOnly, BlueprintReadWrite)
 	class ADropPointUnit* OwnerUnit;
 
+	/** The range, in tiles, that this ability can act on from the origin */
+	UPROPERTY(Category = Ability, EditAnywhere, BlueprintReadWrite)
+	int32 AbilityRange;
+
 public:
+	const int32& GetAbilityRange() const { return AbilityRange; }
+
 	/** Get target unit */
 	FORCEINLINE UFUNCTION(Category = DropPoint, BlueprintGetter)
 	ADropPointTile* GetTargetTile() const { return TargetTile; }

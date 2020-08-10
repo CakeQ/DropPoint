@@ -2,7 +2,6 @@
 
 
 #include "DropPointAbility.h"
-#include "DropPointEnums.h"
 #include "DropPointUnit.h"
 
 UDropPointAbility::UDropPointAbility()

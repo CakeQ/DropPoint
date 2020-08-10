@@ -48,9 +48,10 @@ enum class ETileFlags : uint8
 {
 	Highlighted = (1 << 0),
 	Selected = (1 << 1),
-	IncomingUnit = (1  << 2),
-	IncomingDamage = (1 << 3),
-	HasMinerals = (1 << 4)
+	Targeted = (1 << 2),
+	IncomingUnit = (1  << 3),
+	IncomingDamage = (1 << 4),
+	HasMinerals = (1 << 5)
 };
 ENUM_CLASS_FLAGS(ETileFlags)
 

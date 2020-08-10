@@ -101,19 +101,27 @@ bool ADropPointTile::DestroyTile(const bool bUnits)
 	return GetWorld()->DestroyActor(this);
 }
 
+void ADropPointTile::UpdateMaterialVisuals()
+{
+	
+}
+
 void ADropPointTile::SetTileFlag(const ETileFlags& Value)
 {
 	TileFlags = (uint8)Value;
+	UpdateMaterialVisuals();
 }
 
 void ADropPointTile::AddTileFlag(const ETileFlags& Value)
 {
 	TileFlags |= (uint8)Value;
+	UpdateMaterialVisuals();
 }
 
 void ADropPointTile::RemoveTileFlag(const ETileFlags& Value)
 {
 	TileFlags &= ~(uint8)Value;
+	UpdateMaterialVisuals();
 }
 
 bool ADropPointTile::HasTileFlag(const ETileFlags& Value) const

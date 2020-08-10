@@ -2,10 +2,12 @@
 
 
 #include "DropPointWidgetAbility.h"
+#include "DropPointGameMode.h"
 #include "DropPointAbility.h"
 #include "DropPointCharacter.h"
 #include "DropPointEnums.h"
 #include "Abilities/DropPointAbilityTarget.h"
+#include "Tiles/DropPointTile.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 
@@ -47,6 +49,15 @@ void UDropPointWidgetAbility::ActivateButton()
 		else if(Ability->GetAbilityType() == EAbilityTypes::Targetable)
 		{
 			UDropPointAbilityTarget* AbilityTarget = Cast<UDropPointAbilityTarget>(Ability);
+			if(AbilityTarget->GetAbilityRange())
+			{
+				ADropPointGameMode* Gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
+				const TArray<ADropPointTile*> Tiles = Gamemode->GetTileORange(OwnerUnit->GetConnectedTile()->GetTileCoords(), AbilityTarget->GetAbilityRange(), true);
+				for(ADropPointTile* Tile : Tiles)
+				{
+					Tile->AddTileFlag(ETileFlags::Targeted);
+				}
+			}
 			AbilityTarget->SetOwner(OwnerUnit);
 			OwnerPlayer->OnTileSelect.AddDynamic(AbilityTarget, &UDropPointAbilityTarget::SetTarget);
 			OwnerPlayer->AddPlayerFlag(EPlayerFlags::Targeting);

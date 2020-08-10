@@ -10,6 +10,14 @@ ADropPointTileInteractive::ADropPointTileInteractive()
 	TileMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointTileInteractive::TilePressed);
 }
 
+void ADropPointTileInteractive::UpdateMaterialVisuals()
+{
+	Super::UpdateMaterialVisuals();
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), HasTileFlag(ETileFlags::Selected));
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), HasTileFlag(ETileFlags::Highlighted));
+	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Targeted"), HasTileFlag(ETileFlags::Targeted));
+}
+
 void ADropPointTileInteractive::TileClicked(UPrimitiveComponent * ClickedComp, FKey ButtonClicked)
 {
 	ActivateTile();
@@ -35,7 +43,6 @@ void ADropPointTileInteractive::ToggleTile()
 void ADropPointTileInteractive::ActivateTile()
 {
 	AddTileFlag(ETileFlags::Selected);
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 1.0f);
 	for (ADropPointUnit* Unit : Units)
 	{
 		Unit->HighlightUnit(true);
@@ -45,7 +52,6 @@ void ADropPointTileInteractive::ActivateTile()
 void ADropPointTileInteractive::DeactivateTile()
 {
 	RemoveTileFlag(ETileFlags::Selected);
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), 0.0f);
 	if (!HasTileFlag(ETileFlags::Highlighted))
 	{
 		for (ADropPointUnit* Unit : Units)
@@ -60,12 +66,10 @@ void ADropPointTileInteractive::HighlightTile(bool bOn)
 	if (bOn)
 	{
 		AddTileFlag(ETileFlags::Highlighted);
-		TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), 1.0f);
 	}
 	else
 	{
 		RemoveTileFlag(ETileFlags::Highlighted);
-		TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), 0.0f);
 	}
 
 	if (!HasTileFlag(ETileFlags::Selected))

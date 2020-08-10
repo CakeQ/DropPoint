@@ -18,6 +18,11 @@ public:
 	/** Override to set up input binding. */
 	ADropPointTileInteractive();
 
+	/**
+	* Update tile material parameter values for visuals
+	*/
+    virtual void UpdateMaterialVisuals() override;
+	
 	/** Handle the tile being clicked. */
 	UFUNCTION(Category = DropPoint, BlueprintCallable)
 	void TileClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);

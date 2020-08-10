@@ -6,7 +6,7 @@
 
 void UDropPointSpawnComponentCluster::Fire(ADropPointGameMode* OwnerMode, const FDropPointGridCoord& Coordinates)
 {
-	for(const FDropPointGridCoord& Coord : OwnerMode->GetCoordORange(Coordinates, ClusterRange))
+	for(const FDropPointGridCoord& Coord : OwnerMode->GetCoordORange(Coordinates, ClusterRange, false))
 	{
 		OwnerMode->CreateTile(Coord, TileClass, false);
 	}

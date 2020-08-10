@@ -1,6 +1,17 @@
 // Copyright Daniel Thompson @ https://github.com/CakeQ and Archie Whitehead 2019  All Rights Reserved.
 
 #include "DropPointGameMode.h"
+
+
+
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
+#include "AABB.h"
 #include "DropPointGridCoord.h"
 #include "DropPointPlayerController.h"
 #include "DropPointCharacter.h"
@@ -109,16 +120,16 @@ ADropPointTile* ADropPointGameMode::GetTileStep(const FDropPointGridCoord& Origi
 	return GetTileAtPos(Origin + Offset);
 }
 
-TArray<ADropPointTile*> ADropPointGameMode::GetTileORange(const FDropPointGridCoord& Origin, const int32& Range) const
+TArray<ADropPointTile*> ADropPointGameMode::GetTileORange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bRadial = false) const
 {
-	return GetTileRange(Origin, Range, false);
+	return GetTileRange(Origin, Range,  bRadial, false);
 }
 
-TArray<ADropPointTile*> ADropPointGameMode::GetTileRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin = true) const
+TArray<ADropPointTile*> ADropPointGameMode::GetTileRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bRadial = false, const bool& bIncludeOrigin = true) const
 {
 	TArray<ADropPointTile*> Ret;
-	const FVector OriginVector(Origin.GridX, Origin.GridY, 0);
 	
+	const FVector OriginVector = FVector(Origin.GridX, Origin.GridY, 0);
 	for(int i = -Range; i <= Range; i++)
 	{
 		for(int j = -Range; j <= Range; j++)
@@ -129,6 +140,14 @@ TArray<ADropPointTile*> ADropPointGameMode::GetTileRange(const FDropPointGridCoo
 				if(Coord == Origin && !bIncludeOrigin)
 				{
 					continue;
+				}
+				if(bRadial)
+				{
+					const float DistToCenter = round(FVector::DistXY(FVector(Coord.GridX, Coord.GridY, 0), OriginVector));
+					if(DistToCenter > Range)
+					{
+						continue;
+					}
 				}
 				ADropPointTile* Tile = GetTileAtPos(Coord);
 				if(Tile)
@@ -142,16 +161,16 @@ TArray<ADropPointTile*> ADropPointGameMode::GetTileRange(const FDropPointGridCoo
 	return Ret;
 }
 
-TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordORange(const FDropPointGridCoord& Origin, const int32& Range) const
+TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordORange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bRadial = false) const
 {
-	return GetCoordRange(Origin, Range, false);
+	return GetCoordRange(Origin, Range, bRadial, false);
 }
 
-TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bIncludeOrigin = true) const
+TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordRange(const FDropPointGridCoord& Origin, const int32& Range, const bool& bRadial = false, const bool& bIncludeOrigin = true) const
 {
 	TArray<FDropPointGridCoord> Ret;
-	const FVector OriginVector(Origin.GridX, Origin.GridY, 0);
 	
+	const FVector OriginVector = FVector(Origin.GridX, Origin.GridY, 0);
 	for(int i = -Range; i <= Range; i++)
 	{
 		for(int j = -Range; j <= Range; j++)
@@ -162,6 +181,14 @@ TArray<FDropPointGridCoord> ADropPointGameMode::GetCoordRange(const FDropPointGr
 				if(Coord == Origin && !bIncludeOrigin)
 				{
 					continue;
+				}
+				if(bRadial)
+				{
+					const float DistToCenter = round(FVector::DistXY(FVector(Coord.GridX, Coord.GridY, 0), OriginVector));
+					if(DistToCenter > Range)
+					{
+						continue;
+					}
 				}
 				Ret.Add(Coord);
 			}
@@ -373,7 +400,7 @@ void ADropPointGameMode::SpawnArena()
 		for (int32 BlockYIndex = 0; BlockYIndex < GridSize; BlockYIndex++)
 		{
 			// Get distance to center, for positional spawn pool bonuses.
-			const float DistToCenter = FVector::DistXY(FVector(BlockXIndex, BlockYIndex, 0), GridCenter);
+			const float DistToCenter = round(FVector::DistXY(FVector(BlockXIndex, BlockYIndex, 0), GridCenter));
 			const TSubclassOf<ADropPointTile>& TileTypeClass = PickTileFromPool(DistToCenter);
 			CreateTile(FDropPointGridCoord(BlockXIndex, BlockYIndex), TileTypeClass, false);
 		}

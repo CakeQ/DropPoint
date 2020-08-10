@@ -42,6 +42,12 @@ protected:
 
 public:
 	/**
+	 * Update tile material parameter values for visuals
+	 */
+	UFUNCTION(Category = Tile, BlueprintCallable)
+	virtual void UpdateMaterialVisuals();
+	
+	/**
 	 * Set the tile to have only the input flag.
 	 * @param Value - The input flag to set.
 	 */
