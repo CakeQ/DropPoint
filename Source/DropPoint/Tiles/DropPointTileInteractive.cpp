@@ -6,16 +6,15 @@
 
 ADropPointTileInteractive::ADropPointTileInteractive()
 {
-	TileMesh->OnClicked.AddDynamic(this, &ADropPointTileInteractive::TileClicked);
-	TileMesh->OnInputTouchBegin.AddDynamic(this, &ADropPointTileInteractive::TilePressed);
+	
 }
 
 void ADropPointTileInteractive::UpdateMaterialVisuals()
 {
 	Super::UpdateMaterialVisuals();
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), HasTileFlag(ETileFlags::Selected));
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), HasTileFlag(ETileFlags::Highlighted));
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("Targeted"), HasTileFlag(ETileFlags::Targeted));
+	GridMesh->SetScalarParameterValueOnMaterials(TEXT("Selected"), HasTileFlag(ETileFlags::Selected));
+	GridMesh->SetScalarParameterValueOnMaterials(TEXT("Highlighted"), HasTileFlag(ETileFlags::Highlighted));
+	GridMesh->SetScalarParameterValueOnMaterials(TEXT("Targeted"), HasTileFlag(ETileFlags::Targeted));
 }
 
 void ADropPointTileInteractive::TileClicked(UPrimitiveComponent * ClickedComp, FKey ButtonClicked)

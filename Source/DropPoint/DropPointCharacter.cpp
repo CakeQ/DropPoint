@@ -340,36 +340,36 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 	if (HitResult.Actor.IsValid())
 	{
 		//Cast to the tile.
-		ADropPointTileInteractive* hitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
+		ADropPointTileInteractive* HitTile = Cast<ADropPointTileInteractive>(HitResult.Actor.Get());
 
 		//If the cast failed, try casting to any unit on top.
-		if (!hitTile)
+		if (!HitTile)
 		{
-			ADropPointUnit* hitUnit = Cast<ADropPointUnit>(HitResult.Actor.Get());
-			if (hitUnit)
+			ADropPointUnit* HitUnit = Cast<ADropPointUnit>(HitResult.Actor.Get());
+			if (HitUnit)
 			{
-				hitTile = Cast<ADropPointTileInteractive>(hitUnit->GetConnectedTile());
+				HitTile = Cast<ADropPointTileInteractive>(HitUnit->GetConnectedTile());
 			}
 		}
 
 		//If we still fail to cast, just return.
-		if (!hitTile)
+		if (!HitTile)
 		{
 			return;
 		}
 
-		if (CurrentTileFocus != hitTile)
+		if (CurrentTileFocus != HitTile)
 		{
 			if (CurrentTileFocus)
 			{
 				CurrentTileFocus->HighlightTile(false);
 			}
-			if (hitTile)
+			if (HitTile)
 			{
-				hitTile->HighlightTile(true);
+				HitTile->HighlightTile(true);
 				if (HighlightParameters)
 				{
-					const FVector Loc = hitTile->GetActorLocation();
+					const FVector Loc = HitTile->GetActorLocation();
 					HighlightParameters->SetVectorParameterValue(TEXT("MousePos"), Loc);
 					if (!CurrentActiveTile)
 					{
@@ -377,7 +377,7 @@ void ADropPointCharacter::TraceForBlock(const FVector& Start, const FVector& End
 					}
 				}
 			}
-			CurrentTileFocus = hitTile;
+			CurrentTileFocus = HitTile;
 		}
 	}
 	else if (CurrentTileFocus)

@@ -23,6 +23,10 @@ protected:
 	/** Tile mesh */
 	UPROPERTY(Category = References, EditAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* TileMesh;
+	
+	/** Grid mesh */
+	UPROPERTY(Category = References, EditAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* GridMesh;
 
 	/** Units contained within the tile, with layering taken into account. There should only ever be one unit per layer. */
 	UPROPERTY(Category = References, VisibleAnywhere, BlueprintReadWrite)

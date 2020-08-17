@@ -10,13 +10,16 @@ ADropPointTile::ADropPointTile()
 {
 	TileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TileMesh0"));
 	RootComponent = TileMesh;
+	
+	GridMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("GridMesh0"));
+	GridMesh->SetupAttachment(TileMesh);
 }
 
 void ADropPointTile::SetTileCoords(const FDropPointGridCoord& NewCoord)
 {
 	TileCoordinates = NewCoord;
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileX"), TileCoordinates.GridX);
-	TileMesh->SetScalarParameterValueOnMaterials(TEXT("TileY"), TileCoordinates.GridY);
+	GridMesh->SetScalarParameterValueOnMaterials(TEXT("TileX"), TileCoordinates.GridX);
+	GridMesh->SetScalarParameterValueOnMaterials(TEXT("TileY"), TileCoordinates.GridY);
 }
 
 bool ADropPointTile::HasUnit(EUnitLayers Layer = EUnitLayers::Ground)
