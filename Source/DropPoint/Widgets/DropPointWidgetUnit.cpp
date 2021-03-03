@@ -99,11 +99,11 @@ void UDropPointWidgetUnit::UpdateWidgets()
 
 	if (TextBlock_UnitName)
 	{
-		TextBlock_UnitName->SetText(FText::FromString(OwnerUnit->GetUnitName()));
+		TextBlock_UnitName->SetText(FText::FromName(OwnerUnit->GetUnitName()));
 	}
 	if (TextBlock_UnitDesc)
 	{
-		TextBlock_UnitDesc->SetText(FText::FromString(OwnerUnit->GetUnitDescription()));
+		TextBlock_UnitDesc->SetText(OwnerUnit->GetUnitDescription());
 	}
 	if (Image_Thumbnail)
 	{

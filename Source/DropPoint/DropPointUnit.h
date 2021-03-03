@@ -21,16 +21,18 @@ class DROPPOINT_API ADropPointUnit : public AActor
 	GENERATED_BODY()
 	
 public:	
-	ADropPointUnit();
+	ADropPointUnit(const FObjectInitializer& ObjectInitializer);
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 protected:
 	/** Name of the unit. Used by UI. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	FString UnitName;
+	FName UnitName;
 
 	/** Description of the unit. Used by UI. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	FString UnitDesc;
+	FText UnitDesc;
 
 	/** Thumbnail of the unit. Used by UI. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
@@ -46,15 +48,15 @@ protected:
 
 	/** Current unit health. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	int32 Health = 3;
+	int32 Health;
 
 	/** Maximum possible unit health. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	int32 MaxHealth = 3;
+	int32 MaxHealth;
 
 	/** Time in turns required for this unit to take off when told to do so. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	int32 TimeToLaunch = 3;
+	int32 TimeToLaunch;
 
 	/** Unit coordinates within the game grid */
 	UPROPERTY(Category = Unit, VisibleInstanceOnly, BlueprintReadOnly)
@@ -62,11 +64,11 @@ protected:
 
 	/** The unit's faction. Dictates if the player can interact with it or if it's hostile/neutral. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite)
-	EUnitFactions UnitFaction = EUnitFactions::Neutral;
+	EUnitFactions UnitFaction ;
 
 	/** The layer which the unit occupies on a tile. */
 	UPROPERTY(Category = Unit, EditDefaultsOnly, BlueprintReadWrite)
-	EUnitLayers UnitLayer = EUnitLayers::Ground;
+	EUnitLayers UnitLayer;
 
 	/** Unit properties, stored into a bitmask. See EUnitFlags in DropPointEnums.h for flag descriptions. */
 	UPROPERTY(Category = Unit, EditAnywhere, BlueprintReadWrite, meta=(Bitmask, BitmaskEnum = "EUnitFlags"))
@@ -87,10 +89,6 @@ public:
 	UPROPERTY(Category = DropPoint, BlueprintAssignable)
 	FGatherMineralsDelegate OnGatherMinerals;
 
-	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaTime) override;
-
 	/** Set the unit to start launching. */
 	UFUNCTION(Category = Unit, BlueprintCallable)
 	void TryLaunch() const;
@@ -104,14 +102,14 @@ public:
 	 * @param Amount - The amount of minerals to give.
 	 */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void AddResources(const int32& Amount);
+	void AddResources(const int32 Amount);
 
 	/**
 	 * Adjusts the unit's health value. Will Die() if health drops to zero.
 	 * @param Amount - The amount of health to give or take. Can be negative.
 	 */
 	UFUNCTION(Category = Unit, BlueprintCallable)
-	void AdjustHealth(const int32& Amount);
+	void AdjustHealth(const int32 Amount);
 
 	/** Override base actor TakeDamage. Calls AdjustHealth() with a negative value. */
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -199,11 +197,11 @@ public:
 
 	/** Gets the unit's UI name. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetUnitName() const { return UnitName; };
+	const FName& GetUnitName() const { return UnitName; };
 
 	/** Gets the unit's UI description. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
-	const FString& GetUnitDescription() const { return UnitDesc; };
+	const FText& GetUnitDescription() const { return UnitDesc; };
 
 	/** Gets the unit's UI thumbnail. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintGetter)
@@ -214,28 +212,28 @@ public:
 	* @param Value - The input flag to set.
 	*/
 	UFUNCTION(Category = Tile, BlueprintCallable)
-    void SetUnitFlag(const EUnitFlags& Value);
+    void SetUnitFlag(const EUnitFlags Value);
 
 	/**
 	* Adds the input flag to the unit's flags.
 	* @param Value - The input flag to add.
 	*/
 	UFUNCTION(Category = Tile, BlueprintCallable)
-    void AddUnitFlag(const EUnitFlags& Value);
+    void AddUnitFlag(const EUnitFlags Value);
 
 	/**
 	* Removes the input flag from the unit's flags.
 	* @param Value - The input flag to remove.
 	*/
 	UFUNCTION(Category = Tile, BlueprintCallable)
-    void RemoveUnitFlag(const EUnitFlags& Value);
+    void RemoveUnitFlag(const EUnitFlags Value);
 
 	/**
 	* Checks to see if the unit has the input property flag.
 	* @param Value - The flag to check.
 	*/
 	UFUNCTION(Category = Unit, BlueprintCallable)
-    bool HasUnitFlag(const EUnitFlags& Value) const;
+    bool HasUnitFlag(const EUnitFlags Value) const;
 
 	/** Change the unit's material. */
 	FORCEINLINE UFUNCTION(Category = Unit, BlueprintCallable)

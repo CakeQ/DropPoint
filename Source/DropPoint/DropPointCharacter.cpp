@@ -69,8 +69,10 @@ void ADropPointCharacter::Tick(float DeltaSeconds)
 
 void ADropPointCharacter::NextAction()
 {
-	ADropPointGameMode* Gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode());
-	Gamemode->EndTurn();
+	if (ADropPointGameMode* Gamemode = Cast<ADropPointGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		Gamemode->EndTurn();
+	}
 }
 
 void ADropPointCharacter::SetUnitSpawnType(TSubclassOf<class ADropPointUnit> NewType)

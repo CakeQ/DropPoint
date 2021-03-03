@@ -287,6 +287,19 @@ ADropPointUnit* ADropPointGameMode::CreateUnit(const FDropPointGridCoord& Coord,
 	return NewUnit;
 }
 
+void ADropPointGameMode::RemoveUnit(ADropPointUnit* UnitToRemove, const bool SkipFollowUpSpawn)
+{
+	if (ADropPointTile* ConnectedTile = UnitToRemove->GetConnectedTile())
+	{
+		ConnectedTile->RemoveUnit(UnitToRemove);
+	}
+	Units.Remove(UnitToRemove);
+	//if (UnitToRemove->FollowUpUnit != nullptr && !SkipFollowUpSpawn)
+	//{
+	//	CreateUnit(UnitToRemove->GetUnitCoordinates(), UnitToRemove->FollowUpUnit, UnitToRemove->GetFaction());
+	//}
+}
+
 ADropPointTile* ADropPointGameMode::CreateTile(const FDropPointGridCoord& Coord, const TSubclassOf<class ADropPointTile>& TileType, const bool bForce = false)
 {
 	const float XOffset = (Coord.GridX * TileSize) - GridOffset; // Divide by dimension

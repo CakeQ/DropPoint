@@ -199,6 +199,14 @@ public:
 	class ADropPointUnit* CreateUnit(const FDropPointGridCoord& Coord, TSubclassOf<ADropPointUnit>& UnitType, EUnitFactions& Faction, const bool bForce);
 
 	/**
+	 * Destroys a unit and places any follow up units like wreckages etc. Removes the unit from the unit list.
+	 * @param UnitToRemove - The unit to destroy.
+	 * @param SkipFollowUpSpawn - Whether to skip spawning any follow up units or not.
+	 */
+	UFUNCTION(Category = DropPoint, BlueprintCallable)
+	void RemoveUnit(ADropPointUnit* UnitToRemove, const bool SkipFollowUpSpawn = false);
+
+	/**
 	 * Creates a tile and places it into the arena. Returns the new tile if successful.
 	 * @param Coord - The X and Y values of the desired Coordinate.
 	 * @param TileType - The type of tile to spawn. Should be a defined BP subclass.

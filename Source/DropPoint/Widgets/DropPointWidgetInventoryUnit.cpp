@@ -28,7 +28,7 @@ void UDropPointWidgetInventoryUnit::SetUnitType(TSubclassOf<class ADropPointUnit
 	}
 	if (Button_Unit)
 	{
-		Button_Unit->SetToolTipText(FText::FromString(UnitType->GetUnitName()));
+		Button_Unit->SetToolTipText(FText::FromName(UnitType->GetUnitName()));
 	}
 }
 
